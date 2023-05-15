@@ -4,6 +4,7 @@ using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using OxyPlot;
 using OxyPlot.Annotations;
+using OxyPlot.WindowsForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ namespace Dj_application.View.Control
     {
         LecteurAudio lecteurAudio;
         Boolean isPlay = false;
-        int i = 0;
+        private LineAnnotation positionMarker;
         public LecteurAudioView()
         {
             this.Dock = DockStyle.Fill;
@@ -28,6 +29,19 @@ namespace Dj_application.View.Control
 
             setAudio("boss1.mp3");
         }
+        public void setMarker(double pourcentage)
+        {
+            if (positionMarker != null)
+            {
+                PlotModel plotModel = pv_graph.ActualModel;
+
+                double sizeZone = plotModel.Axes[0].ActualMaximum;
+                double newPosition = pourcentage * sizeZone;
+                positionMarker.X = newPosition + plotModel.Axes[0].ActualMinimum;
+                pv_graph.InvalidatePlot(false);
+            }
+        }
+
 
         public void setAudio(string url)
         {
@@ -39,7 +53,7 @@ namespace Dj_application.View.Control
             lb_timeTotal.Text = "/ " + ((int)(lecteurAudio.getDureeTotalSeconde())).ToString();
             lb_timeNow.Text = ((int)(lecteurAudio.getPositionActuelleSecondes())).ToString();
 
-            pv_graph.Model=lecteurAudio.GetPlotModel(pv_graph.Height);
+            pv_graph.Model = lecteurAudio.GetPlotModel(pv_graph.Height, out positionMarker);
         }
 
         private void lecteurAudio_PositionChanged(object sender, double position)
@@ -47,20 +61,18 @@ namespace Dj_application.View.Control
             int etat = (int)(lecteurAudio.getPositionActuellePourcentage() * 1000);
             int currentSec = (int)lecteurAudio.getPositionActuelleSecondes();
 
-            if (pb_progress.InvokeRequired)
+            if (pv_graph.InvokeRequired)
             {
-                pb_progress.Invoke((MethodInvoker)delegate
+                pv_graph.Invoke((MethodInvoker)delegate
                 {
-                    pb_progress.Value = etat;
                     lb_timeNow.Text = currentSec.ToString();
-                    lecteurAudio.setMarker(lecteurAudio.getPositionActuellePourcentage(), pv_graph.Height);
+                    setMarker(lecteurAudio.getPositionActuellePourcentage());
                 });
             }
             else
             {
-                pb_progress.Value = etat;
                 lb_timeNow.Text = currentSec.ToString();
-                lecteurAudio.setMarker(lecteurAudio.getPositionActuellePourcentage(), pv_graph.Height);
+                setMarker(lecteurAudio.getPositionActuellePourcentage());
             }
         }
 
@@ -102,16 +114,15 @@ namespace Dj_application.View.Control
             lecteurAudio.setVolume(sb_son.Value / 100.0f);
         }
 
-        private void pb_progress_MouseClick(object sender, MouseEventArgs e)
+        private void pv_graph_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 int clickX = e.X;
-                int totalWidth = pb_progress.Width;
+                double totalWidth = pv_graph.Width;
                 double clickPercentage = (double)clickX / totalWidth;
                 double positionSeconds = clickPercentage * lecteurAudio.getDureeTotalSeconde();
                 lecteurAudio.Deplacer(positionSeconds);
-                Console.WriteLine("Position cliquée en secondes : " + positionSeconds);
             }
         }
     }

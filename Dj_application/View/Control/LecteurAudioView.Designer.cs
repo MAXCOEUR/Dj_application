@@ -31,7 +31,6 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             lb_name = new Label();
             lb_nbr_piste = new Label();
-            pb_progress = new ProgressBar();
             vm_son = new NAudio.Gui.VolumeMeter();
             bt_play_pause = new Button();
             bt_stop = new Button();
@@ -69,7 +68,6 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
             tableLayoutPanel1.Controls.Add(lb_name, 0, 0);
             tableLayoutPanel1.Controls.Add(lb_nbr_piste, 17, 0);
-            tableLayoutPanel1.Controls.Add(pb_progress, 0, 6);
             tableLayoutPanel1.Controls.Add(vm_son, 18, 1);
             tableLayoutPanel1.Controls.Add(bt_play_pause, 0, 8);
             tableLayoutPanel1.Controls.Add(bt_stop, 2, 8);
@@ -118,19 +116,6 @@
             lb_nbr_piste.TabIndex = 1;
             lb_nbr_piste.Text = "numero piste";
             lb_nbr_piste.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // pb_progress
-            // 
-            tableLayoutPanel1.SetColumnSpan(pb_progress, 18);
-            pb_progress.Dock = DockStyle.Fill;
-            pb_progress.Location = new Point(3, 153);
-            pb_progress.Maximum = 1000;
-            pb_progress.Name = "pb_progress";
-            pb_progress.Size = new Size(606, 19);
-            pb_progress.Step = 1;
-            pb_progress.Style = ProgressBarStyle.Continuous;
-            pb_progress.TabIndex = 3;
-            pb_progress.MouseClick += pb_progress_MouseClick;
             // 
             // vm_son
             // 
@@ -230,16 +215,18 @@
             // 
             tableLayoutPanel1.SetColumnSpan(pv_graph, 18);
             pv_graph.Dock = DockStyle.Fill;
-            pv_graph.Location = new Point(3, 28);
+            pv_graph.Location = new Point(0, 25);
+            pv_graph.Margin = new Padding(0);
             pv_graph.Name = "pv_graph";
             pv_graph.PanCursor = Cursors.Hand;
-            tableLayoutPanel1.SetRowSpan(pv_graph, 5);
-            pv_graph.Size = new Size(606, 119);
+            tableLayoutPanel1.SetRowSpan(pv_graph, 6);
+            pv_graph.Size = new Size(612, 150);
             pv_graph.TabIndex = 12;
             pv_graph.Text = "plotView1";
             pv_graph.ZoomHorizontalCursor = Cursors.SizeWE;
             pv_graph.ZoomRectangleCursor = Cursors.SizeNWSE;
             pv_graph.ZoomVerticalCursor = Cursors.SizeNS;
+            pv_graph.MouseClick += pv_graph_MouseClick;
             // 
             // LecteurAudioView
             // 
@@ -259,7 +246,6 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Label lb_name;
         private Label lb_nbr_piste;
-        private ProgressBar pb_progress;
         private NAudio.Gui.VolumeMeter vm_son;
         private Button bt_play_pause;
         private Button bt_stop;

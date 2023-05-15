@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using NAudio.Wave;
 
+
 namespace Dj_application.model
 {
     using NAudio.Wave;
     using OxyPlot;
     using OxyPlot.Annotations;
+    using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.WindowsForms;
 
@@ -19,7 +21,7 @@ namespace Dj_application.model
         private AudioFileReader lecteurAudio;
         private string name;
         private string path;
-        private LineAnnotation positionMarker;
+        
 
         public event EventHandler<double> PositionChanged;
 
@@ -31,6 +33,12 @@ namespace Dj_application.model
             sortieAudio = new WaveOutEvent();
             sortieAudio.Init(lecteurAudio);
         }
+
+        public TimeSpan getTime()
+        {
+            return lecteurAudio.TotalTime;
+        }
+
         ~LecteurAudio()
         {
             lecteurAudio.Dispose();
@@ -85,7 +93,7 @@ namespace Dj_application.model
         
         public double getDureeTotalSeconde()
         {
-            return lecteurAudio.TotalTime.TotalSeconds;
+            return getTime().TotalSeconds;
         }
 
         public double getPositionActuelleSecondes()
@@ -141,16 +149,8 @@ namespace Dj_application.model
             return waveform.ToArray();
         }
 
-        public void setMarker(double pourcentage, int sizeZone)
-        {
-            if(positionMarker!=null)
-            {
-                positionMarker.X = pourcentage * sizeZone;
-            }
-            
-        }
 
-        public PlotModel GetPlotModel(int sizeZone)
+        public PlotModel GetPlotModel(int sizeZone, out LineAnnotation positionMarker)
         {
             var model = new PlotModel();
             var lineSeries = new LineSeries();
@@ -163,12 +163,17 @@ namespace Dj_application.model
             positionMarker = new LineAnnotation
             {
                 Type = LineAnnotationType.Vertical,
-                X = getPositionActuellePourcentage() * sizeZone,
+                X = -500,
                 Color = OxyColors.Red,
                 StrokeThickness = 1
             };
             model.Series.Add(lineSeries);
             model.Annotations.Add(positionMarker);
+
+
+            model.PlotMargins = new OxyThickness(0); // Supprimer les marges
+            model.Padding = new OxyThickness(0); // Supprimer le padding
+
 
             return model;
         }
