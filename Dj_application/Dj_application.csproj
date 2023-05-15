@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CSCore" Version="1.2.1.2" />
     <PackageReference Include="NAudio" Version="2.1.0" />
+    <PackageReference Include="OxyPlot.WindowsForms" Version="2.1.2" />
   </ItemGroup>
 
 </Project>

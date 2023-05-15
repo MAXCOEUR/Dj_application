@@ -1,3 +1,7 @@
+using Dj_application.View;
+using Dj_application.Singleton;
+using Dj_application.model;
+
 namespace Dj_application
 {
     internal static class Program
@@ -5,8 +9,8 @@ namespace Dj_application
         [STAThread]
         static void Main()
         {
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            Window window = SingletonWindow.getInstance().window;
+            window.ShowDialog();
         }
     }
 }
