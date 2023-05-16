@@ -20,11 +20,13 @@ namespace Dj_application.model
     {
         private WaveOutEvent sortieAudio;
         private AudioFileReader lecteurAudio;
+        private VolumeSampleProvider lecteurAudioAvecVolume;
         private Musique musique;
         public event EventHandler<double> PositionChanged;
         public event EventHandler<bool> FinishGraph;
         public event EventHandler<double> LoadingPositionChanged;
         public event EventHandler<double> clickOnModel;
+        public event EventHandler FinLecture;
 
         private Thread threadPlay;
         private bool isPlaying = true;
@@ -33,8 +35,9 @@ namespace Dj_application.model
         {
             this.musique = musique;
             lecteurAudio = new AudioFileReader(musique.Path);
+            lecteurAudioAvecVolume = new VolumeSampleProvider(lecteurAudio);
             sortieAudio = new WaveOutEvent();
-            sortieAudio.Init(lecteurAudio);
+            sortieAudio.Init(lecteurAudioAvecVolume);
         }
 
         public TimeSpan getTime()
@@ -61,6 +64,10 @@ namespace Dj_application.model
         private void UpdatePosition()
         {
             OnPositionChanged(getPositionActuelleSecondes());
+            if (getPositionActuelleSecondes() >= getDureeTotalSeconde()-1)
+            {
+                FinLecture?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public void Jouer()
@@ -118,7 +125,7 @@ namespace Dj_application.model
 
         public void setVolume(float volume)
         {
-            sortieAudio.Volume = volume;
+            lecteurAudioAvecVolume.Volume = volume;
         }
         public Musique getMusique()
         {

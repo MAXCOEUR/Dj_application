@@ -22,7 +22,8 @@ namespace Dj_application.View.Control
     public partial class LecteurAudioView : UserControl
     {
         LecteurAudio? lecteurAudio;
-        Boolean isPlay = false;
+        private Boolean isPlay = false;
+        private bool isLoading = false;
         private LineAnnotation positionMarker;
         private LineAnnotation loadingMarker;
         private RectangleAnnotation progressBarAnnotation;
@@ -88,8 +89,6 @@ namespace Dj_application.View.Control
             pv_graph.Model.Axes.Add(yAxis);
             pv_graph.Model.Axes.Add(xAxis);
 
-            //setAudio("boss1.mp3");
-
         }
 
         public int getNumeroPiste()
@@ -108,7 +107,19 @@ namespace Dj_application.View.Control
 
                 marker.X = newPosition;
 
-                progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
+                if(marker.Color== OxyColors.Red)
+                {
+                    if (!isLoading)
+                    {
+                        progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
+                    }
+                }
+                else
+                {
+                    progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
+                }
+
+                
 
 
                 pv_graph.InvalidatePlot(false);
@@ -118,30 +129,57 @@ namespace Dj_application.View.Control
 
         public void setAudio(Musique musique)
         {
-            if(lecteurAudio != null)
+            try
             {
-                lecteurAudio.PositionChanged -= lecteurAudio_PositionChanged;
-                lecteurAudio.FinishGraph -= lecteurAudio_FinishGraph;
-                lecteurAudio.LoadingPositionChanged -= lecteurAudio_LoadingPositionChanged;
-                lecteurAudio.clickOnModel -= lecteurAudio_clickOnModel;
-                lecteurAudio.Dispose();
-            }
-            lecteurAudio = new LecteurAudio(musique);
-            lecteurAudio.PositionChanged += lecteurAudio_PositionChanged;
-            lecteurAudio.FinishGraph += lecteurAudio_FinishGraph;
-            lecteurAudio.LoadingPositionChanged += lecteurAudio_LoadingPositionChanged;
-            lecteurAudio.clickOnModel += lecteurAudio_clickOnModel;
-            lecteurAudio.Jouer();
-            MettreEnPause();
-            lb_name.Text = musique.FileNameWithoutExtension;
-            lb_timeTotal.Text = "/ " + ((int)(lecteurAudio.getDureeTotalSeconde())).ToString();
-            lb_timeNow.Text = ((int)(lecteurAudio.getPositionActuelleSecondes())).ToString();
+                if (lecteurAudio != null)
+                {
+                    lecteurAudio.PositionChanged -= lecteurAudio_PositionChanged;
+                    lecteurAudio.FinishGraph -= lecteurAudio_FinishGraph;
+                    lecteurAudio.LoadingPositionChanged -= lecteurAudio_LoadingPositionChanged;
+                    lecteurAudio.clickOnModel -= lecteurAudio_clickOnModel;
+                    lecteurAudio.FinLecture -= LecteurAudio_FinLecture;
+                    lecteurAudio.Dispose();
+                }
+                lecteurAudio = new LecteurAudio(musique);
+                lecteurAudio.PositionChanged += lecteurAudio_PositionChanged;
+                lecteurAudio.FinishGraph += lecteurAudio_FinishGraph;
+                lecteurAudio.LoadingPositionChanged += lecteurAudio_LoadingPositionChanged;
+                lecteurAudio.clickOnModel += lecteurAudio_clickOnModel;
+                lecteurAudio.FinLecture += LecteurAudio_FinLecture;
+                lecteurAudio.Jouer();
+                MettreEnPause();
+                lb_name.Text = musique.FileNameWithoutExtension;
+                lb_timeTotal.Text = "/ " + ((int)(lecteurAudio.getDureeTotalSeconde())).ToString();
+                lb_timeNow.Text = ((int)(lecteurAudio.getPositionActuelleSecondes())).ToString();
+                lecteurAudio.setVolume(tb_volume.Value / 100.0f);
 
-            StartGeneratingPlotModel();
+                isLoading = true;
+                StartGeneratingPlotModel();
+            }
+            catch
+            {
+                MessageBox.Show("Le format n'est pas pris en compte", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            }
         }
         private void StartGeneratingPlotModel()
         {
             lecteurAudio.StartGeneratingPlotModel(pv_graph);
+        }
+        private void LecteurAudio_FinLecture(object sender, EventArgs e)
+        {
+            if (bt_play_pause.InvokeRequired)
+            {
+                bt_play_pause.Invoke((MethodInvoker)delegate
+                {
+                    MettreEnPause();
+                });
+            }
+            else
+            {
+                MettreEnPause();
+            }
+            
         }
         private void lecteurAudio_LoadingPositionChanged(object sender, double position)
         {
@@ -151,6 +189,7 @@ namespace Dj_application.View.Control
         {
             setMarker(positionMarker, lecteurAudio.getPositionActuellePourcentage());
             setMarker(loadingMarker, -1);
+            isLoading = false;
         }
         private void lecteurAudio_clickOnModel(object sender, double e)
         {
@@ -224,6 +263,11 @@ namespace Dj_application.View.Control
             {
                 MettreEnPause();
             }
+        }
+
+        public bool isPlaying()
+        {
+            return isPlay;
         }
 
         private void tb_volume_ValueChanged(object sender, EventArgs e)

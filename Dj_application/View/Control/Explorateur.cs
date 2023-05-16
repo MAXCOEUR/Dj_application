@@ -45,7 +45,7 @@ namespace Dj_application.View.Control
                 //MessageBox.Show("Le dossier 'Musique' n'existe pas dans le répertoire source du projet.");
             }
 
-            
+
 
         }
 
@@ -130,7 +130,7 @@ namespace Dj_application.View.Control
                 currentFolder = selectedFolderPath;
                 LoadFiles(selectedFolderPath);
             }
-            
+
         }
 
         private void splitContainer1_SizeChanged(object sender, EventArgs e)

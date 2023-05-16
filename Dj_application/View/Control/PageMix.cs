@@ -15,6 +15,8 @@ namespace Dj_application.View.Control
     {
         List<LecteurAudioView> lecteurAudioViews = new List<LecteurAudioView>();
         TableLayoutPanel tableLayout = new TableLayoutPanel();
+        private const int maxPiste = 6;
+        private int nbrPisteCurrent = 0;
         public PageMix()
         {
             this.Dock = DockStyle.Fill;
@@ -26,27 +28,28 @@ namespace Dj_application.View.Control
 
             explorateur.musiqueSelected += explorateur_musiqueSelected;
 
-            
+            for (int i = 0; i < maxPiste; i++)
+            {
+                LecteurAudioView view = new LecteurAudioView();
+                view.Dock = DockStyle.Fill;
+                lecteurAudioViews.Add(view);
+            }
+
+
         }
 
         public void setNumberPist(int nbr)
         {
-            lecteurAudioViews.Clear();
-            for (int i = 0; i < nbr; i++)
-            {
-                LecteurAudioView view = new LecteurAudioView();
-                lecteurAudioViews.Add(view);
-            }
+            nbrPisteCurrent = nbr;
             tableLayout.Controls.Clear();
             tableLayout.RowCount = 0;
-            foreach (LecteurAudioView lecteur in lecteurAudioViews)
+            for (int i=0;i< nbr;i++)
             {
                 tableLayout.RowCount++;
                 tableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
                 // Ajouter la vue du lecteur audio à la nouvelle cellule du tableau
-                lecteur.Dock = DockStyle.Fill;
-                tableLayout.Controls.Add(lecteur, 0, tableLayout.RowCount - 1);
+                tableLayout.Controls.Add(lecteurAudioViews[i], 0, tableLayout.RowCount - 1);
             }
 
             splitContainer1.Panel1.Controls.Clear();
@@ -55,9 +58,13 @@ namespace Dj_application.View.Control
 
         private void explorateur_musiqueSelected(object sender, Musique e)
         {
-            foreach (LecteurAudioView lecteur in lecteurAudioViews)
+            for(int i = 0;i < nbrPisteCurrent;i++)
             {
-                lecteur.setAudio(e);
+                if (!lecteurAudioViews[i].isPlaying())
+                {
+                    lecteurAudioViews[i].setAudio(e);
+                    break;
+                }
             }
         }
 

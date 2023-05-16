@@ -31,16 +31,16 @@
             dgv_listMusique = new DataGridView();
             treev_arbreFolder = new TreeView();
             spCon_explorateur = new SplitContainer();
-            bt_source = new Button();
-            panel1 = new Panel();
             panel2 = new Panel();
+            panel1 = new Panel();
+            bt_source = new Button();
             ((System.ComponentModel.ISupportInitialize)dgv_listMusique).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spCon_explorateur).BeginInit();
             spCon_explorateur.Panel1.SuspendLayout();
             spCon_explorateur.Panel2.SuspendLayout();
             spCon_explorateur.SuspendLayout();
-            panel1.SuspendLayout();
             panel2.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // dgv_listMusique
@@ -52,7 +52,6 @@
             dgv_listMusique.MinimumSize = new Size(100, 0);
             dgv_listMusique.Name = "dgv_listMusique";
             dgv_listMusique.RowTemplate.Height = 25;
-            dgv_listMusique.ScrollBars = ScrollBars.None;
             dgv_listMusique.Size = new Size(682, 492);
             dgv_listMusique.TabIndex = 1;
             dgv_listMusique.CellDoubleClick += dgv_listMusique_CellDoubleClick_1;
@@ -88,6 +87,24 @@
             spCon_explorateur.TabIndex = 3;
             spCon_explorateur.SizeChanged += splitContainer1_SizeChanged;
             // 
+            // panel2
+            // 
+            panel2.Controls.Add(treev_arbreFolder);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(0, 50);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(209, 442);
+            panel2.TabIndex = 4;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(bt_source);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(209, 50);
+            panel1.TabIndex = 3;
+            // 
             // bt_source
             // 
             bt_source.BackColor = Color.Lime;
@@ -99,24 +116,6 @@
             bt_source.Text = "Source";
             bt_source.UseVisualStyleBackColor = false;
             bt_source.Click += bt_source_Click;
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(bt_source);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(209, 50);
-            panel1.TabIndex = 3;
-            // 
-            // panel2
-            // 
-            panel2.Controls.Add(treev_arbreFolder);
-            panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(0, 50);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(209, 442);
-            panel2.TabIndex = 4;
             // 
             // Explorateur
             // 
@@ -130,8 +129,8 @@
             spCon_explorateur.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)spCon_explorateur).EndInit();
             spCon_explorateur.ResumeLayout(false);
-            panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
