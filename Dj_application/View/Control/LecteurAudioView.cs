@@ -21,13 +21,13 @@ namespace Dj_application.View.Control
 {
     public partial class LecteurAudioView : UserControl
     {
-        LecteurAudio lecteurAudio;
+        LecteurAudio? lecteurAudio;
         Boolean isPlay = false;
         private LineAnnotation positionMarker;
         private LineAnnotation loadingMarker;
         private RectangleAnnotation progressBarAnnotation;
         private PlotModel model;
-        private static int lastCreate=1;
+        private static int lastCreate = 1;
         private int numeroPiste;
         public LecteurAudioView()
         {
@@ -68,6 +68,7 @@ namespace Dj_application.View.Control
             model.Annotations.Add(positionMarker);
             pv_graph.InvalidatePlot(false);
 
+
             model.PlotMargins = new OxyThickness(0); // Supprimer les marges
             model.Padding = new OxyThickness(0); // Supprimer le padding
             pv_graph.Model = model;
@@ -87,7 +88,7 @@ namespace Dj_application.View.Control
             pv_graph.Model.Axes.Add(yAxis);
             pv_graph.Model.Axes.Add(xAxis);
 
-            setAudio("boss1.mp3");
+            //setAudio("boss1.mp3");
 
         }
 
@@ -115,16 +116,24 @@ namespace Dj_application.View.Control
         }
 
 
-        public void setAudio(string url)
+        public void setAudio(Musique musique)
         {
-            lecteurAudio = new LecteurAudio(url);
+            if(lecteurAudio != null)
+            {
+                lecteurAudio.PositionChanged -= lecteurAudio_PositionChanged;
+                lecteurAudio.FinishGraph -= lecteurAudio_FinishGraph;
+                lecteurAudio.LoadingPositionChanged -= lecteurAudio_LoadingPositionChanged;
+                lecteurAudio.clickOnModel -= lecteurAudio_clickOnModel;
+                lecteurAudio.Dispose();
+            }
+            lecteurAudio = new LecteurAudio(musique);
             lecteurAudio.PositionChanged += lecteurAudio_PositionChanged;
             lecteurAudio.FinishGraph += lecteurAudio_FinishGraph;
             lecteurAudio.LoadingPositionChanged += lecteurAudio_LoadingPositionChanged;
             lecteurAudio.clickOnModel += lecteurAudio_clickOnModel;
             lecteurAudio.Jouer();
-            lecteurAudio.MettreEnPause();
-            lb_name.Text = lecteurAudio.getName();
+            MettreEnPause();
+            lb_name.Text = musique.FileNameWithoutExtension;
             lb_timeTotal.Text = "/ " + ((int)(lecteurAudio.getDureeTotalSeconde())).ToString();
             lb_timeNow.Text = ((int)(lecteurAudio.getPositionActuelleSecondes())).ToString();
 
@@ -145,11 +154,11 @@ namespace Dj_application.View.Control
         }
         private void lecteurAudio_clickOnModel(object sender, double e)
         {
-            pv_graph_MouseClick(pv_graph,new MouseEventArgs(MouseButtons.Left,1,(int)e,0,0));
+            pv_graph_MouseClick(pv_graph, new MouseEventArgs(MouseButtons.Left, 1, (int)e, 0, 0));
         }
         private void lecteurAudio_PositionChanged(object sender, double position)
         {
-            if(lecteurAudio==null) return;
+            if (lecteurAudio == null) return;
             int etat = (int)(lecteurAudio.getPositionActuellePourcentage() * 1000);
             int currentSec = (int)lecteurAudio.getPositionActuelleSecondes();
 
@@ -221,6 +230,15 @@ namespace Dj_application.View.Control
         {
             if (lecteurAudio == null) return;
             lecteurAudio.setVolume(tb_volume.Value / 100.0f);
+        }
+        public void delete()
+        {
+            if(lecteurAudio != null)
+            {
+                lecteurAudio.delete();
+            }
+            
+            Dispose();
         }
     }
 }

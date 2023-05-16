@@ -20,18 +20,19 @@ namespace Dj_application.model
     {
         private WaveOutEvent sortieAudio;
         private AudioFileReader lecteurAudio;
-        private string name;
-        private string path;
+        private Musique musique;
         public event EventHandler<double> PositionChanged;
         public event EventHandler<bool> FinishGraph;
         public event EventHandler<double> LoadingPositionChanged;
         public event EventHandler<double> clickOnModel;
 
-        public LecteurAudio(string cheminFichierAudio)
+        private Thread threadPlay;
+        private bool isPlaying = true;
+
+        public LecteurAudio(Musique musique)
         {
-            path = cheminFichierAudio;
-            name= Path.GetFileNameWithoutExtension(cheminFichierAudio);
-            lecteurAudio = new AudioFileReader(cheminFichierAudio);
+            this.musique = musique;
+            lecteurAudio = new AudioFileReader(musique.Path);
             sortieAudio = new WaveOutEvent();
             sortieAudio.Init(lecteurAudio);
         }
@@ -41,10 +42,15 @@ namespace Dj_application.model
             return lecteurAudio.TotalTime;
         }
 
-        ~LecteurAudio()
+        public void delete()
+        {
+            Dispose();
+        }
+        public void Dispose()
         {
             lecteurAudio.Dispose();
             sortieAudio.Dispose();
+            isPlaying = false;
         }
 
         private void OnPositionChanged(double position)
@@ -60,22 +66,23 @@ namespace Dj_application.model
         public void Jouer()
         {
             sortieAudio.Play();
-            Task.Run(async () =>
+            Thread threadPlay = new Thread(() =>
             {
                 double lastTime = -1;
-                while (true)
+                while (isPlaying)
                 {
                     double currentTime = getPositionActuelleSecondes();
-                    if (currentTime!= lastTime)
+                    if (currentTime != lastTime)
                     {
                         UpdatePosition();
-                        lastTime=currentTime;
+                        lastTime = currentTime;
                     }
-                    
 
-                    await Task.Delay(100); // Attendre 1% de la durée totale
+                    Thread.Sleep(100); // Attendre 100 millisecondes
                 }
             });
+
+            threadPlay.Start();
         }
 
         public void MettreEnPause()
@@ -113,9 +120,9 @@ namespace Dj_application.model
         {
             sortieAudio.Volume = volume;
         }
-        public string getName()
+        public Musique getMusique()
         {
-            return name;
+            return musique;
         }
         public void Deplacer(double positionEnSecondes)
         {

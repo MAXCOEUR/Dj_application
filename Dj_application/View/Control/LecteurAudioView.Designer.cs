@@ -69,7 +69,7 @@
             tableLayoutPanel1.Controls.Add(lb_nbr_piste, 17, 0);
             tableLayoutPanel1.Controls.Add(bt_stop, 2, 8);
             tableLayoutPanel1.Controls.Add(bt_suite, 18, 8);
-            tableLayoutPanel1.Controls.Add(lb_timeNow, 8, 7);
+            tableLayoutPanel1.Controls.Add(lb_timeNow, 1, 7);
             tableLayoutPanel1.Controls.Add(lb_timeTotal, 10, 7);
             tableLayoutPanel1.Controls.Add(pv_graph, 0, 1);
             tableLayoutPanel1.Controls.Add(bt_play_pause, 0, 8);
@@ -148,12 +148,12 @@
             // lb_timeNow
             // 
             lb_timeNow.AutoSize = true;
-            tableLayoutPanel1.SetColumnSpan(lb_timeNow, 2);
+            tableLayoutPanel1.SetColumnSpan(lb_timeNow, 9);
             lb_timeNow.Dock = DockStyle.Fill;
-            lb_timeNow.Location = new Point(272, 175);
+            lb_timeNow.Location = new Point(34, 175);
             lb_timeNow.Margin = new Padding(0);
             lb_timeNow.Name = "lb_timeNow";
-            lb_timeNow.Size = new Size(68, 25);
+            lb_timeNow.Size = new Size(306, 25);
             lb_timeNow.TabIndex = 10;
             lb_timeNow.Text = "current";
             lb_timeNow.TextAlign = ContentAlignment.MiddleRight;
@@ -161,12 +161,12 @@
             // lb_timeTotal
             // 
             lb_timeTotal.AutoSize = true;
-            tableLayoutPanel1.SetColumnSpan(lb_timeTotal, 2);
+            tableLayoutPanel1.SetColumnSpan(lb_timeTotal, 9);
             lb_timeTotal.Dock = DockStyle.Fill;
             lb_timeTotal.Location = new Point(340, 175);
             lb_timeTotal.Margin = new Padding(0);
             lb_timeTotal.Name = "lb_timeTotal";
-            lb_timeTotal.Size = new Size(68, 25);
+            lb_timeTotal.Size = new Size(306, 25);
             lb_timeTotal.TabIndex = 11;
             lb_timeTotal.Text = "/ totalTime";
             lb_timeTotal.TextAlign = ContentAlignment.MiddleLeft;
