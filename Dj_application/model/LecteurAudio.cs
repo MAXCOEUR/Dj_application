@@ -9,6 +9,7 @@ using NAudio.Wave;
 namespace Dj_application.model
 {
     using NAudio.Wave;
+    using NAudio.Wave.SampleProviders;
     using OxyPlot;
     using OxyPlot.Annotations;
     using OxyPlot.Axes;
@@ -21,9 +22,10 @@ namespace Dj_application.model
         private AudioFileReader lecteurAudio;
         private string name;
         private string path;
-        
-
         public event EventHandler<double> PositionChanged;
+        public event EventHandler<bool> FinishGraph;
+        public event EventHandler<double> LoadingPositionChanged;
+        public event EventHandler<double> clickOnModel;
 
         public LecteurAudio(string cheminFichierAudio)
         {
@@ -120,6 +122,15 @@ namespace Dj_application.model
             lecteurAudio.Position = (long)(positionEnSecondes * lecteurAudio.WaveFormat.AverageBytesPerSecond);
         }
 
+        public void StartGeneratingPlotModel(PlotView view)
+        {
+            Task.Run(() =>
+            {
+                GenerateGraph(view);
+                FinishGraph?.Invoke(this, true);
+            });
+        }
+
         private float[] GetWaveformSamples(int sizeZone)
         {
             const int bufferSize = 8192; // Taille du tampon d'échantillons
@@ -135,6 +146,9 @@ namespace Dj_application.model
             int totalSamples = (int)(lecteurAudioTmp.TotalTime.TotalSeconds * lecteurAudioTmp.WaveFormat.SampleRate);
             int reductionFactor = Math.Max(1, totalSamples / sizeZone);
 
+            long totalBytes = lecteurAudioTmp.Length;
+            int oldPourcentage = 0;
+
             while ((bytesRead = lecteurAudioTmp.Read(buffer, 0, buffer.Length)) > 0)
             {
                 for (int i = 0; i < bytesRead; i += reductionFactor)
@@ -142,6 +156,15 @@ namespace Dj_application.model
                     sampleAggregator.AddSamples(buffer, 0, bytesRead);
                     waveform.Add(sampleAggregator.GetSnapshot().Last());
                 }
+
+                long currentPosition = lecteurAudioTmp.Position;
+                double percentage = (double)currentPosition / totalBytes * 100;
+                if((int)percentage > oldPourcentage)
+                {
+                    oldPourcentage = (int)percentage;
+                    LoadingPositionChanged?.Invoke(this, oldPourcentage/100.0f);
+                }
+
             }
 
             lecteurAudioTmp.Dispose(); // Assurez-vous de libérer les ressources du lecteur temporaire
@@ -150,9 +173,9 @@ namespace Dj_application.model
         }
 
 
-        public PlotModel GetPlotModel(int sizeZone, out LineAnnotation positionMarker)
+        private void GenerateGraph(PlotView view)
         {
-            var model = new PlotModel();
+            int sizeZone = view.Height;
             var lineSeries = new LineSeries();
             float[] waveform = GetWaveformSamples(sizeZone);
 
@@ -160,23 +183,32 @@ namespace Dj_application.model
             {
                 lineSeries.Points.Add(new DataPoint(i, waveform[i]));
             }
-            positionMarker = new LineAnnotation
+
+            view.Model.Axes.Clear();
+            var xAxis = new LinearAxis
             {
-                Type = LineAnnotationType.Vertical,
-                X = -500,
-                Color = OxyColors.Red,
-                StrokeThickness = 1
+                Position = AxisPosition.Bottom,
+                Maximum = waveform.Length,
+                Minimum=0,
             };
-            model.Series.Add(lineSeries);
-            model.Annotations.Add(positionMarker);
+            var yAxis = new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                Maximum = 1,
+                Minimum = -1,
+            };
+            view.Model.Axes.Add(yAxis);
+            view.Model.Axes.Add(xAxis);
 
-
-            model.PlotMargins = new OxyThickness(0); // Supprimer les marges
-            model.Padding = new OxyThickness(0); // Supprimer le padding
-
-
-            return model;
+            view.Model.Series.Clear();
+            lineSeries.MouseDown += (sender, e) =>
+            {
+                clickOnModel?.Invoke(this, e.Position.X);
+            };
+            view.Model.Series.Add(lineSeries);
+            view.InvalidatePlot(false);
         }
+
 
     }
 
