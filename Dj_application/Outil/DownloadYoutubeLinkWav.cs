@@ -28,7 +28,7 @@ namespace Dj_application.Outil
 
         private void downloadYoutubeLink()
         {
-            string arguments = "-x --audio-format mp3 " + url;
+            string arguments = "-x --audio-format wav " + url;
             ProcessStartInfo processInfo = new ProcessStartInfo
             {
                 FileName = command,
@@ -57,7 +57,19 @@ namespace Dj_application.Outil
                     tmpName = line.Replace("[download] Destination: ", "");
                     name = tmpName;
                 }
-
+                else if(line.Contains("[download] ") && line.Contains(" has already been downloaded"))
+                {
+                    string tmpName;
+                    tmpName = line.Replace("[download] ", "");
+                    tmpName = tmpName.Replace(" has already been downloaded", "");
+                    name = tmpName;
+                }
+                else if(line.Contains("[ExtractAudio] Destination: "))
+                {
+                    string tmpName;
+                    tmpName = line.Replace("[ExtractAudio] Destination: ", "");
+                    name = tmpName;
+                }
             }
             try
             {
