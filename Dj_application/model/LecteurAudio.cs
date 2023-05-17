@@ -114,8 +114,16 @@ namespace Dj_application.model
 
         public double getPositionActuelleSecondes()
         {
-            long positionActuelleEnOctets = lecteurAudio.Position;
-            return (double)positionActuelleEnOctets / lecteurAudio.WaveFormat.AverageBytesPerSecond;
+            try
+            {
+                long positionActuelleEnOctets = lecteurAudio.Position;
+                return (double)positionActuelleEnOctets / lecteurAudio.WaveFormat.AverageBytesPerSecond;
+            }
+            catch
+            {
+                return 0;
+            }
+            
         }
 
         public double getPositionActuellePourcentage()

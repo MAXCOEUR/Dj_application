@@ -1,4 +1,5 @@
 ﻿using Dj_application.model;
+using Dj_application.Outil;
 using NAudio.Gui;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -16,12 +17,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Dj_application.View.Control
 {
     public partial class LecteurAudioView : UserControl
     {
         LecteurAudio? lecteurAudio;
+        BpmGenerate bpmGenerate = new BpmGenerate();
+        ProgressBarAnimator animator;
         private Boolean isPlay = false;
         private bool isLoading = false;
         private LineAnnotation positionMarker;
@@ -30,10 +35,14 @@ namespace Dj_application.View.Control
         private PlotModel model;
         private static int lastCreate = 1;
         private int numeroPiste;
+
+        private int volumeMix = 100;
         public LecteurAudioView()
         {
             this.Dock = DockStyle.Fill;
             InitializeComponent();
+
+            animator = new ProgressBarAnimator(pb_loadingBpm);
             numeroPiste = lastCreate++;
             lb_nbr_piste.Text = "Piste " + numeroPiste;
 
@@ -74,6 +83,14 @@ namespace Dj_application.View.Control
             model.Padding = new OxyThickness(0); // Supprimer le padding
             pv_graph.Model = model;
 
+            initGrpahEmpty();
+
+        }
+
+        private void initGrpahEmpty()
+        {
+            pv_graph.Model.Series.Clear();
+            pv_graph.Model.Axes.Clear();
             var xAxis = new LinearAxis
             {
                 Position = AxisPosition.Bottom,
@@ -88,9 +105,7 @@ namespace Dj_application.View.Control
             };
             pv_graph.Model.Axes.Add(yAxis);
             pv_graph.Model.Axes.Add(xAxis);
-
         }
-
         public int getNumeroPiste()
         {
             return numeroPiste;
@@ -107,7 +122,7 @@ namespace Dj_application.View.Control
 
                 marker.X = newPosition;
 
-                if(marker.Color== OxyColors.Red)
+                if (marker.Color == OxyColors.Red)
                 {
                     if (!isLoading)
                     {
@@ -119,39 +134,61 @@ namespace Dj_application.View.Control
                     progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
                 }
 
-                
+
 
 
                 pv_graph.InvalidatePlot(false);
             }
         }
 
+        public void setvolume(int volume=-1)
+        {
+            if (lecteurAudio == null) return;
+            if (volume != -1)
+            {
+                volumeMix = volume;
+            }
+            lecteurAudio.setVolume((tb_volume.Value / 100.0f) * ( volumeMix / 100.0f));
+        }
+
+        public void initEventAndLecteurAudio(Musique musique)
+        {
+            if (lecteurAudio != null)
+            {
+                lecteurAudio.PositionChanged -= lecteurAudio_PositionChanged;
+                lecteurAudio.FinishGraph -= lecteurAudio_FinishGraph;
+                lecteurAudio.LoadingPositionChanged -= lecteurAudio_LoadingPositionChanged;
+                lecteurAudio.clickOnModel -= lecteurAudio_clickOnModel;
+                lecteurAudio.FinLecture -= LecteurAudio_FinLecture;
+                BpmGenerate.BpmTrouver -= bpmGenerate_BpmTrouver;
+                lecteurAudio.Dispose();
+            }
+            lecteurAudio = new LecteurAudio(musique);
+            lecteurAudio.PositionChanged += lecteurAudio_PositionChanged;
+            lecteurAudio.FinishGraph += lecteurAudio_FinishGraph;
+            lecteurAudio.LoadingPositionChanged += lecteurAudio_LoadingPositionChanged;
+            lecteurAudio.clickOnModel += lecteurAudio_clickOnModel;
+            lecteurAudio.FinLecture += LecteurAudio_FinLecture;
+            BpmGenerate.BpmTrouver += bpmGenerate_BpmTrouver;
+            lecteurAudio.Jouer();
+            MettreEnPause();
+        }
 
         public void setAudio(Musique musique)
         {
             try
             {
-                if (lecteurAudio != null)
-                {
-                    lecteurAudio.PositionChanged -= lecteurAudio_PositionChanged;
-                    lecteurAudio.FinishGraph -= lecteurAudio_FinishGraph;
-                    lecteurAudio.LoadingPositionChanged -= lecteurAudio_LoadingPositionChanged;
-                    lecteurAudio.clickOnModel -= lecteurAudio_clickOnModel;
-                    lecteurAudio.FinLecture -= LecteurAudio_FinLecture;
-                    lecteurAudio.Dispose();
-                }
-                lecteurAudio = new LecteurAudio(musique);
-                lecteurAudio.PositionChanged += lecteurAudio_PositionChanged;
-                lecteurAudio.FinishGraph += lecteurAudio_FinishGraph;
-                lecteurAudio.LoadingPositionChanged += lecteurAudio_LoadingPositionChanged;
-                lecteurAudio.clickOnModel += lecteurAudio_clickOnModel;
-                lecteurAudio.FinLecture += LecteurAudio_FinLecture;
-                lecteurAudio.Jouer();
-                MettreEnPause();
+                initEventAndLecteurAudio(musique);
+
+                animator.StartAnimation();
+                bpmGenerate.getBpm(musique);
+
                 lb_name.Text = musique.FileNameWithoutExtension;
                 lb_timeTotal.Text = "/ " + ((int)(lecteurAudio.getDureeTotalSeconde())).ToString();
                 lb_timeNow.Text = ((int)(lecteurAudio.getPositionActuelleSecondes())).ToString();
-                lecteurAudio.setVolume(tb_volume.Value / 100.0f);
+                lb_bpm.Text = "BPM : ";
+                initGrpahEmpty();
+                setvolume();
 
                 isLoading = true;
                 StartGeneratingPlotModel();
@@ -179,7 +216,20 @@ namespace Dj_application.View.Control
             {
                 MettreEnPause();
             }
-            
+
+        }
+        private void bpmGenerate_BpmTrouver(object sender, Musique musique)
+        {
+            if(musique!=lecteurAudio.getMusique()) { return; }
+            if (lb_bpm.InvokeRequired)
+            {
+                lb_bpm.Invoke((MethodInvoker)(() => lb_bpm.Text = "BPM : " + musique.bpm));
+            }
+            else
+            {
+                lb_bpm.Text = "BPM : " + musique.bpm;
+            }
+            animator.StopAnimation();
         }
         private void lecteurAudio_LoadingPositionChanged(object sender, double position)
         {
@@ -273,15 +323,15 @@ namespace Dj_application.View.Control
         private void tb_volume_ValueChanged(object sender, EventArgs e)
         {
             if (lecteurAudio == null) return;
-            lecteurAudio.setVolume(tb_volume.Value / 100.0f);
+            setvolume();
         }
         public void delete()
         {
-            if(lecteurAudio != null)
+            if (lecteurAudio != null)
             {
                 lecteurAudio.delete();
             }
-            
+
             Dispose();
         }
     }

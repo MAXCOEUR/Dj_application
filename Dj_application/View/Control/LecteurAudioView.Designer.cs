@@ -38,6 +38,8 @@
             pv_graph = new OxyPlot.WindowsForms.PlotView();
             bt_play_pause = new Button();
             tb_volume = new TrackBar();
+            lb_bpm = new Label();
+            pb_loadingBpm = new ProgressBar();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tb_volume).BeginInit();
             SuspendLayout();
@@ -74,6 +76,8 @@
             tableLayoutPanel1.Controls.Add(pv_graph, 0, 1);
             tableLayoutPanel1.Controls.Add(bt_play_pause, 0, 8);
             tableLayoutPanel1.Controls.Add(tb_volume, 4, 8);
+            tableLayoutPanel1.Controls.Add(lb_bpm, 9, 0);
+            tableLayoutPanel1.Controls.Add(pb_loadingBpm, 12, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -220,6 +224,30 @@
             tb_volume.Value = 100;
             tb_volume.ValueChanged += tb_volume_ValueChanged;
             // 
+            // lb_bpm
+            // 
+            lb_bpm.AutoSize = true;
+            tableLayoutPanel1.SetColumnSpan(lb_bpm, 3);
+            lb_bpm.Dock = DockStyle.Fill;
+            lb_bpm.Location = new Point(309, 0);
+            lb_bpm.Name = "lb_bpm";
+            lb_bpm.Size = new Size(96, 25);
+            lb_bpm.TabIndex = 16;
+            lb_bpm.Text = "BPM :";
+            lb_bpm.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // pb_loadingBpm
+            // 
+            tableLayoutPanel1.SetColumnSpan(pb_loadingBpm, 4);
+            pb_loadingBpm.Dock = DockStyle.Fill;
+            pb_loadingBpm.Location = new Point(411, 3);
+            pb_loadingBpm.MarqueeAnimationSpeed = 50;
+            pb_loadingBpm.Name = "pb_loadingBpm";
+            pb_loadingBpm.Size = new Size(130, 19);
+            pb_loadingBpm.Style = ProgressBarStyle.Marquee;
+            pb_loadingBpm.TabIndex = 17;
+            pb_loadingBpm.Visible = false;
+            // 
             // LecteurAudioView
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -245,5 +273,7 @@
         private OxyPlot.WindowsForms.PlotView pv_graph;
         private Button bt_play_pause;
         private TrackBar tb_volume;
+        private Label lb_bpm;
+        private ProgressBar pb_loadingBpm;
     }
 }

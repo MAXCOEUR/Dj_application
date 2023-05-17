@@ -4,6 +4,8 @@ using System.IO;
 using System.Windows.Forms;
 using Dj_application.Controller;
 using System.Diagnostics;
+using Dj_application.Outil;
+using System.ComponentModel;
 
 namespace Dj_application.View.Control
 {
@@ -19,8 +21,16 @@ namespace Dj_application.View.Control
             InitializeComponent();
 
             dgv_listMusique.Columns.Clear();
+
             dgv_listMusique.Columns.Add("NomMusiqueColumn", "Nom Musique");
+            dgv_listMusique.Columns["NomMusiqueColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
             dgv_listMusique.Columns.Add("ExtensionColumn", "Extension");
+            dgv_listMusique.Columns["ExtensionColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            dgv_listMusique.Columns.Add("BpmMusiqueColumn", "Bpm");
+            dgv_listMusique.Columns["BpmMusiqueColumn"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
             DataGridViewColumn musiqueColumn = new DataGridViewColumn();
             musiqueColumn.HeaderText = "Musique";
             musiqueColumn.Visible = false; // Rendre la colonne invisible
@@ -45,10 +55,21 @@ namespace Dj_application.View.Control
                 //MessageBox.Show("Le dossier 'Musique' n'existe pas dans le répertoire source du projet.");
             }
 
-
+            BpmGenerate.BpmTrouver += bpmGenerate_BpmTrouver;
 
         }
-
+        private void bpmGenerate_BpmTrouver(object sender, Musique musique)
+        {
+            if (dgv_listMusique.InvokeRequired)
+            {
+                dgv_listMusique.Invoke((MethodInvoker)(() => LoadFiles(currentFolder)));
+                
+            }
+            else
+            {
+                LoadFiles(currentFolder);
+            }
+        }
         private void setRootFolder(string rootFolder)
         {
             this.rootFolder = rootFolder;
@@ -80,12 +101,13 @@ namespace Dj_application.View.Control
                 // Ajouter les musiques dans le DataGridView
                 foreach (Musique musique in musiques)
                 {
+                    int bpm = MusicBpmDatabase.Instance.GetBpm(musique.Path);
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(dgv_listMusique);
                     row.Cells[dgv_listMusique.Columns["MusiqueColumn"].Index].Tag = musique;
                     row.Cells[dgv_listMusique.Columns["NomMusiqueColumn"].Index].Value = musique.FileNameWithoutExtension;
                     row.Cells[dgv_listMusique.Columns["ExtensionColumn"].Index].Value = musique.FileExtension;
-
+                    row.Cells[dgv_listMusique.Columns["BpmMusiqueColumn"].Index].Value = bpm;
                     dgv_listMusique.Rows.Add(row);
                 }
             }
@@ -135,7 +157,7 @@ namespace Dj_application.View.Control
 
         private void splitContainer1_SizeChanged(object sender, EventArgs e)
         {
-            if (spCon_explorateur.Width < 400)
+            if (spCon_explorateur.Width < 500)
             {
                 spCon_explorateur.Orientation = Orientation.Horizontal; // Changer l'orientation en vertical
                 spCon_explorateur.SplitterDistance = spCon_explorateur.Height / 5;
