@@ -32,7 +32,7 @@
             lb_name = new Label();
             lb_nbr_piste = new Label();
             bt_stop = new Button();
-            bt_suite = new Button();
+            bt_casque = new Button();
             lb_timeNow = new Label();
             lb_timeTotal = new Label();
             pv_graph = new OxyPlot.WindowsForms.PlotView();
@@ -70,7 +70,7 @@
             tableLayoutPanel1.Controls.Add(lb_name, 0, 0);
             tableLayoutPanel1.Controls.Add(lb_nbr_piste, 17, 0);
             tableLayoutPanel1.Controls.Add(bt_stop, 2, 8);
-            tableLayoutPanel1.Controls.Add(bt_suite, 18, 8);
+            tableLayoutPanel1.Controls.Add(bt_casque, 18, 8);
             tableLayoutPanel1.Controls.Add(lb_timeNow, 1, 7);
             tableLayoutPanel1.Controls.Add(lb_timeTotal, 10, 7);
             tableLayoutPanel1.Controls.Add(pv_graph, 0, 1);
@@ -136,18 +136,20 @@
             bt_stop.UseVisualStyleBackColor = false;
             bt_stop.Click += bt_stop_Click;
             // 
-            // bt_suite
+            // bt_casque
             // 
-            tableLayoutPanel1.SetColumnSpan(bt_suite, 2);
-            bt_suite.Dock = DockStyle.Fill;
-            bt_suite.Location = new Point(612, 200);
-            bt_suite.Margin = new Padding(0);
-            bt_suite.Name = "bt_suite";
-            tableLayoutPanel1.SetRowSpan(bt_suite, 2);
-            bt_suite.Size = new Size(70, 52);
-            bt_suite.TabIndex = 8;
-            bt_suite.Text = "suite";
-            bt_suite.UseVisualStyleBackColor = true;
+            bt_casque.BackColor = Color.Red;
+            tableLayoutPanel1.SetColumnSpan(bt_casque, 2);
+            bt_casque.Dock = DockStyle.Fill;
+            bt_casque.Location = new Point(612, 200);
+            bt_casque.Margin = new Padding(0);
+            bt_casque.Name = "bt_casque";
+            tableLayoutPanel1.SetRowSpan(bt_casque, 2);
+            bt_casque.Size = new Size(70, 52);
+            bt_casque.TabIndex = 8;
+            bt_casque.Text = "casque";
+            bt_casque.UseVisualStyleBackColor = false;
+            bt_casque.Click += bt_casque_Click;
             // 
             // lb_timeNow
             // 
@@ -267,7 +269,7 @@
         private Label lb_name;
         private Label lb_nbr_piste;
         private Button bt_stop;
-        private Button bt_suite;
+        private Button bt_casque;
         private Label lb_timeNow;
         private Label lb_timeTotal;
         private OxyPlot.WindowsForms.PlotView pv_graph;

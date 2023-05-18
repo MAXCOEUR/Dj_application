@@ -34,6 +34,8 @@
             panel2 = new Panel();
             panel1 = new Panel();
             bt_source = new Button();
+            splitContainer1 = new SplitContainer();
+            bt_download = new Button();
             ((System.ComponentModel.ISupportInitialize)dgv_listMusique).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spCon_explorateur).BeginInit();
             spCon_explorateur.Panel1.SuspendLayout();
@@ -41,6 +43,10 @@
             spCon_explorateur.SuspendLayout();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
+            splitContainer1.Panel2.SuspendLayout();
+            splitContainer1.SuspendLayout();
             SuspendLayout();
             // 
             // dgv_listMusique
@@ -98,7 +104,7 @@
             // 
             // panel1
             // 
-            panel1.Controls.Add(bt_source);
+            panel1.Controls.Add(splitContainer1);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
@@ -111,11 +117,39 @@
             bt_source.Dock = DockStyle.Fill;
             bt_source.Location = new Point(0, 0);
             bt_source.Name = "bt_source";
-            bt_source.Size = new Size(209, 50);
+            bt_source.Size = new Size(102, 50);
             bt_source.TabIndex = 2;
             bt_source.Text = "Source";
             bt_source.UseVisualStyleBackColor = false;
             bt_source.Click += bt_source_Click;
+            // 
+            // splitContainer1
+            // 
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 0);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(bt_source);
+            // 
+            // splitContainer1.Panel2
+            // 
+            splitContainer1.Panel2.Controls.Add(bt_download);
+            splitContainer1.Size = new Size(209, 50);
+            splitContainer1.SplitterDistance = 102;
+            splitContainer1.TabIndex = 3;
+            // 
+            // bt_download
+            // 
+            bt_download.Dock = DockStyle.Fill;
+            bt_download.Location = new Point(0, 0);
+            bt_download.Name = "bt_download";
+            bt_download.Size = new Size(103, 50);
+            bt_download.TabIndex = 0;
+            bt_download.Text = "telechargement";
+            bt_download.UseVisualStyleBackColor = true;
+            bt_download.Click += bt_download_Click;
             // 
             // Explorateur
             // 
@@ -131,6 +165,10 @@
             spCon_explorateur.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel1.ResumeLayout(false);
+            splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -141,5 +179,7 @@
         private Button bt_source;
         private Panel panel2;
         private Panel panel1;
+        private SplitContainer splitContainer1;
+        private Button bt_download;
     }
 }

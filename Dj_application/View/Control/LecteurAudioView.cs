@@ -29,6 +29,7 @@ namespace Dj_application.View.Control
         ProgressBarAnimator animator;
         private Boolean isPlay = false;
         private bool isLoading = false;
+        private bool isCasque = false;
         private LineAnnotation positionMarker;
         private LineAnnotation loadingMarker;
         private RectangleAnnotation progressBarAnnotation;
@@ -141,14 +142,14 @@ namespace Dj_application.View.Control
             }
         }
 
-        public void setvolume(int volume=-1)
+        public void setvolume(int volume = -1)
         {
             if (lecteurAudio == null) return;
             if (volume != -1)
             {
                 volumeMix = volume;
             }
-            lecteurAudio.setVolume((tb_volume.Value / 100.0f) * ( volumeMix / 100.0f));
+            lecteurAudio.setVolume((tb_volume.Value / 100.0f) * (volumeMix / 100.0f));
         }
 
         public void initEventAndLecteurAudio(Musique musique)
@@ -220,7 +221,7 @@ namespace Dj_application.View.Control
         }
         private void bpmGenerate_BpmTrouver(object sender, Musique musique)
         {
-            if(musique!=lecteurAudio.getMusique()) { return; }
+            if (musique != lecteurAudio.getMusique()) { return; }
             if (lb_bpm.InvokeRequired)
             {
                 lb_bpm.Invoke((MethodInvoker)(() => lb_bpm.Text = "BPM : " + musique.bpm));
@@ -333,6 +334,23 @@ namespace Dj_application.View.Control
             }
 
             Dispose();
+        }
+
+        private void bt_casque_Click(object sender, EventArgs e)
+        {
+            if(lecteurAudio==null) return;
+            ParametresForm pf = ParametresForm.Instance;
+            isCasque = !isCasque;
+            if (isCasque)
+            {
+                bt_casque.BackColor = Color.Green;
+                lecteurAudio.setSortieAudio(pf.GetSortieAudioCasque());
+            }
+            else
+            {
+                bt_casque.BackColor = Color.Red;
+                lecteurAudio.setSortieAudio(pf.GetSortieAudioStandard());
+            }
         }
     }
 }

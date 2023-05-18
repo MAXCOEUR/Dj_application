@@ -13,6 +13,7 @@ namespace Dj_application.View.Control
     {
         private string rootFolder;
         private string currentFolder;
+        private string folderDownload = "musique/telechargement/";
         public event EventHandler<Musique> musiqueSelected;
 
         public Explorateur()
@@ -62,12 +63,12 @@ namespace Dj_application.View.Control
         {
             if (dgv_listMusique.InvokeRequired)
             {
-                dgv_listMusique.Invoke((MethodInvoker)(() => LoadFiles(currentFolder)));
-                
+                dgv_listMusique.Invoke((MethodInvoker)(() => updateBpm()));
+
             }
             else
             {
-                LoadFiles(currentFolder);
+                updateBpm();
             }
         }
         private void setRootFolder(string rootFolder)
@@ -80,6 +81,17 @@ namespace Dj_application.View.Control
             TreeViewGenerator treeViewGenerator = new TreeViewGenerator(treev_arbreFolder);
             treeViewGenerator.GenerateTree(rootFolder);
         }
+
+        private void updateBpm()
+        {
+            foreach (DataGridViewRow row in dgv_listMusique.Rows)
+            {
+                Musique musique = row.Cells[dgv_listMusique.Columns["MusiqueColumn"].Index].Tag as Musique;
+                int bpm = MusicBpmDatabase.Instance.GetBpm(musique.Path);
+                row.Cells[dgv_listMusique.Columns["BpmMusiqueColumn"].Index].Value = bpm;
+            }
+        }
+
 
         private void LoadFiles(string folderPath)
         {
@@ -101,13 +113,13 @@ namespace Dj_application.View.Control
                 // Ajouter les musiques dans le DataGridView
                 foreach (Musique musique in musiques)
                 {
-                    int bpm = MusicBpmDatabase.Instance.GetBpm(musique.Path);
+                    musique.bpm = MusicBpmDatabase.Instance.GetBpm(musique.Path);
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(dgv_listMusique);
                     row.Cells[dgv_listMusique.Columns["MusiqueColumn"].Index].Tag = musique;
                     row.Cells[dgv_listMusique.Columns["NomMusiqueColumn"].Index].Value = musique.FileNameWithoutExtension;
                     row.Cells[dgv_listMusique.Columns["ExtensionColumn"].Index].Value = musique.FileExtension;
-                    row.Cells[dgv_listMusique.Columns["BpmMusiqueColumn"].Index].Value = bpm;
+                    row.Cells[dgv_listMusique.Columns["BpmMusiqueColumn"].Index].Value = musique.bpm;
                     dgv_listMusique.Rows.Add(row);
                 }
             }
@@ -116,6 +128,7 @@ namespace Dj_application.View.Control
                 MessageBox.Show("Une erreur s'est produite lors du chargement des fichiers : " + ex.Message);
             }
         }
+
 
         private void dgv_listMusique_CellDoubleClick_1(object sender, DataGridViewCellEventArgs e)
         {
@@ -182,5 +195,9 @@ namespace Dj_application.View.Control
             }
         }
 
+        private void bt_download_Click(object sender, EventArgs e)
+        {
+            LoadFiles(folderDownload);
+        }
     }
 }

@@ -8,6 +8,7 @@ using NAudio.Wave;
 
 namespace Dj_application.model
 {
+    using Dj_application.View;
     using NAudio.Wave;
     using NAudio.Wave.SampleProviders;
     using OxyPlot;
@@ -37,6 +38,7 @@ namespace Dj_application.model
             lecteurAudio = new AudioFileReader(musique.Path);
             lecteurAudioAvecVolume = new VolumeSampleProvider(lecteurAudio);
             sortieAudio = new WaveOutEvent();
+            sortieAudio.DeviceNumber = ParametresForm.Instance.GetSortieAudioStandard();
             sortieAudio.Init(lecteurAudioAvecVolume);
         }
 
@@ -230,6 +232,31 @@ namespace Dj_application.model
             view.Model.Series.Add(lineSeries);
             view.InvalidatePlot(false);
         }
+
+        public void setSortieAudio(int deviceNumber)
+        {
+
+            if (sortieAudio.PlaybackState == PlaybackState.Playing)
+            {
+                MettreEnPause();
+                sortieAudio.Stop();
+
+                // Initialiser le périphérique de sortie avec le numéro de périphérique spécifié
+                sortieAudio.DeviceNumber = deviceNumber;
+                sortieAudio.Init(lecteurAudioAvecVolume);
+
+                Jouer();
+            }
+            else
+            {
+                sortieAudio.Stop();
+                sortieAudio.DeviceNumber = deviceNumber;
+                sortieAudio.Init(lecteurAudioAvecVolume);
+            }
+            
+        }
+
+
 
 
     }

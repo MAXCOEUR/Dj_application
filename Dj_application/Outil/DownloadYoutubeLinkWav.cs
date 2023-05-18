@@ -1,4 +1,6 @@
 ﻿using Dj_application.model;
+using Dj_application.Singleton;
+using Dj_application.View;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,12 +16,15 @@ namespace Dj_application.Outil
         string url;
         public event EventHandler<Musique> finDonwloadAndConvertion;
         string name;
+        Window win;
 
         private const string command = ".\\lib\\yt-dlp.exe";
 
         public DownloadYoutubeLinkWav(string url)
         {
             this.url = url;
+            win = SingletonWindow.getInstance().window;
+            win.StartLoading();
             Task.Run(() =>
             {
                 downloadYoutubeLink();
@@ -47,37 +52,26 @@ namespace Dj_application.Outil
                 process.WaitForExit();
             }
 
-            string[] lines = output.Split('\n');
+            string[] files = Directory.GetFiles(Directory.GetCurrentDirectory());
 
-            foreach(string line in lines )
+            foreach (string file in files)
             {
-                if (line.Contains("[download] Destination: "))
+                string extension = Path.GetExtension(file);
+
+                if (extension == ".wav" || extension == ".webpm")
                 {
-                    string tmpName;
-                    tmpName = line.Replace("[download] Destination: ", "");
-                    name = tmpName;
+                    // Faites quelque chose avec le fichier correspondant à l'extension spécifiée
+                    // Par exemple, vous pouvez stocker le nom du fichier dans une liste ou l'afficher dans la console
+                    string fileName = Path.GetFileName(file);
+                    try
+                    {
+                        convertYoutubeWav(fileName);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("le lien n'est pas bon", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
-                else if(line.Contains("[download] ") && line.Contains(" has already been downloaded"))
-                {
-                    string tmpName;
-                    tmpName = line.Replace("[download] ", "");
-                    tmpName = tmpName.Replace(" has already been downloaded", "");
-                    name = tmpName;
-                }
-                else if(line.Contains("[ExtractAudio] Destination: "))
-                {
-                    string tmpName;
-                    tmpName = line.Replace("[ExtractAudio] Destination: ", "");
-                    name = tmpName;
-                }
-            }
-            try
-            {
-                convertYoutubeWav(name);
-            }
-            catch
-            {
-                MessageBox.Show("le lien n'est pas bon", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             
         }
@@ -89,6 +83,7 @@ namespace Dj_application.Outil
             ConvertOutil.ConvertToWav(oldPath, newPath);
             File.Delete(oldPath);
             finDonwloadAndConvertion?.Invoke(this, new Musique(newPath));
+            win.StopLoading();
         }
 
     }

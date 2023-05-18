@@ -21,7 +21,7 @@ namespace Dj_application
         [STAThread]
         static void Main()
         {
-            new DownloadYoutubeLinkWav("https://www.youtube.com/watch?v=VHoT4N43jK8");
+            //new DownloadYoutubeLinkWav("https://www.youtube.com/watch?v=VHoT4N43jK8");
 
             Dj_application.View.Window window = SingletonWindow.getInstance().window;
             window.ShowDialog();

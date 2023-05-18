@@ -28,31 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Window));
             toolStrip1 = new ToolStrip();
-            toolStripProgressBar1 = new ToolStripProgressBar();
+            Pb_LoadingDownload = new ToolStripProgressBar();
             cb_nbrPiste = new ToolStripComboBox();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             pageMix1 = new Control.PageMix();
             tabPage2 = new TabPage();
+            pageMixYoutubeMusic1 = new Control.PageMixYoutubeMusic();
+            tabPage3 = new TabPage();
+            pageDownload1 = new Control.PageDownload();
+            toolStripButton1 = new ToolStripButton();
             toolStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
+            tabPage2.SuspendLayout();
+            tabPage3.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripProgressBar1, cb_nbrPiste });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, Pb_LoadingDownload, cb_nbrPiste });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(800, 25);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripProgressBar1
+            // Pb_LoadingDownload
             // 
-            toolStripProgressBar1.Name = "toolStripProgressBar1";
-            toolStripProgressBar1.Size = new Size(100, 22);
+            Pb_LoadingDownload.Name = "Pb_LoadingDownload";
+            Pb_LoadingDownload.Size = new Size(100, 22);
             // 
             // cb_nbrPiste
             // 
@@ -66,9 +73,11 @@
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
+            tabControl1.Controls.Add(tabPage3);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 25);
             tabControl1.Name = "tabControl1";
+            tabControl1.RightToLeft = RightToLeft.No;
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(800, 425);
             tabControl1.TabIndex = 1;
@@ -94,6 +103,7 @@
             // 
             // tabPage2
             // 
+            tabPage2.Controls.Add(pageMixYoutubeMusic1);
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
@@ -101,6 +111,43 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // pageMixYoutubeMusic1
+            // 
+            pageMixYoutubeMusic1.Dock = DockStyle.Fill;
+            pageMixYoutubeMusic1.Location = new Point(3, 3);
+            pageMixYoutubeMusic1.Name = "pageMixYoutubeMusic1";
+            pageMixYoutubeMusic1.Size = new Size(786, 391);
+            pageMixYoutubeMusic1.TabIndex = 0;
+            // 
+            // tabPage3
+            // 
+            tabPage3.Controls.Add(pageDownload1);
+            tabPage3.Location = new Point(4, 24);
+            tabPage3.Name = "tabPage3";
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(792, 397);
+            tabPage3.TabIndex = 2;
+            tabPage3.Text = "tabPage3";
+            tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // pageDownload1
+            // 
+            pageDownload1.Dock = DockStyle.Fill;
+            pageDownload1.Location = new Point(3, 3);
+            pageDownload1.Name = "pageDownload1";
+            pageDownload1.Size = new Size(786, 391);
+            pageDownload1.TabIndex = 0;
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.ImageTransparentColor = Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size(46, 22);
+            toolStripButton1.Text = "option";
+            toolStripButton1.Click += toolStripButton1_Click;
             // 
             // Window
             // 
@@ -116,6 +163,8 @@
             toolStrip1.PerformLayout();
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
+            tabPage2.ResumeLayout(false);
+            tabPage3.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -126,8 +175,12 @@
         private TabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private ToolStripProgressBar toolStripProgressBar1;
+        private ToolStripProgressBar Pb_LoadingDownload;
         private Control.PageMix pageMix1;
         private ToolStripComboBox cb_nbrPiste;
+        private Control.PageMixYoutubeMusic pageMixYoutubeMusic1;
+        private TabPage tabPage3;
+        private Control.PageDownload pageDownload1;
+        private ToolStripButton toolStripButton1;
     }
 }
