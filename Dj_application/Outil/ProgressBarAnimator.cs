@@ -47,17 +47,25 @@ namespace Dj_application.Outil
 
         private void AnimateProgressBar()
         {
-            while (isAnimating)
+            try
             {
-                progressBar.Invoke((MethodInvoker)(() =>
+                while (isAnimating)
                 {
-                    progressBar.Value++;
-                    if (progressBar.Value >= progressBar.Maximum)
-                        progressBar.Value = progressBar.Minimum;
-                }));
+                    progressBar.Invoke((MethodInvoker)(() =>
+                    {
+                        progressBar.Value++;
+                        if (progressBar.Value >= progressBar.Maximum)
+                            progressBar.Value = progressBar.Minimum;
+                    }));
 
-                Thread.Sleep(50);
+                    Thread.Sleep(50);
+                }
             }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            
         }
     }
 }

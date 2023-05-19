@@ -26,7 +26,7 @@ namespace Dj_application.model
         public event EventHandler<double> PositionChanged;
         public event EventHandler<bool> FinishGraph;
         public event EventHandler<double> LoadingPositionChanged;
-        public event EventHandler<double> clickOnModel;
+        public event EventHandler<OxyMouseDownEventArgs> clickOnModel;
         public event EventHandler FinLecture;
 
         private Thread threadPlay;
@@ -227,7 +227,8 @@ namespace Dj_application.model
             view.Model.Series.Clear();
             lineSeries.MouseDown += (sender, e) =>
             {
-                clickOnModel?.Invoke(this, e.Position.X);
+                
+                clickOnModel?.Invoke(this, e);
             };
             view.Model.Series.Add(lineSeries);
             view.InvalidatePlot(false);

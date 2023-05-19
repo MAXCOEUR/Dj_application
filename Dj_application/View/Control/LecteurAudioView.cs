@@ -78,6 +78,26 @@ namespace Dj_application.View.Control
             model.Annotations.Add(loadingMarker);
             model.Annotations.Add(positionMarker);
             pv_graph.InvalidatePlot(false);
+            // Désactiver le déplacement
+
+            pv_graph.MouseMove += (sender, e) =>
+            {
+                if (e.Button == MouseButtons.Right)
+                {
+                    pv_graph.Model.ResetAllAxes();
+                }
+            };
+
+
+            // Désactiver le zoom
+            pv_graph.MouseWheel += (sender, e) =>
+            {
+                Console.WriteLine(e.Delta.ToString());
+                pv_graph.Model.ZoomAllAxes(0);
+            };
+
+
+
 
 
             model.PlotMargins = new OxyThickness(0); // Supprimer les marges
@@ -242,10 +262,15 @@ namespace Dj_application.View.Control
             setMarker(loadingMarker, -1);
             isLoading = false;
         }
-        private void lecteurAudio_clickOnModel(object sender, double e)
+        private void lecteurAudio_clickOnModel(object sender, OxyMouseDownEventArgs e)
         {
-            pv_graph_MouseClick(pv_graph, new MouseEventArgs(MouseButtons.Left, 1, (int)e, 0, 0));
+            var mouseState = System.Windows.Forms.Control.MouseButtons;
+            var mouseEventArgs = new MouseEventArgs(mouseState, 1, (int)e.Position.X, (int)e.Position.Y, 0);
+            pv_graph_MouseClick(pv_graph, mouseEventArgs);
         }
+
+
+
         private void lecteurAudio_PositionChanged(object sender, double position)
         {
             if (lecteurAudio == null) return;
