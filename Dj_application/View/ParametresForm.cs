@@ -2,13 +2,16 @@
 using NAudio.Wave;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
 namespace Dj_application.View
 {
     public partial class ParametresForm : Form
     {
         private static ParametresForm instance;
-        private List<KeyValuePair<int, string>> sortiesAudio;
+        private List<WaveOutCapabilities> sortiesAudio;
+        private WaveOutCapabilities casque;
+        private WaveOutCapabilities standard;
 
         public static ParametresForm Instance
         {
@@ -18,6 +21,7 @@ namespace Dj_application.View
                 {
                     instance = new ParametresForm();
                 }
+                instance.Initial();
                 return instance;
             }
         }
@@ -26,6 +30,13 @@ namespace Dj_application.View
         {
             InitializeComponent();
             this.Text = "Option";
+            Initial();
+            SortieAudioParDefaut();
+
+        }
+
+        private void Initial()
+        {
             InitializeSortiesAudio();
             PopulateComboBoxes();
         }
@@ -35,15 +46,14 @@ namespace Dj_application.View
             sortiesAudio = GetSortiesAudio();
         }
 
-        private List<KeyValuePair<int, string>> GetSortiesAudio()
+        private List<WaveOutCapabilities> GetSortiesAudio()
         {
-            List<KeyValuePair<int, string>> sortiesAudio = new List<KeyValuePair<int, string>>();
+            List<WaveOutCapabilities> sortiesAudio = new List<WaveOutCapabilities>();
 
             for (int deviceNumber = 0; deviceNumber < WaveOut.DeviceCount; deviceNumber++)
             {
                 WaveOutCapabilities capabilities = WaveOut.GetCapabilities(deviceNumber);
-                string sortieAudio = capabilities.ProductName;
-                sortiesAudio.Add(new KeyValuePair<int, string>(deviceNumber, sortieAudio));
+                sortiesAudio.Add(capabilities);
             }
 
             return sortiesAudio;
@@ -51,40 +61,88 @@ namespace Dj_application.View
 
         private void PopulateComboBoxes()
         {
-            foreach (KeyValuePair<int, string> sortie in sortiesAudio)
+            cb_audioCasque.Items.Clear();
+            cb_audioStandard.Items.Clear();
+            foreach (WaveOutCapabilities sortie in sortiesAudio)
             {
-                cb_audioCasque.Items.Add(sortie.Value);
-                cb_audioStandard.Items.Add(sortie.Value);
+                cb_audioCasque.Items.Add(sortie.ProductName);
+                cb_audioStandard.Items.Add(sortie.ProductName);
             }
-
-            cb_audioStandard.SelectedIndex = GetSortieAudioParDefaut();
-            cb_audioCasque.SelectedIndex = GetSortieAudioParDefaut();
         }
 
-        private int GetSortieAudioParDefaut()
+        private void SortieAudioParDefaut()
+        {
+
+            int defaultOut = getSortieAudioParDefaut();
+            cb_audioStandard.SelectedIndex = defaultOut;
+            cb_audioCasque.SelectedIndex = defaultOut;
+        }
+        private int getSortieAudioParDefaut()
         {
             WaveOutCapabilities defaultCapabilities = WaveOut.GetCapabilities(0);
-            string defaultDeviceName = defaultCapabilities.ProductName;
-
+            int defaultOut = -1;
             for (int i = 0; i < sortiesAudio.Count; i++)
             {
-                if (sortiesAudio[i].Value == defaultDeviceName)
+                if (sortiesAudio[i].Equals(defaultCapabilities))
                 {
-                    return i;
+                    defaultOut = i;
                 }
             }
-
-            // Retourner une valeur par défaut si aucun périphérique correspondant n'est trouvé
-            return -1;
+            return defaultOut;
         }
 
         public int GetSortieAudioStandard()
         {
-            return cb_audioStandard.SelectedIndex;
+            Initial();
+            for (int i = 0; i < sortiesAudio.Count(); i++)
+            {
+                if (sortiesAudio[i].Equals(standard))
+                {
+                    return i;
+                }
+            }
+            return getSortieAudioParDefaut();
         }
         public int GetSortieAudioCasque()
         {
-            return cb_audioCasque.SelectedIndex;
+            Initial();
+            for (int i = 0; i < sortiesAudio.Count(); i++)
+            {
+                if (sortiesAudio[i].Equals(casque))
+                {
+                    return i;
+                }
+            }
+            return getSortieAudioParDefaut();
+        }
+        public WaveOutCapabilities GetSortieAudioCasqueWaveOutCapabilities()
+        {
+            Initial();
+            for (int i = 0; i < sortiesAudio.Count(); i++)
+            {
+                if (sortiesAudio[i].Equals(casque))
+                {
+                    return sortiesAudio[i];
+                }
+            }
+            return sortiesAudio[getSortieAudioParDefaut()];
+        }
+
+        private void cb_audioStandard_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("cb_audioStandard_SelectedIndexChanged " + cb_audioStandard.SelectedIndex);
+            standard = sortiesAudio[cb_audioStandard.SelectedIndex];
+        }
+
+        private void cb_audioCasque_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Console.WriteLine("cb_audioCasque_SelectedIndexChanged " + cb_audioCasque.SelectedIndex);
+            casque = sortiesAudio[cb_audioCasque.SelectedIndex];
+        }
+
+        private void bt_close_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

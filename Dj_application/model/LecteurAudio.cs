@@ -38,7 +38,6 @@ namespace Dj_application.model
             lecteurAudio = new AudioFileReader(musique.Path);
             lecteurAudioAvecVolume = new VolumeSampleProvider(lecteurAudio);
             sortieAudio = new WaveOutEvent();
-            sortieAudio.DeviceNumber = ParametresForm.Instance.GetSortieAudioStandard();
             sortieAudio.Init(lecteurAudioAvecVolume);
         }
 
@@ -236,7 +235,7 @@ namespace Dj_application.model
 
         public void setSortieAudio(int deviceNumber)
         {
-
+            Console.WriteLine(deviceNumber);
             if (sortieAudio.PlaybackState == PlaybackState.Playing)
             {
                 MettreEnPause();

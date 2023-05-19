@@ -35,6 +35,7 @@
             flowLayoutPanel1 = new FlowLayoutPanel();
             label1 = new Label();
             cb_audioStandard = new ComboBox();
+            bt_close = new Button();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
@@ -46,13 +47,14 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(flowLayoutPanel2, 0, 1);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 0);
+            tableLayoutPanel1.Controls.Add(bt_close, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 5;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(800, 450);
@@ -84,6 +86,7 @@
             cb_audioCasque.Name = "cb_audioCasque";
             cb_audioCasque.Size = new Size(289, 23);
             cb_audioCasque.TabIndex = 1;
+            cb_audioCasque.SelectedIndexChanged += cb_audioCasque_SelectedIndexChanged;
             // 
             // flowLayoutPanel1
             // 
@@ -111,6 +114,19 @@
             cb_audioStandard.Name = "cb_audioStandard";
             cb_audioStandard.Size = new Size(280, 23);
             cb_audioStandard.TabIndex = 1;
+            cb_audioStandard.SelectedIndexChanged += cb_audioStandard_SelectedIndexChanged;
+            // 
+            // bt_close
+            // 
+            bt_close.BackColor = Color.Lime;
+            bt_close.Dock = DockStyle.Fill;
+            bt_close.Location = new Point(3, 103);
+            bt_close.Name = "bt_close";
+            bt_close.Size = new Size(794, 44);
+            bt_close.TabIndex = 3;
+            bt_close.Text = "fermer";
+            bt_close.UseVisualStyleBackColor = false;
+            bt_close.Click += bt_close_Click;
             // 
             // ParametresForm
             // 
@@ -137,5 +153,6 @@
         private FlowLayoutPanel flowLayoutPanel1;
         private Label label1;
         private ComboBox cb_audioStandard;
+        private Button bt_close;
     }
 }

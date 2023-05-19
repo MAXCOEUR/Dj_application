@@ -10,10 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibUsbDotNet" Version="3.0.102-alpha" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1829-prerelease" />
     <PackageReference Include="NAudio" Version="2.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="OxyPlot.WindowsForms" Version="2.1.2" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.117" />

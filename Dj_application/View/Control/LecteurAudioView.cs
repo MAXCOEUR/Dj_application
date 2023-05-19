@@ -191,6 +191,16 @@ namespace Dj_application.View.Control
             lecteurAudio.clickOnModel += lecteurAudio_clickOnModel;
             lecteurAudio.FinLecture += LecteurAudio_FinLecture;
             BpmGenerate.BpmTrouver += bpmGenerate_BpmTrouver;
+
+            ParametresForm pf = ParametresForm.Instance;
+            if (isCasque)
+            {
+                lecteurAudio.setSortieAudio(pf.GetSortieAudioCasque());
+            }
+            else
+            {
+                lecteurAudio.setSortieAudio(pf.GetSortieAudioStandard());
+            }
             lecteurAudio.Jouer();
             MettreEnPause();
         }

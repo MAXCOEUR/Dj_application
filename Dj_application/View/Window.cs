@@ -15,8 +15,6 @@ namespace Dj_application.View
     {
         private Thread loadingThread;
         private bool isLoading;
-        ParametresForm pf = ParametresForm.Instance;
-
         public Window()
         {
             InitializeComponent();
@@ -79,6 +77,7 @@ namespace Dj_application.View
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            ParametresForm pf = ParametresForm.Instance;
             pf.ShowDialog();
         }
     }
