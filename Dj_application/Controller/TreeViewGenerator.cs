@@ -19,7 +19,18 @@ namespace Dj_application.Controller
             var rootNode = new TreeNode(Path.GetFileName(rootFolder));
             treeView.Nodes.Add(rootNode);
 
-            GenerateSubfolders(rootFolder, rootNode);
+            if (treeView.Created)
+            {
+                Thread thread = new Thread(() => GenerateSubfolders(rootFolder, rootNode));
+                thread.Start();
+            }
+
+            treeView.HandleCreated += (sender, e) =>
+            {
+                Thread thread = new Thread(() => GenerateSubfolders(rootFolder, rootNode));
+                thread.Start();
+            };
+            
         }
 
         private void GenerateSubfolders(string folderPath, TreeNode parentNode)
@@ -31,7 +42,12 @@ namespace Dj_application.Controller
                 foreach (string subfolder in subfolders)
                 {
                     var subfolderNode = new TreeNode(Path.GetFileName(subfolder));
-                    parentNode.Nodes.Add(subfolderNode);
+
+                    // Utiliser Invoke pour ajouter le nœud dans le thread de l'interface utilisateur
+                    treeView.Invoke((MethodInvoker)delegate
+                    {
+                        parentNode.Nodes.Add(subfolderNode);
+                    });
 
                     GenerateSubfolders(subfolder, subfolderNode);
                 }
@@ -45,5 +61,7 @@ namespace Dj_application.Controller
                 MessageBox.Show("Une erreur s'est produite lors de la génération de l'arborescence des dossiers : " + ex.Message);
             }
         }
+
     }
+
 }
