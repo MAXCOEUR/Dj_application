@@ -6,6 +6,10 @@ using Dj_application.Controller;
 using System.Diagnostics;
 using Dj_application.Outil;
 using System.ComponentModel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using OxyPlot.WindowsForms;
+using OxyPlot;
+using Dj_application.Singleton;
 
 namespace Dj_application.View.Control
 {
@@ -15,6 +19,7 @@ namespace Dj_application.View.Control
         private string currentFolder;
         private string folderDownload = "musique/telechargement/";
         public event EventHandler<Musique> musiqueSelected;
+        public event EventHandler<Tuple<int, Musique>> musiqueSelectedWithPiste;
 
         public Explorateur()
         {
@@ -98,30 +103,56 @@ namespace Dj_application.View.Control
             // Effacer les lignes existantes dans le DataGridView
             dgv_listMusique.Rows.Clear();
 
+            if (dgv_listMusique.Created)
+            {
+                Thread thread = new Thread(() =>
+                {
+                    LoadFilesAsync(folderPath);
+                });
+                thread.Start();
+            }
 
+            dgv_listMusique.HandleCreated += (sender, e) =>
+            {
+                Thread thread = new Thread(() =>
+                {
+                    LoadFilesAsync(folderPath);
+                });
+                thread.Start();
+            };
+
+
+        }
+
+        private void LoadFilesAsync(string folderPath)
+        {
             try
             {
-                // Obtenir la liste des fichiers dans le dossier spécifié
-                string[] files = Directory.GetFiles(folderPath);
-
-                Musique[] musiques = new Musique[files.Length];
-                for (int i = 0; i < files.Length; i++)
+                dgv_listMusique.Invoke((MethodInvoker)delegate
                 {
-                    musiques[i] = new Musique(files[i]);
-                }
 
-                // Ajouter les musiques dans le DataGridView
-                foreach (Musique musique in musiques)
-                {
-                    musique.bpm = MusicBpmDatabase.Instance.GetBpm(musique.Path);
-                    DataGridViewRow row = new DataGridViewRow();
-                    row.CreateCells(dgv_listMusique);
-                    row.Cells[dgv_listMusique.Columns["MusiqueColumn"].Index].Tag = musique;
-                    row.Cells[dgv_listMusique.Columns["NomMusiqueColumn"].Index].Value = musique.FileNameWithoutExtension;
-                    row.Cells[dgv_listMusique.Columns["ExtensionColumn"].Index].Value = musique.FileExtension;
-                    row.Cells[dgv_listMusique.Columns["BpmMusiqueColumn"].Index].Value = musique.bpm;
-                    dgv_listMusique.Rows.Add(row);
-                }
+                    // Obtenir la liste des fichiers dans le dossier spécifié
+                    string[] files = Directory.GetFiles(folderPath);
+
+                    Musique[] musiques = new Musique[files.Length];
+                    for (int i = 0; i < files.Length; i++)
+                    {
+                        musiques[i] = new Musique(files[i]);
+                    }
+
+                    // Ajouter les musiques dans le DataGridView
+                    foreach (Musique musique in musiques)
+                    {
+                        musique.bpm = MusicBpmDatabase.Instance.GetBpm(musique.Path);
+                        DataGridViewRow row = new DataGridViewRow();
+                        row.CreateCells(dgv_listMusique);
+                        row.Cells[dgv_listMusique.Columns["MusiqueColumn"].Index].Tag = musique;
+                        row.Cells[dgv_listMusique.Columns["NomMusiqueColumn"].Index].Value = musique.FileNameWithoutExtension;
+                        row.Cells[dgv_listMusique.Columns["ExtensionColumn"].Index].Value = musique.FileExtension;
+                        row.Cells[dgv_listMusique.Columns["BpmMusiqueColumn"].Index].Value = musique.bpm;
+                        dgv_listMusique.Rows.Add(row);
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -198,6 +229,45 @@ namespace Dj_application.View.Control
         private void bt_download_Click(object sender, EventArgs e)
         {
             LoadFiles(folderDownload);
+        }
+
+        private void MenuItem_Click(object sender, EventArgs e, Musique musique)
+        {
+            // Gérer le clic sur une option du menu contextuel
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            int option = int.Parse(menuItem.Text.Replace("Piste ", ""));
+            musiqueSelectedWithPiste?.Invoke(this, new Tuple<int, Musique>(option - 1, musique));
+        }
+
+        private void dgv_listMusique_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+        }
+
+        private void dgv_listMusique_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                DataGridViewCell clickedCell = dgv_listMusique.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+                // Créer le menu contextuel
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+                Musique musique = clickedCell.Tag as Musique;
+
+                // Ajouter les options au menu contextuel
+                Window win = SingletonWindow.getInstance().window;
+                for (int i = 1; i <= win.getNbrPiste(); i++)
+                {
+                    string optionText = $"Piste {i}";
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem(optionText);
+                    menuItem.Click += (sender, eventArgs) => MenuItem_Click(sender, eventArgs, musique);
+                    contextMenu.Items.Add(menuItem);
+                }
+
+                // Afficher le menu contextuel à l'emplacement du clic
+                Point relativeMousePosition = dgv_listMusique.PointToClient(Cursor.Position);
+                contextMenu.Show(dgv_listMusique, relativeMousePosition);
+            }
         }
     }
 }

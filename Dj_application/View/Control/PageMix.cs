@@ -33,6 +33,7 @@ namespace Dj_application.View.Control
             tableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
 
             explorateur.musiqueSelected += explorateur_musiqueSelected;
+            explorateur.musiqueSelectedWithPiste += explorateur_musiqueSelectedWithPiste;
 
             for (int i = 0; i < maxPiste; i++)
             {
@@ -76,6 +77,13 @@ namespace Dj_application.View.Control
                     lecteurAudioViews[i].setAudio(e);
                     break;
                 }
+            }
+        }
+        private void explorateur_musiqueSelectedWithPiste(object sender, Tuple<int, Musique> pair)
+        {
+            if (!lecteurAudioViews[pair.Item1].isPlaying())
+            {
+                lecteurAudioViews[pair.Item1].setAudio(pair.Item2);
             }
         }
 

@@ -15,6 +15,7 @@ namespace Dj_application.View
     {
         private Thread loadingThread;
         private bool isLoading;
+        private int nbrPiste;
         public Window()
         {
             InitializeComponent();
@@ -22,6 +23,7 @@ namespace Dj_application.View
             tabPage2.Text = "Mix Youtube Music";
             tabPage1.Text = "Mix Fichier";
             cb_nbrPiste.SelectedIndex = 0;
+            nbrPiste = int.Parse((string)cb_nbrPiste.SelectedItem);
         }
 
         private void Window_FormClosed(object sender, FormClosedEventArgs e)
@@ -32,7 +34,8 @@ namespace Dj_application.View
 
         private void cb_nbrPiste_SelectedIndexChanged(object sender, EventArgs e)
         {
-            pageMix1.setNumberPist(int.Parse((string)cb_nbrPiste.SelectedItem));
+            nbrPiste = int.Parse((string)cb_nbrPiste.SelectedItem);
+            pageMix1.setNumberPist(nbrPiste);
         }
 
         public void StartLoading()
@@ -79,6 +82,11 @@ namespace Dj_application.View
         {
             ParametresForm pf = ParametresForm.Instance;
             pf.ShowDialog();
+        }
+
+        public int getNbrPiste()
+        {
+            return nbrPiste;
         }
     }
 }

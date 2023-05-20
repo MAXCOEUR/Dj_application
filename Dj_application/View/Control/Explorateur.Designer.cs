@@ -33,8 +33,8 @@
             spCon_explorateur = new SplitContainer();
             panel2 = new Panel();
             panel1 = new Panel();
-            bt_source = new Button();
             splitContainer1 = new SplitContainer();
+            bt_source = new Button();
             bt_download = new Button();
             ((System.ComponentModel.ISupportInitialize)dgv_listMusique).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spCon_explorateur).BeginInit();
@@ -60,7 +60,9 @@
             dgv_listMusique.RowTemplate.Height = 25;
             dgv_listMusique.Size = new Size(682, 492);
             dgv_listMusique.TabIndex = 1;
+            dgv_listMusique.CellClick += dgv_listMusique_CellClick;
             dgv_listMusique.CellDoubleClick += dgv_listMusique_CellDoubleClick_1;
+            dgv_listMusique.CellMouseClick += dgv_listMusique_CellMouseClick;
             dgv_listMusique.KeyDown += dgv_listMusique_KeyDown;
             // 
             // treev_arbreFolder
@@ -111,18 +113,6 @@
             panel1.Size = new Size(209, 50);
             panel1.TabIndex = 3;
             // 
-            // bt_source
-            // 
-            bt_source.BackColor = Color.Lime;
-            bt_source.Dock = DockStyle.Fill;
-            bt_source.Location = new Point(0, 0);
-            bt_source.Name = "bt_source";
-            bt_source.Size = new Size(102, 50);
-            bt_source.TabIndex = 2;
-            bt_source.Text = "Source";
-            bt_source.UseVisualStyleBackColor = false;
-            bt_source.Click += bt_source_Click;
-            // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
@@ -139,6 +129,18 @@
             splitContainer1.Size = new Size(209, 50);
             splitContainer1.SplitterDistance = 102;
             splitContainer1.TabIndex = 3;
+            // 
+            // bt_source
+            // 
+            bt_source.BackColor = Color.Lime;
+            bt_source.Dock = DockStyle.Fill;
+            bt_source.Location = new Point(0, 0);
+            bt_source.Name = "bt_source";
+            bt_source.Size = new Size(102, 50);
+            bt_source.TabIndex = 2;
+            bt_source.Text = "Source";
+            bt_source.UseVisualStyleBackColor = false;
+            bt_source.Click += bt_source_Click;
             // 
             // bt_download
             // 
