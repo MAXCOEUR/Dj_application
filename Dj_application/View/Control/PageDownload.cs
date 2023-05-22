@@ -23,7 +23,7 @@ namespace Dj_application.View.Control
             this.Dock = DockStyle.Fill;
             InitializeComponent();
 
-            LecteurMusiqueOnline lecteur = new LecteurMusiqueOnline(new model.MusiqueOnline("https://www.youtube.com/watch?v=BtyHYIpykN0"));
+            LecteurMusiqueOnline lecteur = new LecteurMusiqueOnline(new model.MusiqueOnline("https://www.youtube.com/watch?v=GkdJNTt4H5E"));
             splitContainer1.Panel1.Controls.Add(lecteur);
         }
 

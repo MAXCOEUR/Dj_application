@@ -59,9 +59,15 @@ namespace Dj_application.model
             }
         }
 
-        public string GetUrlStream()
+        public async Task<string> GetUrlStream()
         {
+            await WaitForInitialization();
             return streamInfo.Url;
+        }
+        public async Task<IStreamInfo> GetStreamInfo()
+        {
+            await WaitForInitialization();
+            return streamInfo;
         }
 
         public string GetUrl()

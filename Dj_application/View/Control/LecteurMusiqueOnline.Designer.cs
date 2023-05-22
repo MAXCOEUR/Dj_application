@@ -32,7 +32,7 @@
             lb_name = new Label();
             tb_volume = new TrackBar();
             bt_playPause = new Button();
-            pb_time = new ProgressBar();
+            pb_progess = new ProgressBar();
             ((System.ComponentModel.ISupportInitialize)tb_volume).BeginInit();
             SuspendLayout();
             // 
@@ -60,42 +60,45 @@
             // tb_volume
             // 
             tb_volume.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tb_volume.Location = new Point(119, 90);
+            tb_volume.Location = new Point(119, 88);
             tb_volume.Maximum = 100;
             tb_volume.Name = "tb_volume";
             tb_volume.Size = new Size(769, 45);
             tb_volume.TabIndex = 7;
             tb_volume.TickStyle = TickStyle.None;
             tb_volume.Value = 100;
+            tb_volume.ValueChanged += tb_volume_ValueChanged;
             // 
             // bt_playPause
             // 
-            bt_playPause.Location = new Point(25, 86);
+            bt_playPause.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            bt_playPause.BackColor = Color.Lime;
+            bt_playPause.Location = new Point(25, 41);
             bt_playPause.Name = "bt_playPause";
-            bt_playPause.Size = new Size(75, 23);
+            bt_playPause.Size = new Size(75, 79);
             bt_playPause.TabIndex = 6;
             bt_playPause.Text = "Play";
-            bt_playPause.UseVisualStyleBackColor = true;
+            bt_playPause.UseVisualStyleBackColor = false;
+            bt_playPause.Click += bt_playPause_Click;
             // 
-            // pb_time
+            // pb_progess
             // 
-            pb_time.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pb_time.Location = new Point(70, 33);
-            pb_time.Name = "pb_time";
-            pb_time.Size = new Size(818, 23);
-            pb_time.TabIndex = 5;
+            pb_progess.Location = new Point(119, 52);
+            pb_progess.Name = "pb_progess";
+            pb_progess.Size = new Size(769, 23);
+            pb_progess.TabIndex = 10;
             // 
             // LecteurMusiqueOnline
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(pb_progess);
             Controls.Add(lb_temp);
             Controls.Add(lb_name);
             Controls.Add(tb_volume);
             Controls.Add(bt_playPause);
-            Controls.Add(pb_time);
             Name = "LecteurMusiqueOnline";
-            Size = new Size(950, 150);
+            Size = new Size(950, 135);
             ((System.ComponentModel.ISupportInitialize)tb_volume).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -107,6 +110,6 @@
         private Label lb_name;
         private TrackBar tb_volume;
         private Button bt_playPause;
-        private ProgressBar pb_time;
+        private ProgressBar pb_progess;
     }
 }
