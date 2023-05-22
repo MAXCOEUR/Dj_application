@@ -7,7 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Dj_application.model;
 using Dj_application.View;
+using NAudio.Wave.SampleProviders;
+using NAudio.Wave;
+using Vlc.DotNet.Forms;
+using YoutubeExplode;
+using YoutubeExplode.Videos;
+using YoutubeExplode.Videos.Streams;
 
 namespace Dj_application.View
 {
@@ -16,6 +23,7 @@ namespace Dj_application.View
         private Thread loadingThread;
         private bool isLoading;
         private int nbrPiste;
+        VlcControl vlc = new VlcControl();
         public Window()
         {
             InitializeComponent();
@@ -24,6 +32,24 @@ namespace Dj_application.View
             tabPage1.Text = "Mix Fichier";
             cb_nbrPiste.SelectedIndex = 0;
             nbrPiste = int.Parse((string)cb_nbrPiste.SelectedItem);
+
+            vlc.Dock= DockStyle.Fill;
+            tabPage4.Controls.Add(vlc);
+            //initVlc();
+        }
+
+        private async void initVlc()
+        {
+            var youtube = new YoutubeClient();
+
+            var videoUrl = "https://www.youtube.com/watch?v=BtyHYIpykN0";
+            StreamManifest streamManifest = await youtube.Videos.Streams.GetManifestAsync(videoUrl);
+            var streamInfo = streamManifest.GetAudioOnlyStreams().GetWithHighestBitrate();
+            vlc.BeginInit();
+            vlc.VlcLibDirectory = new DirectoryInfo(@"C:\Program Files\VideoLAN\VLC");
+            vlc.EndInit();
+
+            vlc.Play(new Uri(streamInfo.Url));
         }
 
         private void Window_FormClosed(object sender, FormClosedEventArgs e)

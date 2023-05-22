@@ -23,19 +23,14 @@ namespace Dj_application.View.Control
             this.Dock = DockStyle.Fill;
             InitializeComponent();
 
-            InitializeWebView();
-        }
-
-        private async void InitializeWebView()
-        {
-            webV_youtube.Source = new Uri("https://www.youtube.com/");
+            LecteurMusiqueOnline lecteur = new LecteurMusiqueOnline(new model.MusiqueOnline("https://www.youtube.com/watch?v=BtyHYIpykN0"));
+            splitContainer1.Panel1.Controls.Add(lecteur);
         }
 
 
         private void bt_dowload_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(webV_youtube.Source.ToString());
-            new DownloadYoutubeLinkWav(webV_youtube.Source.ToString());
+
         }
     }
 }

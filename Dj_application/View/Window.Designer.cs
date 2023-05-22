@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Window));
             toolStrip1 = new ToolStrip();
+            toolStripButton1 = new ToolStripButton();
             Pb_LoadingDownload = new ToolStripProgressBar();
             cb_nbrPiste = new ToolStripComboBox();
             tabControl1 = new TabControl();
@@ -39,7 +40,7 @@
             pageMixYoutubeMusic1 = new Control.PageMixYoutubeMusic();
             tabPage3 = new TabPage();
             pageDownload1 = new Control.PageDownload();
-            toolStripButton1 = new ToolStripButton();
+            tabPage4 = new TabPage();
             toolStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
@@ -55,6 +56,16 @@
             toolStrip1.Size = new Size(800, 25);
             toolStrip1.TabIndex = 0;
             toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.ImageTransparentColor = Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size(46, 22);
+            toolStripButton1.Text = "option";
+            toolStripButton1.Click += toolStripButton1_Click;
             // 
             // Pb_LoadingDownload
             // 
@@ -74,6 +85,7 @@
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
+            tabControl1.Controls.Add(tabPage4);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 25);
             tabControl1.Name = "tabControl1";
@@ -139,15 +151,15 @@
             pageDownload1.Size = new Size(786, 391);
             pageDownload1.TabIndex = 0;
             // 
-            // toolStripButton1
+            // tabPage4
             // 
-            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
-            toolStripButton1.ImageTransparentColor = Color.Magenta;
-            toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new Size(46, 22);
-            toolStripButton1.Text = "option";
-            toolStripButton1.Click += toolStripButton1_Click;
+            tabPage4.Location = new Point(4, 24);
+            tabPage4.Name = "tabPage4";
+            tabPage4.Padding = new Padding(3);
+            tabPage4.Size = new Size(792, 397);
+            tabPage4.TabIndex = 3;
+            tabPage4.Text = "tabPage4";
+            tabPage4.UseVisualStyleBackColor = true;
             // 
             // Window
             // 
@@ -182,5 +194,6 @@
         private TabPage tabPage3;
         private Control.PageDownload pageDownload1;
         private ToolStripButton toolStripButton1;
+        private TabPage tabPage4;
     }
 }
