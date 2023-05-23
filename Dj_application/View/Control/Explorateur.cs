@@ -159,7 +159,34 @@ namespace Dj_application.View.Control
                 MessageBox.Show("Une erreur s'est produite lors du chargement des fichiers : " + ex.Message);
             }
         }
+        private void dgv_listMusique_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < dgv_listMusique.Rows.Count)
+            {
+                DataGridViewCell clickedCell = dgv_listMusique.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
+                DataGridViewRow selectedRow = dgv_listMusique.Rows[e.RowIndex];
+                Musique musique = selectedRow.Cells["MusiqueColumn"].Tag as Musique;
+
+                // Créer le menu contextuel
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+                
+
+                // Ajouter les options au menu contextuel
+                Window win = SingletonWindow.getInstance().window;
+                for (int i = 1; i <= win.getNbrPiste(); i++)
+                {
+                    string optionText = $"Piste {i}";
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem(optionText);
+                    menuItem.Click += (sender, eventArgs) => MenuItem_Click(sender, eventArgs, musique);
+                    contextMenu.Items.Add(menuItem);
+                }
+
+                // Afficher le menu contextuel à l'emplacement du clic
+                Point relativeMousePosition = dgv_listMusique.PointToClient(Cursor.Position);
+                contextMenu.Show(dgv_listMusique, relativeMousePosition);
+            }
+        }
 
         private void dgv_listMusique_CellDoubleClick_1(object sender, DataGridViewCellEventArgs e)
         {
@@ -239,35 +266,6 @@ namespace Dj_application.View.Control
             musiqueSelectedWithPiste?.Invoke(this, new Tuple<int, Musique>(option - 1, musique));
         }
 
-        private void dgv_listMusique_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-           
-        }
-
-        private void dgv_listMusique_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
-            {
-                DataGridViewCell clickedCell = dgv_listMusique.Rows[e.RowIndex].Cells[e.ColumnIndex];
-
-                // Créer le menu contextuel
-                ContextMenuStrip contextMenu = new ContextMenuStrip();
-                Musique musique = clickedCell.Tag as Musique;
-
-                // Ajouter les options au menu contextuel
-                Window win = SingletonWindow.getInstance().window;
-                for (int i = 1; i <= win.getNbrPiste(); i++)
-                {
-                    string optionText = $"Piste {i}";
-                    ToolStripMenuItem menuItem = new ToolStripMenuItem(optionText);
-                    menuItem.Click += (sender, eventArgs) => MenuItem_Click(sender, eventArgs, musique);
-                    contextMenu.Items.Add(menuItem);
-                }
-
-                // Afficher le menu contextuel à l'emplacement du clic
-                Point relativeMousePosition = dgv_listMusique.PointToClient(Cursor.Position);
-                contextMenu.Show(dgv_listMusique, relativeMousePosition);
-            }
-        }
+        
     }
 }

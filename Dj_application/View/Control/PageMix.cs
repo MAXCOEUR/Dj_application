@@ -102,15 +102,17 @@ namespace Dj_application.View.Control
             int valeur = tb_mixPiste.Value;
             int valeur1 = 100;
             int valeur2 = 100;
-            if (valeur > 0)
+            if (piste1 != null && piste2 != null)
             {
-                valeur1 = 100 - Math.Abs(valeur);
+                if (valeur > 0)
+                {
+                    valeur1 = 100 - Math.Abs(valeur);
+                }
+                else if (valeur < 0)
+                {
+                    valeur2 = 100 - Math.Abs(valeur);
+                }
             }
-            else if (valeur < 0)
-            {
-                valeur2 = 100 - Math.Abs(valeur);
-            }
-
             if (piste1 != null)
             {
                 piste1.setvolume(valeur1);

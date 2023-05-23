@@ -40,10 +40,13 @@ namespace Dj_application.View
             pageMix1 = new PageMix();
             tabPage3 = new TabPage();
             pageDownload1 = new PageDownloadYoutubeMusic();
+            tabPage2 = new TabPage();
+            pageDownloadYoutube1 = new PageDownloadYoutube();
             toolStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             tabPage3.SuspendLayout();
+            tabPage2.SuspendLayout();
             SuspendLayout();
             // 
             // toolStrip1
@@ -82,6 +85,7 @@ namespace Dj_application.View
             // 
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage3);
+            tabControl1.Controls.Add(tabPage2);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 25);
             tabControl1.Name = "tabControl1";
@@ -128,6 +132,25 @@ namespace Dj_application.View
             pageDownload1.Size = new Size(786, 391);
             pageDownload1.TabIndex = 0;
             // 
+            // tabPage2
+            // 
+            tabPage2.Controls.Add(pageDownloadYoutube1);
+            tabPage2.Location = new Point(4, 24);
+            tabPage2.Name = "tabPage2";
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(792, 397);
+            tabPage2.TabIndex = 3;
+            tabPage2.Text = "tabPage2";
+            tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // pageDownloadYoutube1
+            // 
+            pageDownloadYoutube1.Dock = DockStyle.Fill;
+            pageDownloadYoutube1.Location = new Point(3, 3);
+            pageDownloadYoutube1.Name = "pageDownloadYoutube1";
+            pageDownloadYoutube1.Size = new Size(786, 391);
+            pageDownloadYoutube1.TabIndex = 0;
+            // 
             // Window
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -143,6 +166,7 @@ namespace Dj_application.View
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
+            tabPage2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -158,5 +182,7 @@ namespace Dj_application.View
         private TabPage tabPage3;
         private Control.PageDownloadYoutubeMusic pageDownload1;
         private ToolStripButton toolStripButton1;
+        private TabPage tabPage2;
+        private PageDownloadYoutube pageDownloadYoutube1;
     }
 }

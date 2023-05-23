@@ -169,7 +169,15 @@ namespace Dj_application.View.Control
             {
                 volumeMix = volume;
             }
-            lecteurAudio.setVolume((tb_volume.Value / 100.0f) * (volumeMix / 100.0f));
+            if (isCasque)
+            {
+                lecteurAudio.setVolume((tb_volume.Value / 100.0f));
+            }
+            else
+            {
+                lecteurAudio.setVolume((tb_volume.Value / 100.0f) * (volumeMix / 100.0f));
+            }
+            
         }
 
         public void initEventAndLecteurAudio(Musique musique)
@@ -376,6 +384,7 @@ namespace Dj_application.View.Control
             if(lecteurAudio==null) return;
             ParametresForm pf = ParametresForm.Instance;
             isCasque = !isCasque;
+            setvolume();
             if (isCasque)
             {
                 bt_casque.BackColor = Color.Green;

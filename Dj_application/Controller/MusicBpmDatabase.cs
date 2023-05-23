@@ -57,20 +57,28 @@ namespace Dj_application.Controller
 
         public void InsertBpm(string filePath, int bpm)
         {
-            lock (lockObject)
+            try
             {
-                connection.Open();
-
-                using (SQLiteCommand command = connection.CreateCommand())
+                lock (lockObject)
                 {
-                    command.CommandText = $"INSERT INTO {TableName} ({FilePathColumnName}, {BpmColumnName}) VALUES (@filePath, @bpm)";
-                    command.Parameters.AddWithValue("@filePath", filePath);
-                    command.Parameters.AddWithValue("@bpm", bpm);
-                    command.ExecuteNonQuery();
-                }
+                    connection.Open();
 
-                connection.Close();
+                    using (SQLiteCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText = $"INSERT INTO {TableName} ({FilePathColumnName}, {BpmColumnName}) VALUES (@filePath, @bpm)";
+                        command.Parameters.AddWithValue("@filePath", filePath);
+                        command.Parameters.AddWithValue("@bpm", bpm);
+                        command.ExecuteNonQuery();
+                    }
+
+                    connection.Close();
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            
         }
 
         public int GetBpm(string filePath)

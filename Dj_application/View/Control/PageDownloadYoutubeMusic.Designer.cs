@@ -33,6 +33,7 @@
             wv_youtube = new Microsoft.Web.WebView2.WinForms.WebView2();
             tb_url = new TextBox();
             bt_dowload = new Button();
+            bt_mute = new Button();
             bt_back = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -59,6 +60,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(bt_mute);
             splitContainer1.Panel1.Controls.Add(bt_back);
             splitContainer1.Panel1.Controls.Add(wv_youtube);
             // 
@@ -73,12 +75,12 @@
             // wv_youtube
             // 
             wv_youtube.AllowExternalDrop = true;
+            wv_youtube.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             wv_youtube.CreationProperties = null;
             wv_youtube.DefaultBackgroundColor = Color.White;
-            wv_youtube.Dock = DockStyle.Fill;
-            wv_youtube.Location = new Point(0, 0);
+            wv_youtube.Location = new Point(0, 32);
             wv_youtube.Name = "wv_youtube";
-            wv_youtube.Size = new Size(639, 536);
+            wv_youtube.Size = new Size(639, 504);
             wv_youtube.TabIndex = 0;
             wv_youtube.ZoomFactor = 1D;
             // 
@@ -106,12 +108,23 @@
             bt_dowload.UseVisualStyleBackColor = false;
             bt_dowload.Click += bt_dowload_Click;
             // 
-            // PageDownload
+            // bt_mute
+            // 
+            bt_mute.BackColor = Color.Lime;
+            bt_mute.Location = new Point(84, 3);
+            bt_mute.Name = "bt_mute";
+            bt_mute.Size = new Size(93, 23);
+            bt_mute.TabIndex = 4;
+            bt_mute.Text = "mute";
+            bt_mute.UseVisualStyleBackColor = false;
+            bt_mute.Click += bt_mute_Click;
+            // 
+            // PageDownloadYoutubeMusic
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(splitContainer1);
-            Name = "PageDownload";
+            Name = "PageDownloadYoutubeMusic";
             Size = new Size(920, 536);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
@@ -128,5 +141,6 @@
         private Button bt_dowload;
         private Microsoft.Web.WebView2.WinForms.WebView2 wv_youtube;
         private TextBox tb_url;
+        private Button bt_mute;
     }
 }

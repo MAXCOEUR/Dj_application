@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using NAudio.Lame;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Dj_application.Outil
 {
     internal class ConvertOutil
     {
-        public static void ConvertToWav(string inputFilePath, string outputFilePath)
+        public static void ConvertToMp3(string inputFilePath, string outputFilePath)
         {
             using (var reader = new MediaFoundationReader(inputFilePath))
             {
@@ -18,11 +19,15 @@ namespace Dj_application.Outil
                 string sanitizedFileName = SanitizeFileName(Path.GetFileNameWithoutExtension(outputFilePath));
 
                 // Supprimer les caractères spéciaux du nom de fichier
-                string safeOutputFileName = Path.Combine(Path.GetDirectoryName(outputFilePath), sanitizedFileName + ".wav");
+                string safeOutputFileName = Path.Combine(Path.GetDirectoryName(outputFilePath), sanitizedFileName + ".mp3");
 
-                WaveFileWriter.CreateWaveFile(safeOutputFileName, reader);
+                using (var writer = new LameMP3FileWriter(safeOutputFileName, reader.WaveFormat, LAMEPreset.VBR_90))
+                {
+                    reader.CopyTo(writer);
+                }
             }
         }
+
         private static string SanitizeFileName(string fileName)
         {
             // Supprimer les caractères non autorisés dans le nom de fichier
@@ -36,7 +41,6 @@ namespace Dj_application.Outil
 
             return sanitizedFileName;
         }
-
-
     }
+
 }

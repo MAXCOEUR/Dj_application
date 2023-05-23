@@ -60,7 +60,6 @@
             dgv_listMusique.RowTemplate.Height = 25;
             dgv_listMusique.Size = new Size(682, 492);
             dgv_listMusique.TabIndex = 1;
-            dgv_listMusique.CellClick += dgv_listMusique_CellClick;
             dgv_listMusique.CellDoubleClick += dgv_listMusique_CellDoubleClick_1;
             dgv_listMusique.CellMouseClick += dgv_listMusique_CellMouseClick;
             dgv_listMusique.KeyDown += dgv_listMusique_KeyDown;

@@ -52,9 +52,9 @@ namespace Dj_application.model
         }
         public void Dispose()
         {
+            isPlaying = false;
             lecteurAudio.Dispose();
             sortieAudio.Dispose();
-            isPlaying = false;
         }
 
         private void OnPositionChanged(double position)
@@ -115,16 +115,9 @@ namespace Dj_application.model
 
         public double getPositionActuelleSecondes()
         {
-            try
-            {
-                long positionActuelleEnOctets = lecteurAudio.Position;
-                return (double)positionActuelleEnOctets / lecteurAudio.WaveFormat.AverageBytesPerSecond;
-            }
-            catch
-            {
-                return 0;
-            }
-            
+            long positionActuelleEnOctets = lecteurAudio.Position;
+            return (double)positionActuelleEnOctets / lecteurAudio.WaveFormat.AverageBytesPerSecond;
+
         }
 
         public double getPositionActuellePourcentage()

@@ -22,8 +22,8 @@ namespace Dj_application.View
         public Window()
         {
             InitializeComponent();
-            tabPage3.Text = "Download Musique Youtube";
-            tabPage2.Text = "Mix Youtube Music";
+            tabPage3.Text = "Download Youtube Music";
+            tabPage2.Text = "Download Youtube";
             tabPage1.Text = "Mix Fichier";
             cb_nbrPiste.SelectedIndex = 0;
             nbrPiste = int.Parse((string)cb_nbrPiste.SelectedItem);

@@ -19,24 +19,38 @@ namespace Dj_application.View.Control
 {
     public partial class PageDownloadYoutubeMusic : UserControl
     {
-
+        bool isMute = true;
         public PageDownloadYoutubeMusic()
         {
             this.Dock = DockStyle.Fill;
             InitializeComponent();
             wv_youtube.Source = new Uri("https://music.youtube.com/");
+            wv_youtube.CoreWebView2InitializationCompleted += Wv_youtube_CoreWebView2InitializationCompleted;
+        }
+
+        private void Wv_youtube_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
+        {
+            if (e.IsSuccess)
+            {
+                // CoreWebView2 est prêt, vous pouvez maintenant accéder à sa propriété et effectuer les opérations nécessaires
+                wv_youtube.CoreWebView2.IsMuted = isMute;
+            }
+            else
+            {
+                // Gérer les erreurs d'initialisation de CoreWebView2
+                MessageBox.Show("Erreur d'initialisation de CoreWebView2.");
+            }
         }
 
 
         private void bt_dowload_Click(object sender, EventArgs e)
         {
             string url = tb_url.Text.ToString();
-            url= url.Trim();
+            url = url.Trim();
             url = url.Split('&')[0];
-            Console.WriteLine(url);
             if (url.ToString().Contains("https://music.youtube.com/watch?") || url.ToString().Contains("https://music.youtube.com/playlist?"))
             {
-                new DownloadYoutubeLinkWav(url);
+                new DownloadYoutubeLink(url);
             }
             else
             {
@@ -52,10 +66,17 @@ namespace Dj_application.View.Control
 
         private void tb_url_MouseClick(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 tb_url.Text = "";
             }
+        }
+
+        private void bt_mute_Click(object sender, EventArgs e)
+        {
+            isMute = !isMute;
+            wv_youtube.CoreWebView2.IsMuted = isMute;
+            bt_mute.BackColor = (isMute) ? Color.Green : Color.Red;
         }
     }
 }
