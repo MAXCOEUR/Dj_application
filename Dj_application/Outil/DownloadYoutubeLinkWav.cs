@@ -40,7 +40,8 @@ namespace Dj_application.Outil
                 Arguments = arguments,
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                WorkingDirectory = Path.GetDirectoryName(".\\musique\\telechargement\\")
             };
 
             string output;
@@ -52,13 +53,13 @@ namespace Dj_application.Outil
                 process.WaitForExit();
             }
 
-            string[] files = Directory.GetFiles(Directory.GetCurrentDirectory());
+            string[] files = Directory.GetFiles(Path.GetDirectoryName(".\\musique\\telechargement\\"));
 
             foreach (string file in files)
             {
                 string extension = Path.GetExtension(file);
 
-                if (extension == ".wav" || extension == ".webpm")
+                if (extension == ".webpm")
                 {
                     // Faites quelque chose avec le fichier correspondant à l'extension spécifiée
                     // Par exemple, vous pouvez stocker le nom du fichier dans une liste ou l'afficher dans la console
@@ -73,7 +74,7 @@ namespace Dj_application.Outil
                     }
                 }
             }
-            
+            win.StopLoading();
         }
 
         private void convertYoutubeWav(string oldPath)
@@ -83,7 +84,6 @@ namespace Dj_application.Outil
             ConvertOutil.ConvertToWav(oldPath, newPath);
             File.Delete(oldPath);
             finDonwloadAndConvertion?.Invoke(this, new Musique(newPath));
-            win.StopLoading();
         }
 
     }

@@ -15,7 +15,6 @@ namespace Dj_application.Outil
     internal class BpmGenerate
     {
         private const string command = ".\\lib\\streaming_extractor_music.exe";
-        private static long id = 0;
         static public event EventHandler<Musique> BpmTrouver;
 
         public void getBpm(Musique musique)
@@ -35,7 +34,7 @@ namespace Dj_application.Outil
         {
             string url = musique.Path;
             string name = System.IO.Path.GetFileNameWithoutExtension(url);
-            string pathBmp = "lib\\" + name + "_"+(id++) + ".bpm";
+            string pathBmp = "lib\\" + name + ".bpm";
             string arguments = "\"" + url + "\" \"" + pathBmp + "\"";
 
             ProcessStartInfo processInfo = new ProcessStartInfo
@@ -55,26 +54,50 @@ namespace Dj_application.Outil
             }
 
             int bpm = 0;
+            string libFolderPath = "lib";
             try
             {
-                // Lecture du contenu du fichier JSON
-                string json = File.ReadAllText(pathBmp);
+                string[] bpmFiles = Directory.GetFiles(libFolderPath, "*.bpm");
 
-                // Création d'un document JSON à partir de la chaîne JSON
-                using (JsonDocument document = JsonDocument.Parse(json))
+                foreach (string bpmFile in bpmFiles)
                 {
-                    // Accès à la propriété "bpm" dans la partie "rhythm" du JSON
-                    JsonElement bpmElement = document.RootElement.GetProperty("rhythm").GetProperty("bpm");
+                    // Lecture du contenu du fichier JSON
+                    string json = File.ReadAllText(bpmFile);
 
-                    // Vérification si la valeur est un nombre
-                    if (bpmElement.ValueKind == JsonValueKind.Number)
+                    // Création d'un document JSON à partir de la chaîne JSON
+                    using (JsonDocument document = JsonDocument.Parse(json))
                     {
-                        bpm = (int)Math.Round(bpmElement.GetDouble());
-                        MusicBpmDatabase.Instance.InsertBpm(url, bpm);
-                    }
-                    else
-                    {
-                        Console.WriteLine("La valeur BPM n'est pas un nombre valide.");
+                        // Accès à la propriété "metadata" dans le JSON
+                        if (document.RootElement.TryGetProperty("metadata", out JsonElement metadataElement))
+                        {
+                            // Accès à la propriété "file_name" dans la partie "metadata" du JSON
+                            if (metadataElement.GetProperty("tags").TryGetProperty("file_name", out JsonElement fileNameElement))
+                            {
+                                // Vérification si la valeur correspond à l'URL donnée
+                                if (fileNameElement.GetString() == url)
+                                {
+                                    // Accès à la propriété "bpm" dans la partie "rhythm" du JSON
+                                    if (document.RootElement.TryGetProperty("rhythm", out JsonElement rhythmElement))
+                                    {
+                                        if (rhythmElement.TryGetProperty("bpm", out JsonElement bpmElement))
+                                        {
+                                            // Vérification si la valeur est un nombre
+                                            if (bpmElement.ValueKind == JsonValueKind.Number)
+                                            {
+                                                bpm = (int)Math.Round(bpmElement.GetDouble());
+                                                MusicBpmDatabase.Instance.InsertBpm(url, bpm);
+                                                File.Delete(bpmFile);
+                                                break; // Sortir de la boucle si la correspondance est trouvée
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine("La valeur BPM n'est pas un nombre valide.");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -86,8 +109,6 @@ namespace Dj_application.Outil
             {
                 Console.WriteLine("Une erreur s'est produite lors de l'analyse du JSON : " + e.Message);
             }
-
-            File.Delete(pathBmp);
             musique.bpm = bpm;
 
         }

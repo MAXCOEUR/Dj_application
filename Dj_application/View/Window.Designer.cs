@@ -1,4 +1,6 @@
-﻿namespace Dj_application.View
+﻿using Dj_application.View.Control;
+
+namespace Dj_application.View
 {
     partial class Window
     {
@@ -35,16 +37,12 @@
             cb_nbrPiste = new ToolStripComboBox();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
-            pageMix1 = new Control.PageMix();
-            tabPage2 = new TabPage();
-            pageMixYoutubeMusic1 = new Control.PageMixYoutubeMusic();
+            pageMix1 = new PageMix();
             tabPage3 = new TabPage();
-            pageDownload1 = new Control.PageDownload();
-            tabPage4 = new TabPage();
+            pageDownload1 = new PageDownloadYoutubeMusic();
             toolStrip1.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
-            tabPage2.SuspendLayout();
             tabPage3.SuspendLayout();
             SuspendLayout();
             // 
@@ -83,9 +81,7 @@
             // tabControl1
             // 
             tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
-            tabControl1.Controls.Add(tabPage4);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 25);
             tabControl1.Name = "tabControl1";
@@ -113,25 +109,6 @@
             pageMix1.Size = new Size(786, 391);
             pageMix1.TabIndex = 0;
             // 
-            // tabPage2
-            // 
-            tabPage2.Controls.Add(pageMixYoutubeMusic1);
-            tabPage2.Location = new Point(4, 24);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(792, 397);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
-            tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // pageMixYoutubeMusic1
-            // 
-            pageMixYoutubeMusic1.Dock = DockStyle.Fill;
-            pageMixYoutubeMusic1.Location = new Point(3, 3);
-            pageMixYoutubeMusic1.Name = "pageMixYoutubeMusic1";
-            pageMixYoutubeMusic1.Size = new Size(786, 391);
-            pageMixYoutubeMusic1.TabIndex = 0;
-            // 
             // tabPage3
             // 
             tabPage3.Controls.Add(pageDownload1);
@@ -151,16 +128,6 @@
             pageDownload1.Size = new Size(786, 391);
             pageDownload1.TabIndex = 0;
             // 
-            // tabPage4
-            // 
-            tabPage4.Location = new Point(4, 24);
-            tabPage4.Name = "tabPage4";
-            tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(792, 397);
-            tabPage4.TabIndex = 3;
-            tabPage4.Text = "tabPage4";
-            tabPage4.UseVisualStyleBackColor = true;
-            // 
             // Window
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -175,7 +142,6 @@
             toolStrip1.PerformLayout();
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
-            tabPage2.ResumeLayout(false);
             tabPage3.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
@@ -186,14 +152,11 @@
         private ToolStrip toolStrip1;
         private TabControl tabControl1;
         private TabPage tabPage1;
-        private TabPage tabPage2;
+        private PageMix pageMix1;
         private ToolStripProgressBar Pb_LoadingDownload;
-        private Control.PageMix pageMix1;
         private ToolStripComboBox cb_nbrPiste;
-        private Control.PageMixYoutubeMusic pageMixYoutubeMusic1;
         private TabPage tabPage3;
-        private Control.PageDownload pageDownload1;
+        private Control.PageDownloadYoutubeMusic pageDownload1;
         private ToolStripButton toolStripButton1;
-        private TabPage tabPage4;
     }
 }

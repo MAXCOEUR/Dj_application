@@ -28,8 +28,15 @@ namespace Dj_application.Outil
             // Supprimer les caractères non autorisés dans le nom de fichier
             string sanitizedFileName = Regex.Replace(fileName, @"[^\w\-. ]", "");
 
+            // Convertir en bytes
+            byte[] bytes = Encoding.Default.GetBytes(sanitizedFileName);
+
+            // Reconvertir en chaîne UTF-8
+            sanitizedFileName = Encoding.UTF8.GetString(bytes);
+
             return sanitizedFileName;
         }
+
 
     }
 }
