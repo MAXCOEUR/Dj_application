@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="USB\**" />
+    <EmbeddedResource Remove="USB\**" />
+    <None Remove="USB\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="LibUsbDotNet" Version="3.0.102-alpha" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1829-prerelease" />
     <PackageReference Include="NAudio" Version="2.1.0" />
@@ -36,13 +42,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="lib\" />
-    <Folder Include="musique\telechargement\" />
-    <Folder Include="USB\" />
-  </ItemGroup>
 
-  <ItemGroup>
+	<ItemGroup>
     <Reference Include="CefSharp">
       <HintPath>bin\x64\Debug\net6.0-windows\CefSharp.dll</HintPath>
     </Reference>
@@ -57,40 +58,9 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="lib\streaming_extractor_music.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\youtube-dl.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\yt-dlp.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="musique\collection\1.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="musique\map_1\1.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="musique\map_1\2.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="musique\map_1\3.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="musique\map_1\map_1.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="musique\map_1_boss\boss1.mp3">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="musique\S3 [8lVyHDyB9lI].webm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="musique\telechargement\S3 [8lVyHDyB9lI].wav">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="xcopy /E /I /D /Y &quot;$(ProjectDir)lib&quot; &quot;$(TargetDir)lib&quot;&#xD;&#xA;xcopy /E /I /D /Y &quot;$(ProjectDir)musique&quot; &quot;$(TargetDir)musique&quot;" />
+	</Target>
 
 </Project>
