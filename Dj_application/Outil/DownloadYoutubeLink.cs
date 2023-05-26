@@ -53,6 +53,11 @@ namespace Dj_application.Outil
                 process.WaitForExit();
             }
 
+            if (!output.Contains("[download]"))
+            {
+                MessageBox.Show("La ou les musiques ne peuvent pas être téléchargées. Essayez sur YouTube classique.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             string[] files = Directory.GetFiles(Path.GetDirectoryName(".\\musique\\telechargement\\"));
 
             foreach (string file in files)
@@ -61,8 +66,6 @@ namespace Dj_application.Outil
 
                 if (extension == ".webpm")
                 {
-                    // Faites quelque chose avec le fichier correspondant à l'extension spécifiée
-                    // Par exemple, vous pouvez stocker le nom du fichier dans une liste ou l'afficher dans la console
                     string fileName = Path.GetFileName(file);
                     try
                     {
