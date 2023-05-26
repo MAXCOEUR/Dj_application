@@ -71,7 +71,7 @@
             treev_arbreFolder.Name = "treev_arbreFolder";
             treev_arbreFolder.Size = new Size(209, 442);
             treev_arbreFolder.TabIndex = 2;
-            treev_arbreFolder.AfterSelect += treev_arbreFolder_AfterSelect;
+            treev_arbreFolder.NodeMouseClick += treev_arbreFolder_NodeMouseClick;
             // 
             // spCon_explorateur
             // 
@@ -139,7 +139,7 @@
             bt_source.TabIndex = 2;
             bt_source.Text = "Source";
             bt_source.UseVisualStyleBackColor = false;
-            bt_source.Click += bt_source_Click;
+            bt_source.MouseDown += bt_source_MouseDown;
             // 
             // bt_download
             // 
@@ -150,7 +150,7 @@
             bt_download.TabIndex = 0;
             bt_download.Text = "telechargement";
             bt_download.UseVisualStyleBackColor = true;
-            bt_download.Click += bt_download_Click;
+            bt_download.MouseDown += bt_download_MouseDown;
             // 
             // Explorateur
             // 

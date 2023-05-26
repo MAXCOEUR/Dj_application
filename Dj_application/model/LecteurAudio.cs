@@ -153,6 +153,7 @@ namespace Dj_application.model
 
             AudioFileReader lecteurAudioTmp = new AudioFileReader(lecteurAudio.FileName);
 
+
             var sampleAggregator = new SampleAggregator(lecteurAudio.WaveFormat.SampleRate);
             var buffer = new float[bufferSize];
             var waveform = new List<float>();
@@ -193,6 +194,7 @@ namespace Dj_application.model
         {
             int sizeZone = view.Height;
             var lineSeries = new LineSeries();
+            
             float[] waveform = GetWaveformSamples(sizeZone);
 
             for (int i = 0; i < waveform.Length; i++)

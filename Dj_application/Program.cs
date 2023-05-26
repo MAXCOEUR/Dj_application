@@ -21,9 +21,35 @@ namespace Dj_application
         [STAThread]
         static void Main()
         {
-
+            initFolder();
             Dj_application.View.Window window = SingletonWindow.getInstance().window;
             window.ShowDialog();
+
+
+
+
+
+            void initFolder()
+            {
+                string musiqueFolderPath = "./musique";
+                string telechargementFolderPath = "./musique/telechargement";
+
+                // Vérifier si le dossier "./musique" existe
+                if (!Directory.Exists(musiqueFolderPath))
+                {
+                    // Créer le dossier "./musique"
+                    Directory.CreateDirectory(musiqueFolderPath);
+                    Console.WriteLine("Le dossier {0} a été créé.", musiqueFolderPath);
+                }
+
+                // Vérifier si le dossier "./musique/telechargement" existe
+                if (!Directory.Exists(telechargementFolderPath))
+                {
+                    // Créer le dossier "./musique/telechargement"
+                    Directory.CreateDirectory(telechargementFolderPath);
+                    Console.WriteLine("Le dossier {0} a été créé.", telechargementFolderPath);
+                }
+            }
         }
     }
 }

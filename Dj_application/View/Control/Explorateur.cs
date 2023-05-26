@@ -17,7 +17,7 @@ namespace Dj_application.View.Control
     {
         private string rootFolder;
         private string currentFolder;
-        private string folderDownload = "musique/telechargement/";
+        private string folderDownload = Path.GetFullPath("musique/telechargement/");
         public event EventHandler<Musique> musiqueSelected;
         public event EventHandler<Tuple<int, Musique>> musiqueSelectedWithPiste;
 
@@ -25,6 +25,11 @@ namespace Dj_application.View.Control
         {
             this.Dock = DockStyle.Fill;
             InitializeComponent();
+
+            System.Windows.Forms.ToolTip toolTip = new System.Windows.Forms.ToolTip();
+            toolTip.SetToolTip(bt_download, "Clic gauche pour ouvrir le dossier ci-dessous, clic droit pour ouvrir le dossier dans l'explorateur.");
+
+            toolTip.SetToolTip(bt_source, "Clic gauche pour choisir le dossier source, clic droit pour ouvrir le dossier source dans l'explorateur.");
 
             dgv_listMusique.Columns.Clear();
 
@@ -170,7 +175,7 @@ namespace Dj_application.View.Control
 
                 // Créer le menu contextuel
                 ContextMenuStrip contextMenu = new ContextMenuStrip();
-                
+
 
                 // Ajouter les options au menu contextuel
                 Window win = SingletonWindow.getInstance().window;
@@ -210,22 +215,6 @@ namespace Dj_application.View.Control
             }
         }
 
-        private void treev_arbreFolder_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            if (e.Node != null)
-            {
-                string nodeFullPath = e.Node.FullPath;
-                string[] pathSegments = nodeFullPath.Split('\\');
-                string[] remainingSegments = pathSegments.Skip(1).ToArray();
-                string selectedFolderPath = string.Join("/", remainingSegments);
-                selectedFolderPath = Path.Combine(rootFolder, selectedFolderPath);
-
-                currentFolder = selectedFolderPath;
-                LoadFiles(selectedFolderPath);
-            }
-
-        }
-
         private void splitContainer1_SizeChanged(object sender, EventArgs e)
         {
             if (spCon_explorateur.Width < 500)
@@ -240,24 +229,6 @@ namespace Dj_application.View.Control
             }
         }
 
-        private void bt_source_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-
-            DialogResult result = folderBrowserDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                string selectedFolder = folderBrowserDialog.SelectedPath;
-                setRootFolder(selectedFolder);
-            }
-        }
-
-        private void bt_download_Click(object sender, EventArgs e)
-        {
-            LoadFiles(folderDownload);
-        }
-
         private void MenuItem_Click(object sender, EventArgs e, Musique musique)
         {
             // Gérer le clic sur une option du menu contextuel
@@ -266,6 +237,66 @@ namespace Dj_application.View.Control
             musiqueSelectedWithPiste?.Invoke(this, new Tuple<int, Musique>(option - 1, musique));
         }
 
-        
+        private void bt_download_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                LoadFiles(folderDownload);
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                Process.Start("explorer.exe", folderDownload);
+            }
+        }
+
+        private void bt_source_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+
+                DialogResult result = folderBrowserDialog.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    string selectedFolder = folderBrowserDialog.SelectedPath;
+                    setRootFolder(selectedFolder);
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                Process.Start("explorer.exe", rootFolder);
+            }
+        }
+
+        private void treev_arbreFolder_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+                if (e.Node != null)
+                {
+                    string nodeFullPath = e.Node.FullPath;
+                    string[] pathSegments = nodeFullPath.Split('\\');
+                    string[] remainingSegments = pathSegments.Skip(1).ToArray();
+                    string selectedFolderPath = string.Join("/", remainingSegments);
+                    selectedFolderPath = Path.Combine(rootFolder, selectedFolderPath);
+
+                    currentFolder = selectedFolderPath;
+                    LoadFiles(selectedFolderPath);
+                }
+            }
+            else if(e.Button == MouseButtons.Right)
+            {
+                if (e.Node != null)
+                {
+                    string nodeFullPath = e.Node.FullPath;
+                    string[] pathSegments = nodeFullPath.Split('\\');
+                    string[] remainingSegments = pathSegments.Skip(1).ToArray();
+                    string selectedFolderPath = string.Join("/", remainingSegments);
+                    selectedFolderPath = Path.Combine(rootFolder, selectedFolderPath);
+                    Process.Start("explorer.exe", selectedFolderPath);
+                }
+            }
+        }
     }
 }

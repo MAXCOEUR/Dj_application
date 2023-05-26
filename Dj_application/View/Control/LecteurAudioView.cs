@@ -1,24 +1,8 @@
 ﻿using Dj_application.model;
 using Dj_application.Outil;
-using NAudio.Gui;
-using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
-using OxyPlot.Series;
-using OxyPlot.WindowsForms;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Dj_application.View.Control
 {
