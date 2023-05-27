@@ -13,6 +13,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Text.Json;
 using System.Reflection.Metadata;
 using System.Security.Policy;
+using System.Windows.Forms;
 
 namespace Dj_application
 {
@@ -21,8 +22,10 @@ namespace Dj_application
         [STAThread]
         static void Main()
         {
+
             initFolder();
             Dj_application.View.Window window = SingletonWindow.getInstance().window;
+
             window.ShowDialog();
 
 

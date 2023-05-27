@@ -1,4 +1,5 @@
-﻿using NAudio.CoreAudioApi;
+﻿using Dj_application.model;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Dj_application.View
         private List<WaveOutCapabilities> sortiesAudio;
         private WaveOutCapabilities casque;
         private WaveOutCapabilities standard;
+        public Font fontDefault = new Font("Arial", 16, FontStyle.Regular);
+        public PalettesCouleur palettesCouleur { get; }
 
         public static ParametresForm Instance
         {
@@ -31,9 +34,17 @@ namespace Dj_application.View
         {
             InitializeComponent();
             this.Text = "Option";
+            palettesCouleur = new PalettesCouleur();
+            setColor();
             Initial();
             SortieAudioParDefaut();
 
+        }
+        private void setColor()
+        {
+            this.BackColor = palettesCouleur.Fond;
+            this.ForeColor = palettesCouleur.Texte;
+            this.Font = fontDefault;
         }
 
         private void Initial()

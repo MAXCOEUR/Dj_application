@@ -1,4 +1,5 @@
 ﻿using Dj_application.model;
+using Dj_application.WinFormHeritage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,10 +24,25 @@ namespace Dj_application.View.Control
         int indexPiste1 = 0;
         int indexPiste2 = 0;
 
+        private ParametresForm parametresForm = ParametresForm.Instance;
+
+        private void setColor()
+        {
+            this.BackColor = parametresForm.palettesCouleur.Fond;
+            tb_mixPiste.BackColor = parametresForm.palettesCouleur.Fond;
+            this.ForeColor = parametresForm.palettesCouleur.Texte;
+            cb_piste1.BackColor = parametresForm.palettesCouleur.Fond;
+            cb_piste1.ForeColor = parametresForm.palettesCouleur.Texte;
+            cb_piste2.BackColor = parametresForm.palettesCouleur.Fond;
+            cb_piste2.ForeColor = parametresForm.palettesCouleur.Texte;
+        }
+
         public PageMix()
         {
             this.Dock = DockStyle.Fill;
             InitializeComponent();
+
+            setColor();
 
             tableLayout.Dock = DockStyle.Fill;
             tableLayout.ColumnCount = 1;

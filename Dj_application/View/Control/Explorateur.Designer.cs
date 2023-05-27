@@ -131,24 +131,26 @@
             // 
             // bt_source
             // 
-            bt_source.BackColor = Color.Lime;
+            bt_source.BackColor = Color.Green;
+            bt_source.BackgroundImage = Resource.source;
+            bt_source.BackgroundImageLayout = ImageLayout.Zoom;
             bt_source.Dock = DockStyle.Fill;
             bt_source.Location = new Point(0, 0);
             bt_source.Name = "bt_source";
             bt_source.Size = new Size(102, 50);
             bt_source.TabIndex = 2;
-            bt_source.Text = "Source";
             bt_source.UseVisualStyleBackColor = false;
             bt_source.MouseDown += bt_source_MouseDown;
             // 
             // bt_download
             // 
+            bt_download.BackgroundImage = Resource.telecharger;
+            bt_download.BackgroundImageLayout = ImageLayout.Zoom;
             bt_download.Dock = DockStyle.Fill;
             bt_download.Location = new Point(0, 0);
             bt_download.Name = "bt_download";
             bt_download.Size = new Size(103, 50);
             bt_download.TabIndex = 0;
-            bt_download.Text = "telechargement";
             bt_download.UseVisualStyleBackColor = true;
             bt_download.MouseDown += bt_download_MouseDown;
             // 

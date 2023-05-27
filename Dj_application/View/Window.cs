@@ -19,17 +19,42 @@ namespace Dj_application.View
         private Thread loadingThread;
         private bool isLoading;
         private int nbrPiste;
-        private int nbrMusicDownload=0;
+        private int nbrMusicDownload = 0;
         static Mutex mutex_nbrMusicDownload = new Mutex();
+        private ParametresForm parametresForm = ParametresForm.Instance;
         public Window()
         {
             InitializeComponent();
+            setColor();
+
             tabPage3.Text = "Download Youtube Music";
+
             tabPage2.Text = "Download Youtube";
+
             tabPage1.Text = "Mix Fichier";
+
             cb_nbrPiste.SelectedIndex = 0;
             nbrPiste = int.Parse((string)cb_nbrPiste.SelectedItem);
 
+            toolStripButton1.BackColor = parametresForm.palettesCouleur.Mise_Evidence;
+        }
+
+        private void setColor()
+        {
+            this.BackColor = parametresForm.palettesCouleur.Fond;
+            this.ForeColor = parametresForm.palettesCouleur.Texte;
+            toolStrip1.BackColor = parametresForm.palettesCouleur.Fond;
+            tabControl1.BackColor = parametresForm.palettesCouleur.Principal;
+            toolStrip1.Margin = new Padding(0);
+            tabPage3.BackColor = parametresForm.palettesCouleur.Principal;
+            tabPage2.BackColor = parametresForm.palettesCouleur.Principal;
+            tabPage1.BackColor = parametresForm.palettesCouleur.Principal;
+            cb_nbrPiste.BackColor = parametresForm.palettesCouleur.Principal;
+            cb_nbrPiste.ForeColor = parametresForm.palettesCouleur.Texte;
+
+            this.Font = parametresForm.fontDefault;
+            toolStripButton1.Font = parametresForm.fontDefault;
+            cb_nbrPiste.Font = parametresForm.fontDefault;
         }
 
         private void Window_FormClosed(object sender, FormClosedEventArgs e)

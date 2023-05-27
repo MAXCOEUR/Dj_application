@@ -1,8 +1,10 @@
 ﻿using Dj_application.model;
 using Dj_application.Outil;
+using Dj_application.WinFormHeritage;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
+using System.Windows.Forms;
 
 namespace Dj_application.View.Control
 {
@@ -22,10 +24,30 @@ namespace Dj_application.View.Control
         private int numeroPiste;
 
         private int volumeMix = 100;
+
+        private ParametresForm parametresForm = ParametresForm.Instance;
+
+        private void setColor()
+        {
+            this.BackColor = parametresForm.palettesCouleur.Fond;
+            tb_volume.BackColor = parametresForm.palettesCouleur.Fond;
+            this.ForeColor = parametresForm.palettesCouleur.Texte;
+
+            pv_graph.BackColor = parametresForm.palettesCouleur.Principal;
+        }
         public LecteurAudioView()
         {
             this.Dock = DockStyle.Fill;
             InitializeComponent();
+
+            setColor();
+
+            bt_play_pause.BackgroundImageLayout = ImageLayout.Zoom;
+            bt_play_pause.BackgroundImage = Resource.bouton_play;
+            bt_casque.BackgroundImageLayout = ImageLayout.Zoom;
+            bt_casque.BackgroundImage = Resource.ecouteurs;
+            bt_stop.BackgroundImageLayout = ImageLayout.Zoom;
+            bt_stop.BackgroundImage = Resource.stop;
 
             animator = new ProgressBarAnimator(pb_loadingBpm);
             numeroPiste = lastCreate++;
@@ -161,7 +183,7 @@ namespace Dj_application.View.Control
             {
                 lecteurAudio.setVolume((tb_volume.Value / 100.0f) * (volumeMix / 100.0f));
             }
-            
+
         }
 
         public void initEventAndLecteurAudio(Musique musique)
@@ -300,14 +322,14 @@ namespace Dj_application.View.Control
             lecteurAudio.Reprendre();
             isPlay = true;
             bt_play_pause.BackColor = Color.Red;
-            bt_play_pause.Text = "Pause";
+            bt_play_pause.BackgroundImage = Resource.bouton_pause;
         }
         private void MettreEnPause()
         {
             lecteurAudio.MettreEnPause();
             isPlay = false;
             bt_play_pause.BackColor = Color.Green;
-            bt_play_pause.Text = "Jouer";
+            bt_play_pause.BackgroundImage = Resource.bouton_play;
         }
 
         private void bt_stop_Click(object sender, EventArgs e)
@@ -365,7 +387,7 @@ namespace Dj_application.View.Control
 
         private void bt_casque_Click(object sender, EventArgs e)
         {
-            if(lecteurAudio==null) return;
+            if (lecteurAudio == null) return;
             ParametresForm pf = ParametresForm.Instance;
             isCasque = !isCasque;
             setvolume();

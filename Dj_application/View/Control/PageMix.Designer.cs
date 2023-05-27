@@ -31,9 +31,9 @@
             splitContainer1 = new SplitContainer();
             splitContainer2 = new SplitContainer();
             tableLayoutPanel1 = new TableLayoutPanel();
-            cb_piste1 = new ComboBox();
-            cb_piste2 = new ComboBox();
-            tb_mixPiste = new TrackBar();
+            tb_mixPiste = new WinFormHeritage.CustomTrackBar();
+            cb_piste1 = new WinFormHeritage.CustomComboBox();
+            cb_piste2 = new WinFormHeritage.CustomComboBox();
             explorateur = new Explorateur();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -83,9 +83,9 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24.1935482F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 51.6129036F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 24.1935482F));
+            tableLayoutPanel1.Controls.Add(tb_mixPiste, 1, 0);
             tableLayoutPanel1.Controls.Add(cb_piste1, 0, 0);
             tableLayoutPanel1.Controls.Add(cb_piste2, 2, 0);
-            tableLayoutPanel1.Controls.Add(tb_mixPiste, 1, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -93,28 +93,6 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Size = new Size(483, 35);
             tableLayoutPanel1.TabIndex = 0;
-            // 
-            // cb_piste1
-            // 
-            cb_piste1.Dock = DockStyle.Fill;
-            cb_piste1.DropDownStyle = ComboBoxStyle.DropDownList;
-            cb_piste1.FormattingEnabled = true;
-            cb_piste1.Location = new Point(3, 3);
-            cb_piste1.Name = "cb_piste1";
-            cb_piste1.Size = new Size(110, 23);
-            cb_piste1.TabIndex = 0;
-            cb_piste1.SelectedIndexChanged += cb_piste1_SelectedIndexChanged;
-            // 
-            // cb_piste2
-            // 
-            cb_piste2.Dock = DockStyle.Fill;
-            cb_piste2.DropDownStyle = ComboBoxStyle.DropDownList;
-            cb_piste2.FormattingEnabled = true;
-            cb_piste2.Location = new Point(368, 3);
-            cb_piste2.Name = "cb_piste2";
-            cb_piste2.Size = new Size(112, 23);
-            cb_piste2.TabIndex = 1;
-            cb_piste2.SelectedIndexChanged += cb_piste2_SelectedIndexChanged;
             // 
             // tb_mixPiste
             // 
@@ -125,12 +103,37 @@
             tb_mixPiste.Name = "tb_mixPiste";
             tb_mixPiste.Size = new Size(243, 29);
             tb_mixPiste.TabIndex = 2;
-            tb_mixPiste.TickStyle = TickStyle.None;
             tb_mixPiste.ValueChanged += tb_mixPiste_ValueChanged;
+            // 
+            // cb_piste1
+            // 
+            cb_piste1.Dock = DockStyle.Fill;
+            cb_piste1.DropDownStyle = ComboBoxStyle.DropDownList;
+            cb_piste1.FormattingEnabled = true;
+            cb_piste1.Location = new Point(0, 0);
+            cb_piste1.Margin = new Padding(0);
+            cb_piste1.Name = "cb_piste1";
+            cb_piste1.Size = new Size(116, 23);
+            cb_piste1.TabIndex = 3;
+            cb_piste1.SelectedIndexChanged += cb_piste1_SelectedIndexChanged;
+            // 
+            // cb_piste2
+            // 
+            cb_piste2.Dock = DockStyle.Fill;
+            cb_piste2.DropDownStyle = ComboBoxStyle.DropDownList;
+            cb_piste2.FormattingEnabled = true;
+            cb_piste2.Location = new Point(365, 0);
+            cb_piste2.Margin = new Padding(0);
+            cb_piste2.Name = "cb_piste2";
+            cb_piste2.Size = new Size(118, 23);
+            cb_piste2.TabIndex = 4;
+            cb_piste2.SelectedIndexChanged += cb_piste2_SelectedIndexChanged;
             // 
             // explorateur
             // 
+            explorateur.BackColor = Color.FromArgb(28, 28, 28);
             explorateur.Dock = DockStyle.Fill;
+            explorateur.ForeColor = Color.White;
             explorateur.Location = new Point(0, 0);
             explorateur.Name = "explorateur";
             explorateur.Size = new Size(273, 442);
@@ -162,8 +165,9 @@
         private Explorateur explorateur;
         private SplitContainer splitContainer2;
         private TableLayoutPanel tableLayoutPanel1;
-        private ComboBox cb_piste1;
-        private ComboBox cb_piste2;
-        private TrackBar tb_mixPiste;
+        private WinFormHeritage.CustomTrackBar tb_mixPiste;
+        private WinFormHeritage.CustomComboBox cb_piste1;
+        private WinFormHeritage.CustomComboBox cb_piste2;
+        //private TrackBar tb_mixPiste;
     }
 }

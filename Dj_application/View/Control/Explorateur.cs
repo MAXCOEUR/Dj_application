@@ -21,10 +21,35 @@ namespace Dj_application.View.Control
         public event EventHandler<Musique> musiqueSelected;
         public event EventHandler<Tuple<int, Musique>> musiqueSelectedWithPiste;
 
+        private ParametresForm parametresForm = ParametresForm.Instance;
+
+        private void setColor()
+        {
+            this.BackColor = parametresForm.palettesCouleur.Fond;
+            this.ForeColor = parametresForm.palettesCouleur.Texte;
+            treev_arbreFolder.BackColor = parametresForm.palettesCouleur.Fond;
+            treev_arbreFolder.ForeColor = parametresForm.palettesCouleur.Texte;
+            dgv_listMusique.DefaultCellStyle.BackColor = parametresForm.palettesCouleur.Fond;
+
+            dgv_listMusique.AdvancedCellBorderStyle.All = DataGridViewAdvancedCellBorderStyle.Single; // Bordures pour toutes les cellules
+            dgv_listMusique.CellBorderStyle = DataGridViewCellBorderStyle.Single; // Bordures pour les cellules individuelles
+            dgv_listMusique.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dgv_listMusique.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
+            dgv_listMusique.GridColor = parametresForm.palettesCouleur.Texte;
+
+            dgv_listMusique.ColumnHeadersDefaultCellStyle.BackColor = parametresForm.palettesCouleur.Fond;
+            dgv_listMusique.ColumnHeadersDefaultCellStyle.ForeColor = parametresForm.palettesCouleur.Texte;
+            dgv_listMusique.RowHeadersDefaultCellStyle.BackColor = parametresForm.palettesCouleur.Fond;
+            dgv_listMusique.RowHeadersDefaultCellStyle.ForeColor = parametresForm.palettesCouleur.Texte;
+
+            bt_download.BackColor = parametresForm.palettesCouleur.Mise_Evidence;
+        }
+
         public Explorateur()
         {
             this.Dock = DockStyle.Fill;
             InitializeComponent();
+            setColor();
 
             System.Windows.Forms.ToolTip toolTip = new System.Windows.Forms.ToolTip();
             toolTip.SetToolTip(bt_download, "Clic gauche pour ouvrir le dossier ci-dessous, clic droit pour ouvrir le dossier dans l'explorateur.");
@@ -271,7 +296,7 @@ namespace Dj_application.View.Control
 
         private void treev_arbreFolder_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 if (e.Node != null)
                 {
@@ -285,7 +310,7 @@ namespace Dj_application.View.Control
                     LoadFiles(selectedFolderPath);
                 }
             }
-            else if(e.Button == MouseButtons.Right)
+            else if (e.Button == MouseButtons.Right)
             {
                 if (e.Node != null)
                 {
