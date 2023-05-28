@@ -31,14 +31,19 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             flowLayoutPanel2 = new FlowLayoutPanel();
             label2 = new Label();
-            cb_audioCasque = new ComboBox();
+            lb_casqueSortie = new Label();
             flowLayoutPanel1 = new FlowLayoutPanel();
             label1 = new Label();
             cb_audioStandard = new ComboBox();
             bt_close = new Button();
+            flowLayoutPanel3 = new FlowLayoutPanel();
+            label3 = new Label();
+            numericUpDown_timeClignotement = new NumericUpDown();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
+            flowLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_timeClignotement).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -47,14 +52,16 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(flowLayoutPanel2, 0, 1);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 0);
-            tableLayoutPanel1.Controls.Add(bt_close, 0, 2);
+            tableLayoutPanel1.Controls.Add(bt_close, 0, 3);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel3, 0, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 5;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 50F));
+            tableLayoutPanel1.RowCount = 6;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(800, 450);
@@ -63,7 +70,7 @@
             // flowLayoutPanel2
             // 
             flowLayoutPanel2.Controls.Add(label2);
-            flowLayoutPanel2.Controls.Add(cb_audioCasque);
+            flowLayoutPanel2.Controls.Add(lb_casqueSortie);
             flowLayoutPanel2.Dock = DockStyle.Fill;
             flowLayoutPanel2.Location = new Point(3, 53);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
@@ -75,18 +82,18 @@
             label2.AutoSize = true;
             label2.Location = new Point(3, 0);
             label2.Name = "label2";
-            label2.Size = new Size(109, 15);
+            label2.Size = new Size(218, 15);
             label2.TabIndex = 0;
-            label2.Text = "sortie audio casque";
+            label2.Text = "sortie audio casque (sortie par default) : ";
             // 
-            // cb_audioCasque
+            // lb_casqueSortie
             // 
-            cb_audioCasque.FormattingEnabled = true;
-            cb_audioCasque.Location = new Point(118, 3);
-            cb_audioCasque.Name = "cb_audioCasque";
-            cb_audioCasque.Size = new Size(289, 23);
-            cb_audioCasque.TabIndex = 1;
-            cb_audioCasque.SelectedIndexChanged += cb_audioCasque_SelectedIndexChanged;
+            lb_casqueSortie.AutoSize = true;
+            lb_casqueSortie.Location = new Point(227, 0);
+            lb_casqueSortie.Name = "lb_casqueSortie";
+            lb_casqueSortie.Size = new Size(96, 15);
+            lb_casqueSortie.TabIndex = 1;
+            lb_casqueSortie.Text = "sortie par default";
             // 
             // flowLayoutPanel1
             // 
@@ -103,16 +110,17 @@
             label1.AutoSize = true;
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
-            label1.Size = new Size(118, 15);
+            label1.Size = new Size(127, 15);
             label1.TabIndex = 0;
-            label1.Text = "sortie audio standard";
+            label1.Text = "sortie audio standard : ";
             // 
             // cb_audioStandard
             // 
+            cb_audioStandard.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cb_audioStandard.FormattingEnabled = true;
-            cb_audioStandard.Location = new Point(127, 3);
+            cb_audioStandard.Location = new Point(136, 3);
             cb_audioStandard.Name = "cb_audioStandard";
-            cb_audioStandard.Size = new Size(280, 23);
+            cb_audioStandard.Size = new Size(500, 23);
             cb_audioStandard.TabIndex = 1;
             cb_audioStandard.SelectedIndexChanged += cb_audioStandard_SelectedIndexChanged;
             // 
@@ -120,13 +128,41 @@
             // 
             bt_close.BackColor = Color.Lime;
             bt_close.Dock = DockStyle.Fill;
-            bt_close.Location = new Point(3, 103);
+            bt_close.Location = new Point(3, 153);
             bt_close.Name = "bt_close";
             bt_close.Size = new Size(794, 44);
             bt_close.TabIndex = 3;
             bt_close.Text = "fermer";
             bt_close.UseVisualStyleBackColor = false;
             bt_close.Click += bt_close_Click;
+            // 
+            // flowLayoutPanel3
+            // 
+            flowLayoutPanel3.Controls.Add(label3);
+            flowLayoutPanel3.Controls.Add(numericUpDown_timeClignotement);
+            flowLayoutPanel3.Dock = DockStyle.Fill;
+            flowLayoutPanel3.Location = new Point(3, 103);
+            flowLayoutPanel3.Name = "flowLayoutPanel3";
+            flowLayoutPanel3.Size = new Size(794, 44);
+            flowLayoutPanel3.TabIndex = 4;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(3, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(259, 15);
+            label3.TabIndex = 0;
+            label3.Text = "clignotement quand il reste moins de (seconde)";
+            // 
+            // numericUpDown_timeClignotement
+            // 
+            numericUpDown_timeClignotement.Location = new Point(268, 3);
+            numericUpDown_timeClignotement.Maximum = new decimal(new int[] { 1000, 0, 0, 0 });
+            numericUpDown_timeClignotement.Name = "numericUpDown_timeClignotement";
+            numericUpDown_timeClignotement.Size = new Size(120, 23);
+            numericUpDown_timeClignotement.TabIndex = 1;
+            numericUpDown_timeClignotement.ValueChanged += numericUpDown_timeClignotement_ValueChanged;
             // 
             // ParametresForm
             // 
@@ -141,6 +177,9 @@
             flowLayoutPanel2.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
+            flowLayoutPanel3.ResumeLayout(false);
+            flowLayoutPanel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_timeClignotement).EndInit();
             ResumeLayout(false);
         }
 
@@ -149,10 +188,13 @@
         private TableLayoutPanel tableLayoutPanel1;
         private FlowLayoutPanel flowLayoutPanel2;
         private Label label2;
-        private ComboBox cb_audioCasque;
         private FlowLayoutPanel flowLayoutPanel1;
         private Label label1;
         private ComboBox cb_audioStandard;
         private Button bt_close;
+        private FlowLayoutPanel flowLayoutPanel3;
+        private Label label3;
+        private NumericUpDown numericUpDown_timeClignotement;
+        private Label lb_casqueSortie;
     }
 }
