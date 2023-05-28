@@ -103,6 +103,7 @@
             tb_mixPiste.Name = "tb_mixPiste";
             tb_mixPiste.Size = new Size(243, 29);
             tb_mixPiste.TabIndex = 2;
+            tb_mixPiste.TickStyle = TickStyle.None;
             tb_mixPiste.ValueChanged += tb_mixPiste_ValueChanged;
             // 
             // cb_piste1
@@ -168,6 +169,5 @@
         private WinFormHeritage.CustomTrackBar tb_mixPiste;
         private WinFormHeritage.CustomComboBox cb_piste1;
         private WinFormHeritage.CustomComboBox cb_piste2;
-        //private TrackBar tb_mixPiste;
     }
 }

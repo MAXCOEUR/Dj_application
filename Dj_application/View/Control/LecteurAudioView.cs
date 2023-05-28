@@ -42,6 +42,8 @@ namespace Dj_application.View.Control
             this.Dock = DockStyle.Fill;
             InitializeComponent();
 
+            tb_volume.setTargetPosition(100);
+
             setColor();
 
             bt_play_pause.BackgroundImageLayout = ImageLayout.Zoom;

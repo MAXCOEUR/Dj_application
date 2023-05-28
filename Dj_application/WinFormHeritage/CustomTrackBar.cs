@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,15 +11,70 @@ namespace Dj_application.WinFormHeritage
 {
     public class CustomTrackBar : TrackBar
     {
+        int vitesse = 1;
         int ThumbWith = 30;
         private Color thumbColor;
         private bool isThumbMoving = false;
         private ParametresForm parametresForm = ParametresForm.Instance;
 
+        private int targetPosition;
+        private Thread thread;
+
         public CustomTrackBar()
         {
+            this.TickStyle = TickStyle.None;
             this.thumbColor = parametresForm.palettesCouleur.Accentuation;
+            targetPosition = 0;
             SetStyle(ControlStyles.UserPaint, true);
+
+            thread = new Thread(threadMethode);
+            thread.Start();
+        }
+
+        public void setTargetPosition(int targetPosition)
+        {
+            this.targetPosition=targetPosition;
+        }
+
+        private void threadMethode()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke((MethodInvoker)delegate
+                        {
+                            changePosition();
+                        });
+                    }
+                    else
+                    {
+                        changePosition();
+                    }
+                }
+                catch
+                {
+                    break;
+                }
+                
+                
+                Thread.Sleep(10);
+            }
+        }
+
+        private void changePosition()
+        {
+            if (targetPosition > Value)
+            {
+                Value += vitesse;
+            }
+            else if (targetPosition < Value)
+            {
+                Value -= vitesse;
+            }
+            Invalidate();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -27,7 +83,7 @@ namespace Dj_application.WinFormHeritage
 
             using (SolidBrush brush = new SolidBrush(parametresForm.palettesCouleur.Mise_Evidence))
             {
-                Rectangle referenceRect = new Rectangle(0, this.ClientRectangle.Height/4, this.ClientRectangle.Width, this.ClientRectangle.Height/2);
+                Rectangle referenceRect = new Rectangle(0, this.ClientRectangle.Height / 4, this.ClientRectangle.Width, this.ClientRectangle.Height/2);
                 e.Graphics.FillRectangle(brush, referenceRect);
             }
 
@@ -37,7 +93,7 @@ namespace Dj_application.WinFormHeritage
                 e.Graphics.FillRectangle(brush, thumbRect);
             }
 
-            
+
         }
 
 
@@ -67,7 +123,7 @@ namespace Dj_application.WinFormHeritage
                 {
                     isThumbMoving = true;
                     Capture = true;
-                    Value = Math.Clamp(newValue, Minimum, Maximum);
+                    targetPosition = Math.Clamp(newValue, Minimum, Maximum);
                     Invalidate();
                 }
             }
@@ -82,6 +138,7 @@ namespace Dj_application.WinFormHeritage
                 int newValue = ValueFromMousePosition(e.Location);
                 if (newValue != Value)
                 {
+                    targetPosition = Math.Clamp(newValue, Minimum, Maximum);
                     Value = Math.Clamp(newValue, Minimum, Maximum);
                     Invalidate();
                 }
@@ -103,4 +160,5 @@ namespace Dj_application.WinFormHeritage
             return (int)(Minimum + thumbPosition * (Maximum - Minimum));
         }
     }
+
 }

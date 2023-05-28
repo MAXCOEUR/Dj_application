@@ -46,15 +46,15 @@
             // 
             // tb_volume
             // 
-            tableLayoutPanel1.SetColumnSpan(tb_volume, 14);
+            tableLayoutPanel1.SetColumnSpan(tb_volume, 12);
             tb_volume.Dock = DockStyle.Fill;
-            tb_volume.Location = new Point(141, 198);
+            tb_volume.Location = new Point(176, 198);
             tb_volume.Maximum = 100;
             tb_volume.Name = "tb_volume";
             tableLayoutPanel1.SetRowSpan(tb_volume, 2);
-            tb_volume.Size = new Size(484, 49);
+            tb_volume.Size = new Size(414, 49);
             tb_volume.TabIndex = 18;
-            tb_volume.Value = 100;
+            tb_volume.TickStyle = TickStyle.None;
             tb_volume.ValueChanged += tb_volume_ValueChanged;
             // 
             // pb_loadingBpm
@@ -223,7 +223,7 @@
             tableLayoutPanel1.Controls.Add(bt_play_pause, 0, 8);
             tableLayoutPanel1.Controls.Add(lb_bpm, 8, 0);
             tableLayoutPanel1.Controls.Add(pb_loadingBpm, 13, 0);
-            tableLayoutPanel1.Controls.Add(tb_volume, 4, 8);
+            tableLayoutPanel1.Controls.Add(tb_volume, 5, 8);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
