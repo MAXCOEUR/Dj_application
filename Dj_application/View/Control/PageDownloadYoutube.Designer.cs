@@ -64,7 +64,7 @@
             bt_mute.BackColor = Color.Lime;
             bt_mute.Location = new Point(100, 3);
             bt_mute.Name = "bt_mute";
-            bt_mute.Size = new Size(93, 23);
+            bt_mute.Size = new Size(94, 23);
             bt_mute.TabIndex = 3;
             bt_mute.Text = "mute";
             bt_mute.UseVisualStyleBackColor = false;

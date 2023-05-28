@@ -19,7 +19,7 @@ namespace Dj_application.View.Control
 {
     public partial class PageDownloadYoutubeMusic : UserControl
     {
-        bool isMute = true;
+        bool isMute = false;
         public PageDownloadYoutubeMusic()
         {
             this.Dock = DockStyle.Fill;

@@ -24,6 +24,7 @@ namespace Dj_application.model
         private VolumeSampleProvider lecteurAudioAvecVolume;
         private Musique musique;
         public event EventHandler<double> PositionChanged;
+        public event EventHandler<bool> under30Second;
         public event EventHandler<bool> FinishGraph;
         public event EventHandler<double> LoadingPositionChanged;
         public event EventHandler<OxyMouseDownEventArgs> clickOnModel;
@@ -31,6 +32,8 @@ namespace Dj_application.model
 
         private Thread threadPlay;
         private bool isPlaying = true;
+
+        private ParametresForm parametresForm = ParametresForm.Instance;
 
         public LecteurAudio(Musique musique)
         {
@@ -85,6 +88,7 @@ namespace Dj_application.model
                         UpdatePosition();
                         lastTime = currentTime;
                     }
+                    under30Second?.Invoke(this, currentTime >= getDureeTotalSeconde() - parametresForm.getTimeClignotement());
 
                     Thread.Sleep(100); // Attendre 100 millisecondes
                 }

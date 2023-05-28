@@ -15,7 +15,7 @@ namespace Dj_application.View.Control
     public partial class PageDownloadYoutube : UserControl
     {
 
-        bool isMute = true;
+        bool isMute = false;
         public PageDownloadYoutube()
         {
             this.Dock = DockStyle.Fill;
@@ -98,7 +98,7 @@ namespace Dj_application.View.Control
         {
             isMute = !isMute;
             wv_youtube.CoreWebView2.IsMuted = isMute;
-            bt_mute.BackColor = (isMute)?Color.Green: Color.Red;
+            bt_mute.BackColor = (isMute) ? Color.Green : Color.Red;
         }
     }
 }

@@ -30,10 +30,10 @@
         {
             Button bt_back;
             splitContainer1 = new SplitContainer();
+            bt_mute = new Button();
             wv_youtube = new Microsoft.Web.WebView2.WinForms.WebView2();
             tb_url = new TextBox();
             bt_dowload = new Button();
-            bt_mute = new Button();
             bt_back = new Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -46,7 +46,7 @@
             // 
             bt_back.Location = new Point(3, 3);
             bt_back.Name = "bt_back";
-            bt_back.Size = new Size(75, 23);
+            bt_back.Size = new Size(94, 23);
             bt_back.TabIndex = 2;
             bt_back.Text = "retour";
             bt_back.UseVisualStyleBackColor = true;
@@ -71,6 +71,17 @@
             splitContainer1.Size = new Size(920, 536);
             splitContainer1.SplitterDistance = 639;
             splitContainer1.TabIndex = 0;
+            // 
+            // bt_mute
+            // 
+            bt_mute.BackColor = Color.Lime;
+            bt_mute.Location = new Point(103, 3);
+            bt_mute.Name = "bt_mute";
+            bt_mute.Size = new Size(94, 23);
+            bt_mute.TabIndex = 4;
+            bt_mute.Text = "mute";
+            bt_mute.UseVisualStyleBackColor = false;
+            bt_mute.Click += bt_mute_Click;
             // 
             // wv_youtube
             // 
@@ -107,17 +118,6 @@
             bt_dowload.Text = "Download";
             bt_dowload.UseVisualStyleBackColor = false;
             bt_dowload.Click += bt_dowload_Click;
-            // 
-            // bt_mute
-            // 
-            bt_mute.BackColor = Color.Lime;
-            bt_mute.Location = new Point(84, 3);
-            bt_mute.Name = "bt_mute";
-            bt_mute.Size = new Size(93, 23);
-            bt_mute.TabIndex = 4;
-            bt_mute.Text = "mute";
-            bt_mute.UseVisualStyleBackColor = false;
-            bt_mute.Click += bt_mute_Click;
             // 
             // PageDownloadYoutubeMusic
             // 

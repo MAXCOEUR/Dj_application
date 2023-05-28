@@ -3,6 +3,7 @@ using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 
@@ -16,6 +17,7 @@ namespace Dj_application.View
         private WaveOutCapabilities standard;
         public Font fontDefault = new Font("Arial", 16, FontStyle.Regular);
         public PalettesCouleur palettesCouleur { get; }
+        private int timeSecondeClignotement;
 
         public static ParametresForm Instance
         {
@@ -37,6 +39,7 @@ namespace Dj_application.View
             palettesCouleur = new PalettesCouleur();
             setColor();
             Initial();
+            numericUpDown_timeClignotement.Value = 30;
             SortieAudioParDefaut();
 
         }
@@ -49,6 +52,7 @@ namespace Dj_application.View
 
         private void Initial()
         {
+            casque = WaveOut.GetCapabilities(0);
             InitializeSortiesAudio();
             PopulateComboBoxes();
         }
@@ -73,21 +77,18 @@ namespace Dj_application.View
 
         private void PopulateComboBoxes()
         {
-            cb_audioCasque.Items.Clear();
             cb_audioStandard.Items.Clear();
             foreach (WaveOutCapabilities sortie in sortiesAudio)
             {
-                cb_audioCasque.Items.Add(sortie.ProductName);
                 cb_audioStandard.Items.Add(sortie.ProductName);
             }
+            lb_casqueSortie.Text = casque.ProductName;
         }
 
         private void SortieAudioParDefaut()
         {
-
             int defaultOut = getSortieAudioParDefaut();
             cb_audioStandard.SelectedIndex = defaultOut;
-            cb_audioCasque.SelectedIndex = defaultOut;
         }
         private int getSortieAudioParDefaut()
         {
@@ -139,6 +140,10 @@ namespace Dj_application.View
             }
             return sortiesAudio[getSortieAudioParDefaut()];
         }
+        public int getTimeClignotement()
+        {
+            return timeSecondeClignotement;
+        }
 
         private void cb_audioStandard_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -146,15 +151,14 @@ namespace Dj_application.View
             standard = sortiesAudio[cb_audioStandard.SelectedIndex];
         }
 
-        private void cb_audioCasque_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Console.WriteLine("cb_audioCasque_SelectedIndexChanged " + cb_audioCasque.SelectedIndex);
-            casque = sortiesAudio[cb_audioCasque.SelectedIndex];
-        }
-
         private void bt_close_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void numericUpDown_timeClignotement_ValueChanged(object sender, EventArgs e)
+        {
+            timeSecondeClignotement = (int)numericUpDown_timeClignotement.Value;
         }
     }
 }

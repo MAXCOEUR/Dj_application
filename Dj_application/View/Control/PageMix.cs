@@ -54,7 +54,6 @@ namespace Dj_application.View.Control
             for (int i = 0; i < maxPiste; i++)
             {
                 LecteurAudioView view = new LecteurAudioView();
-                view.Dock = DockStyle.Fill;
                 lecteurAudioViews.Add(view);
             }
             splitContainer2.Panel2.Controls.Add(tableLayout);

@@ -27,6 +27,8 @@ namespace Dj_application.View.Control
 
         private ParametresForm parametresForm = ParametresForm.Instance;
 
+        DateTime lastClignotantBack = DateTime.Now;
+
         private void setColor()
         {
             this.BackColor = parametresForm.palettesCouleur.Fond;
@@ -195,6 +197,7 @@ namespace Dj_application.View.Control
                 lecteurAudio.LoadingPositionChanged -= lecteurAudio_LoadingPositionChanged;
                 lecteurAudio.clickOnModel -= lecteurAudio_clickOnModel;
                 lecteurAudio.FinLecture -= LecteurAudio_FinLecture;
+                lecteurAudio.under30Second -= LecteurAudio_under30Second;
                 BpmGenerate.BpmTrouver -= bpmGenerate_BpmTrouver;
                 lecteurAudio.Dispose();
             }
@@ -204,6 +207,7 @@ namespace Dj_application.View.Control
             lecteurAudio.LoadingPositionChanged += lecteurAudio_LoadingPositionChanged;
             lecteurAudio.clickOnModel += lecteurAudio_clickOnModel;
             lecteurAudio.FinLecture += LecteurAudio_FinLecture;
+            lecteurAudio.under30Second += LecteurAudio_under30Second;
             BpmGenerate.BpmTrouver += bpmGenerate_BpmTrouver;
 
             ParametresForm pf = ParametresForm.Instance;
@@ -247,6 +251,31 @@ namespace Dj_application.View.Control
         private void StartGeneratingPlotModel()
         {
             lecteurAudio.StartGeneratingPlotModel(pv_graph);
+        }
+
+        private void LecteurAudio_under30Second(object sender, bool b)
+        {
+            if (!b)
+            {
+                pv_graph.BackColor = parametresForm.palettesCouleur.Principal;
+            }
+            else
+            {
+                DateTime currentTime = DateTime.Now;
+                if ((currentTime - lastClignotantBack).TotalSeconds > 0.5)
+                {
+                    if (pv_graph.BackColor == parametresForm.palettesCouleur.Principal)
+                    {
+                        pv_graph.BackColor = parametresForm.palettesCouleur.Accentuation;
+                    }
+                    else
+                    {
+                        pv_graph.BackColor = parametresForm.palettesCouleur.Principal;
+                    }
+                    lastClignotantBack = currentTime;
+                }
+
+            }
         }
         private void LecteurAudio_FinLecture(object sender, EventArgs e)
         {
