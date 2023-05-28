@@ -332,19 +332,27 @@ namespace Dj_application.View.Control
             int etat = (int)(lecteurAudio.getPositionActuellePourcentage() * 1000);
             int currentSec = (int)lecteurAudio.getPositionActuelleSecondes();
 
-            if (pv_graph.InvokeRequired)
+            try
             {
-                pv_graph.Invoke((MethodInvoker)delegate
+                if (pv_graph.InvokeRequired)
+                {
+                    pv_graph.Invoke((MethodInvoker)delegate
+                    {
+                        lb_timeNow.Text = currentSec.ToString();
+                        setMarker(positionMarker, lecteurAudio.getPositionActuellePourcentage());
+                    });
+                }
+                else
                 {
                     lb_timeNow.Text = currentSec.ToString();
                     setMarker(positionMarker, lecteurAudio.getPositionActuellePourcentage());
-                });
+                }
             }
-            else
+            catch
             {
-                lb_timeNow.Text = currentSec.ToString();
-                setMarker(positionMarker, lecteurAudio.getPositionActuellePourcentage());
+
             }
+            
         }
 
         private void Reprendre()

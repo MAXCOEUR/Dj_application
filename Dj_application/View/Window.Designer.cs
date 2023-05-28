@@ -38,7 +38,7 @@ namespace Dj_application.View
             pageDownloadYoutubeMusic1 = new PageDownloadYoutubeMusic();
             tabPage1 = new TabPage();
             pageMix1 = new PageMix();
-            tabControl1 = new WinFormHeritage.CustomTabControl();
+            
             tabPage2 = new TabPage();
             pageDownloadYoutube1 = new PageDownloadYoutube();
             toolStrip1.SuspendLayout();
@@ -185,7 +185,6 @@ namespace Dj_application.View
         private PageDownloadYoutubeMusic pageDownloadYoutubeMusic1;
         private TabPage tabPage1;
         private PageMix pageMix1;
-        private WinFormHeritage.CustomTabControl tabControl1;
         private TabPage tabPage2;
         private PageDownloadYoutube pageDownloadYoutube1;
         private ToolStripComboBox cb_nbrPiste;

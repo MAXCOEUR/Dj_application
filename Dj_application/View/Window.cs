@@ -11,6 +11,7 @@ using Dj_application.model;
 using Dj_application.View;
 using NAudio.Wave.SampleProviders;
 using NAudio.Wave;
+using Dj_application.WinFormHeritage;
 
 namespace Dj_application.View
 {
@@ -22,16 +23,22 @@ namespace Dj_application.View
         private int nbrMusicDownload = 0;
         static Mutex mutex_nbrMusicDownload = new Mutex();
         private ParametresForm parametresForm = ParametresForm.Instance;
+        private List<Image> imageListPerso = new List<Image>();
+        private CustomTabControl tabControl1;
         public Window()
         {
+            imageListPerso.Add(Resource.mixer);
+            imageListPerso.Add(Resource.youtube_music);
+            imageListPerso.Add(Resource.YouTube_Logo);
+            tabControl1 = new CustomTabControl(imageListPerso);
             InitializeComponent();
             setColor();
 
-            tabPage3.Text = "Download Youtube Music";
+            
 
-            tabPage2.Text = "Download Youtube";
-
-            tabPage1.Text = "Mix Fichier";
+            tabPage1.Text = "0000000000000000";
+            tabPage3.Text = "0000000000000000";
+            tabPage2.Text = "0000000000000000";
 
             cb_nbrPiste.SelectedIndex = 0;
             nbrPiste = int.Parse((string)cb_nbrPiste.SelectedItem);

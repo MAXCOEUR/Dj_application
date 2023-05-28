@@ -61,22 +61,24 @@
             // 
             // bt_mute
             // 
-            bt_mute.BackColor = Color.Lime;
+            bt_mute.BackColor = Color.Green;
+            bt_mute.BackgroundImage = Resource.volume;
+            bt_mute.BackgroundImageLayout = ImageLayout.Zoom;
             bt_mute.Location = new Point(100, 3);
             bt_mute.Name = "bt_mute";
             bt_mute.Size = new Size(94, 23);
             bt_mute.TabIndex = 3;
-            bt_mute.Text = "mute";
             bt_mute.UseVisualStyleBackColor = false;
             bt_mute.Click += bt_mute_Click;
             // 
             // bt_back
             // 
+            bt_back.BackgroundImage = Resource.retour;
+            bt_back.BackgroundImageLayout = ImageLayout.Zoom;
             bt_back.Location = new Point(0, 3);
             bt_back.Name = "bt_back";
             bt_back.Size = new Size(94, 23);
             bt_back.TabIndex = 2;
-            bt_back.Text = "retour";
             bt_back.UseVisualStyleBackColor = true;
             bt_back.Click += bt_back_Click;
             // 
@@ -95,12 +97,13 @@
             // bt_download
             // 
             bt_download.BackColor = Color.Lime;
+            bt_download.BackgroundImage = Resource.telecharger;
+            bt_download.BackgroundImageLayout = ImageLayout.Zoom;
             bt_download.Dock = DockStyle.Fill;
             bt_download.Location = new Point(0, 0);
             bt_download.Name = "bt_download";
             bt_download.Size = new Size(229, 476);
             bt_download.TabIndex = 0;
-            bt_download.Text = "telecharger";
             bt_download.UseVisualStyleBackColor = false;
             bt_download.Click += bt_download_Click;
             // 

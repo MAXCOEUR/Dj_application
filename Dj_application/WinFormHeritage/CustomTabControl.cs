@@ -13,9 +13,21 @@ namespace Dj_application.WinFormHeritage
     public class CustomTabControl : TabControl
     {
         private ParametresForm parametresForm = ParametresForm.Instance;
-        public CustomTabControl()
+        private List<Image> imageListPerso = new List<Image>();
+        private Size itemSize = new Size(50, 50);
+        public CustomTabControl(List<Image> imageListPerso)
         {
-            //SetStyle(ControlStyles.UserPaint, true);
+            this.imageListPerso = imageListPerso;
+
+            // Assurez-vous que le style du contrôle est correctement configuré
+            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.DoubleBuffer, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.UserPaint, true);
+
+            // Modifiez la hauteur des onglets dans le style du contrôle
+            ItemSize = itemSize;
+            SetStyle(ControlStyles.UserPaint, true);
 
         }
         protected override void OnPaint(PaintEventArgs e)
@@ -37,11 +49,6 @@ namespace Dj_application.WinFormHeritage
                     {
                         e.Graphics.FillRectangle(brush, tabRect);
                     }
-
-                    using (var brush = new SolidBrush(parametresForm.palettesCouleur.Texte))
-                    {
-                        TextRenderer.DrawText(e.Graphics, TabPages[i].Text, Font, tabRect, brush.Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-                    }
                 }
                 else
                 {
@@ -49,14 +56,19 @@ namespace Dj_application.WinFormHeritage
                     {
                         e.Graphics.FillRectangle(brush, tabRect);
                     }
+                }
 
-                    using (var brush = new SolidBrush(parametresForm.palettesCouleur.Texte))
-                    {
-                        TextRenderer.DrawText(e.Graphics, TabPages[i].Text, Font, tabRect, brush.Color, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-                    }
+                // Dessiner l'image de l'onglet
+                Image image = imageListPerso[i];
+                if (image != null)
+                {
+                    float prop = (float)tabRect.Height/image.Size.Height;
+                    int imageX = (int)((tabRect.Width * i) + ((tabRect.Width / 2) - (image.Width * prop/2)));
+                    e.Graphics.DrawImage(image, imageX, 0,image.Width* prop, tabRect.Height);
                 }
             }
         }
+
 
     }
 }

@@ -20,10 +20,12 @@ namespace Dj_application.View.Control
     public partial class PageDownloadYoutubeMusic : UserControl
     {
         bool isMute = false;
+        private ParametresForm parametresForm = ParametresForm.Instance;
         public PageDownloadYoutubeMusic()
         {
             this.Dock = DockStyle.Fill;
             InitializeComponent();
+            bt_back.BackColor = parametresForm.palettesCouleur.Mise_Evidence;
             wv_youtube.Source = new Uri("https://music.youtube.com/");
             wv_youtube.CoreWebView2InitializationCompleted += Wv_youtube_CoreWebView2InitializationCompleted;
         }
@@ -76,7 +78,8 @@ namespace Dj_application.View.Control
         {
             isMute = !isMute;
             wv_youtube.CoreWebView2.IsMuted = isMute;
-            bt_mute.BackColor = (isMute) ? Color.Green : Color.Red;
+            bt_mute.BackColor = (isMute) ? Color.Red : Color.Green;
+            bt_mute.BackgroundImage = (isMute) ? Resource.volume_mute : Resource.volume;
         }
     }
 }

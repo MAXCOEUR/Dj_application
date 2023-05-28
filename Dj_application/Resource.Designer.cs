@@ -93,6 +93,26 @@ namespace Dj_application {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap mixer {
+            get {
+                object obj = ResourceManager.GetObject("mixer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap retour {
+            get {
+                object obj = ResourceManager.GetObject("retour", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap setting {
             get {
                 object obj = ResourceManager.GetObject("setting", resourceCulture);
@@ -126,6 +146,46 @@ namespace Dj_application {
         public static System.Drawing.Bitmap telecharger {
             get {
                 object obj = ResourceManager.GetObject("telecharger", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap volume {
+            get {
+                object obj = ResourceManager.GetObject("volume", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap volume_mute {
+            get {
+                object obj = ResourceManager.GetObject("volume_mute", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap YouTube_Logo {
+            get {
+                object obj = ResourceManager.GetObject("YouTube_Logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap youtube_music {
+            get {
+                object obj = ResourceManager.GetObject("youtube_music", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

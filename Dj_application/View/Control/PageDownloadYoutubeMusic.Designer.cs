@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Button bt_back;
+            bt_back = new Button();
             splitContainer1 = new SplitContainer();
             bt_mute = new Button();
             wv_youtube = new Microsoft.Web.WebView2.WinForms.WebView2();
@@ -41,16 +41,6 @@
             splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)wv_youtube).BeginInit();
             SuspendLayout();
-            // 
-            // bt_back
-            // 
-            bt_back.Location = new Point(3, 3);
-            bt_back.Name = "bt_back";
-            bt_back.Size = new Size(94, 23);
-            bt_back.TabIndex = 2;
-            bt_back.Text = "retour";
-            bt_back.UseVisualStyleBackColor = true;
-            bt_back.Click += bt_back_Click;
             // 
             // splitContainer1
             // 
@@ -74,14 +64,26 @@
             // 
             // bt_mute
             // 
-            bt_mute.BackColor = Color.Lime;
+            bt_mute.BackColor = Color.Green;
+            bt_mute.BackgroundImage = Resource.volume;
+            bt_mute.BackgroundImageLayout = ImageLayout.Zoom;
             bt_mute.Location = new Point(103, 3);
             bt_mute.Name = "bt_mute";
             bt_mute.Size = new Size(94, 23);
             bt_mute.TabIndex = 4;
-            bt_mute.Text = "mute";
             bt_mute.UseVisualStyleBackColor = false;
             bt_mute.Click += bt_mute_Click;
+            // 
+            // bt_back
+            // 
+            bt_back.BackgroundImage = Resource.retour;
+            bt_back.BackgroundImageLayout = ImageLayout.Zoom;
+            bt_back.Location = new Point(3, 3);
+            bt_back.Name = "bt_back";
+            bt_back.Size = new Size(94, 23);
+            bt_back.TabIndex = 2;
+            bt_back.UseVisualStyleBackColor = true;
+            bt_back.Click += bt_back_Click;
             // 
             // wv_youtube
             // 
@@ -108,6 +110,8 @@
             // bt_dowload
             // 
             bt_dowload.BackColor = Color.Lime;
+            bt_dowload.BackgroundImage = Resource.telecharger;
+            bt_dowload.BackgroundImageLayout = ImageLayout.Zoom;
             bt_dowload.Dock = DockStyle.Fill;
             bt_dowload.Location = new Point(0, 0);
             bt_dowload.Margin = new Padding(50);
@@ -115,7 +119,6 @@
             bt_dowload.Padding = new Padding(5);
             bt_dowload.Size = new Size(277, 536);
             bt_dowload.TabIndex = 0;
-            bt_dowload.Text = "Download";
             bt_dowload.UseVisualStyleBackColor = false;
             bt_dowload.Click += bt_dowload_Click;
             // 
@@ -142,5 +145,6 @@
         private Microsoft.Web.WebView2.WinForms.WebView2 wv_youtube;
         private TextBox tb_url;
         private Button bt_mute;
+        private Button bt_back;
     }
 }
