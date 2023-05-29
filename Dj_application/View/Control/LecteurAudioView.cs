@@ -10,7 +10,10 @@ namespace Dj_application.View.Control
 {
     public partial class LecteurAudioView : UserControl
     {
-        LecteurAudio? lecteurAudio;
+        LecteurAudio lecteurAudio;
+
+        List<Musique> musiques = new List<Musique>();
+
         BpmGenerate bpmGenerate = new BpmGenerate();
         ProgressBarAnimator animator;
         private Boolean isPlay = false;
@@ -22,6 +25,7 @@ namespace Dj_application.View.Control
         private PlotModel model;
         private static int lastCreate = 1;
         private int numeroPiste;
+        private ListeAttente listeAttente;
 
         private int volumeMix = 100;
 
@@ -39,6 +43,7 @@ namespace Dj_application.View.Control
         }
         public LecteurAudioView()
         {
+            listeAttente = new ListeAttente(musiques);
             this.Dock = DockStyle.Fill;
             InitializeComponent();
 
@@ -190,6 +195,11 @@ namespace Dj_application.View.Control
 
         }
 
+        public void addMusiqueFil(Musique musique)
+        {
+            musiques.Add(musique);
+        }
+
         public void initEventAndLecteurAudio(Musique musique)
         {
             if (lecteurAudio != null)
@@ -233,19 +243,21 @@ namespace Dj_application.View.Control
 
                 animator.StartAnimation();
                 bpmGenerate.getBpm(musique);
-
                 lb_name.Text = musique.FileNameWithoutExtension;
                 lb_timeTotal.Text = "/ " + ((int)(lecteurAudio.getDureeTotalSeconde())).ToString();
                 lb_timeNow.Text = ((int)(lecteurAudio.getPositionActuelleSecondes())).ToString();
                 lb_bpm.Text = "BPM : ";
+
                 initGrpahEmpty();
                 setvolume();
+                
 
                 isLoading = true;
                 StartGeneratingPlotModel();
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 MessageBox.Show("Le format n'est pas pris en compte", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
@@ -263,20 +275,7 @@ namespace Dj_application.View.Control
             }
             else
             {
-                DateTime currentTime = DateTime.Now;
-                if ((currentTime - lastClignotantBack).TotalSeconds > 0.5)
-                {
-                    if (pv_graph.BackColor == parametresForm.palettesCouleur.Principal)
-                    {
-                        pv_graph.BackColor = parametresForm.palettesCouleur.Accentuation;
-                    }
-                    else
-                    {
-                        pv_graph.BackColor = parametresForm.palettesCouleur.Principal;
-                    }
-                    lastClignotantBack = currentTime;
-                }
-
+                pv_graph.BackColor = parametresForm.palettesCouleur.Accentuation;
             }
         }
         private void LecteurAudio_FinLecture(object sender, EventArgs e)
@@ -286,12 +285,27 @@ namespace Dj_application.View.Control
                 bt_play_pause.Invoke((MethodInvoker)delegate
                 {
                     MettreEnPause();
+                    try
+                    {
+                        setAudio(musiques[0]);
+                        Reprendre();
+                        musiques.Remove(musiques[0]);
+                    }
+                    catch { }
                 });
             }
             else
             {
                 MettreEnPause();
+                try
+                {
+                    setAudio(musiques[0]);
+                    Reprendre();
+                    musiques.Remove(musiques[0]);
+                }
+                catch { }
             }
+            
 
         }
         private void bpmGenerate_BpmTrouver(object sender, Musique musique)
@@ -352,7 +366,7 @@ namespace Dj_application.View.Control
             {
 
             }
-            
+
         }
 
         private void Reprendre()
@@ -440,6 +454,11 @@ namespace Dj_application.View.Control
                 bt_casque.BackColor = Color.Red;
                 lecteurAudio.setSortieAudio(pf.GetSortieAudioStandard());
             }
+        }
+
+        private void bt_next_Click(object sender, EventArgs e)
+        {
+            listeAttente.ShowDialog();
         }
     }
 }

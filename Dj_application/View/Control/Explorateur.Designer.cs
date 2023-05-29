@@ -36,6 +36,7 @@
             splitContainer1 = new SplitContainer();
             bt_source = new Button();
             bt_download = new Button();
+            tb_search = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgv_listMusique).BeginInit();
             ((System.ComponentModel.ISupportInitialize)spCon_explorateur).BeginInit();
             spCon_explorateur.Panel1.SuspendLayout();
@@ -54,12 +55,12 @@
             dgv_listMusique.AllowUserToAddRows = false;
             dgv_listMusique.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgv_listMusique.Dock = DockStyle.Fill;
-            dgv_listMusique.Location = new Point(0, 0);
+            dgv_listMusique.Location = new Point(0, 23);
             dgv_listMusique.MinimumSize = new Size(100, 0);
             dgv_listMusique.Name = "dgv_listMusique";
             dgv_listMusique.RowTemplate.Height = 25;
-            dgv_listMusique.Size = new Size(682, 492);
-            dgv_listMusique.TabIndex = 1;
+            dgv_listMusique.Size = new Size(682, 469);
+            dgv_listMusique.TabIndex = 2;
             dgv_listMusique.CellDoubleClick += dgv_listMusique_CellDoubleClick_1;
             dgv_listMusique.CellMouseClick += dgv_listMusique_CellMouseClick;
             dgv_listMusique.KeyDown += dgv_listMusique_KeyDown;
@@ -88,6 +89,7 @@
             // spCon_explorateur.Panel2
             // 
             spCon_explorateur.Panel2.Controls.Add(dgv_listMusique);
+            spCon_explorateur.Panel2.Controls.Add(tb_search);
             spCon_explorateur.Panel2MinSize = 150;
             spCon_explorateur.Size = new Size(895, 492);
             spCon_explorateur.SplitterDistance = 209;
@@ -154,6 +156,17 @@
             bt_download.UseVisualStyleBackColor = true;
             bt_download.MouseDown += bt_download_MouseDown;
             // 
+            // tb_search
+            // 
+            tb_search.Dock = DockStyle.Top;
+            tb_search.Location = new Point(0, 0);
+            tb_search.Name = "tb_search";
+            tb_search.Size = new Size(682, 23);
+            tb_search.TabIndex = 3;
+            tb_search.Text = "Recherche";
+            tb_search.Click += tb_search_Click;
+            tb_search.TextChanged += tb_search_TextChanged;
+            // 
             // Explorateur
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -164,6 +177,7 @@
             ((System.ComponentModel.ISupportInitialize)dgv_listMusique).EndInit();
             spCon_explorateur.Panel1.ResumeLayout(false);
             spCon_explorateur.Panel2.ResumeLayout(false);
+            spCon_explorateur.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)spCon_explorateur).EndInit();
             spCon_explorateur.ResumeLayout(false);
             panel2.ResumeLayout(false);
@@ -184,5 +198,6 @@
         private Panel panel1;
         private SplitContainer splitContainer1;
         private Button bt_download;
+        private TextBox tb_search;
     }
 }

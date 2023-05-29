@@ -40,6 +40,7 @@
             lb_nbr_piste = new Label();
             lb_name = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
+            bt_next = new Button();
             ((System.ComponentModel.ISupportInitialize)tb_volume).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -48,7 +49,7 @@
             // 
             tableLayoutPanel1.SetColumnSpan(tb_volume, 12);
             tb_volume.Dock = DockStyle.Fill;
-            tb_volume.Location = new Point(176, 198);
+            tb_volume.Location = new Point(141, 198);
             tb_volume.Maximum = 100;
             tb_volume.Name = "tb_volume";
             tableLayoutPanel1.SetRowSpan(tb_volume, 2);
@@ -143,11 +144,11 @@
             bt_casque.BackColor = Color.Red;
             tableLayoutPanel1.SetColumnSpan(bt_casque, 2);
             bt_casque.Dock = DockStyle.Fill;
-            bt_casque.Location = new Point(628, 195);
+            bt_casque.Location = new Point(558, 195);
             bt_casque.Margin = new Padding(0);
             bt_casque.Name = "bt_casque";
             tableLayoutPanel1.SetRowSpan(bt_casque, 2);
-            bt_casque.Size = new Size(72, 55);
+            bt_casque.Size = new Size(70, 55);
             bt_casque.TabIndex = 8;
             bt_casque.UseVisualStyleBackColor = false;
             bt_casque.Click += bt_casque_Click;
@@ -216,14 +217,15 @@
             tableLayoutPanel1.Controls.Add(lb_name, 0, 0);
             tableLayoutPanel1.Controls.Add(lb_nbr_piste, 17, 0);
             tableLayoutPanel1.Controls.Add(bt_stop, 2, 8);
-            tableLayoutPanel1.Controls.Add(bt_casque, 18, 8);
+            tableLayoutPanel1.Controls.Add(bt_casque, 16, 8);
             tableLayoutPanel1.Controls.Add(lb_timeNow, 1, 7);
             tableLayoutPanel1.Controls.Add(lb_timeTotal, 10, 7);
             tableLayoutPanel1.Controls.Add(pv_graph, 0, 1);
             tableLayoutPanel1.Controls.Add(bt_play_pause, 0, 8);
             tableLayoutPanel1.Controls.Add(lb_bpm, 8, 0);
             tableLayoutPanel1.Controls.Add(pb_loadingBpm, 13, 0);
-            tableLayoutPanel1.Controls.Add(tb_volume, 5, 8);
+            tableLayoutPanel1.Controls.Add(tb_volume, 4, 8);
+            tableLayoutPanel1.Controls.Add(bt_next, 18, 8);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -240,6 +242,20 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 12.5F));
             tableLayoutPanel1.Size = new Size(700, 250);
             tableLayoutPanel1.TabIndex = 0;
+            // 
+            // bt_next
+            // 
+            tableLayoutPanel1.SetColumnSpan(bt_next, 2);
+            bt_next.Dock = DockStyle.Fill;
+            bt_next.Location = new Point(628, 195);
+            bt_next.Margin = new Padding(0);
+            bt_next.Name = "bt_next";
+            tableLayoutPanel1.SetRowSpan(bt_next, 2);
+            bt_next.Size = new Size(72, 55);
+            bt_next.TabIndex = 19;
+            bt_next.Text = "next";
+            bt_next.UseVisualStyleBackColor = true;
+            bt_next.Click += bt_next_Click;
             // 
             // LecteurAudioView
             // 
@@ -270,5 +286,6 @@
         private Button bt_play_pause;
         private Label lb_bpm;
         private ProgressBar pb_loadingBpm;
+        private Button bt_next;
     }
 }

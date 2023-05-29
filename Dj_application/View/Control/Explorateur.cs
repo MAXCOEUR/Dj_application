@@ -323,5 +323,30 @@ namespace Dj_application.View.Control
                 }
             }
         }
+
+        private void tb_search_Click(object sender, EventArgs e)
+        {
+            tb_search.Text = "";
+        }
+
+        private void tb_search_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = tb_search.Text.ToLower(); // Texte de recherche en minuscules
+
+            foreach (DataGridViewRow row in dgv_listMusique.Rows)
+            {
+                string cellValue = row.Cells["NomMusiqueColumn"].Value.ToString().ToLower();
+
+                if (cellValue.Contains(searchText))
+                {
+                    row.Visible = true;
+                }
+                else
+                {
+                    row.Visible = false;
+                }
+            }
+        }
+
     }
 }

@@ -100,6 +100,10 @@ namespace Dj_application.View.Control
             {
                 lecteurAudioViews[pair.Item1].setAudio(pair.Item2);
             }
+            else
+            {
+                lecteurAudioViews[pair.Item1].addMusiqueFil(pair.Item2);
+            }
         }
 
         public void delete()

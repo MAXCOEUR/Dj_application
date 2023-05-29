@@ -22,6 +22,7 @@ namespace Dj_application.model
         private WaveOutEvent sortieAudio;
         private AudioFileReader lecteurAudio;
         private VolumeSampleProvider lecteurAudioAvecVolume;
+
         private Musique musique;
         public event EventHandler<double> PositionChanged;
         public event EventHandler<bool> under30Second;
