@@ -49,10 +49,11 @@ namespace Dj_application.Outil
             {
                 process.StartInfo = processInfo;
                 process.Start();
+                
                 output = process.StandardOutput.ReadToEnd();
                 process.WaitForExit();
             }
-
+            Console.WriteLine(output);
             if (!output.Contains("[download]"))
             {
                 MessageBox.Show("La ou les musiques ne peuvent pas être téléchargées. Essayez sur YouTube classique.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -69,7 +70,7 @@ namespace Dj_application.Outil
                     string fileName = Path.GetFileName(file);
                     try
                     {
-                        convertYoutubeWav(fileName);
+                        convertYoutubeMp3(fileName);
                     }
                     catch
                     {
@@ -80,7 +81,7 @@ namespace Dj_application.Outil
             win.StopLoading();
         }
 
-        private void convertYoutubeWav(string oldPath)
+        private void convertYoutubeMp3(string oldPath)
         {
             string name = Path.GetFileNameWithoutExtension(oldPath);
             string newPath = "musique/telechargement/" + name + ".wav";

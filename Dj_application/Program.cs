@@ -26,6 +26,8 @@ namespace Dj_application
             initFolder();
             Dj_application.View.Window window = SingletonWindow.getInstance().window;
 
+            new FFmpegGestion();
+
             window.ShowDialog();
 
 

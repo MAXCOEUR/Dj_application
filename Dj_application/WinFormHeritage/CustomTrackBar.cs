@@ -66,7 +66,11 @@ namespace Dj_application.WinFormHeritage
 
         private void changePosition()
         {
-            if (targetPosition > Value)
+            if(targetPosition==Value)
+            {
+                return;
+            }
+            else if (targetPosition > Value)
             {
                 Value += vitesse;
             }
