@@ -257,7 +257,7 @@ namespace Dj_application.View.Control
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.Error.WriteLine(ex.ToString());
                 MessageBox.Show("Le format n'est pas pris en compte", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
@@ -343,11 +343,10 @@ namespace Dj_application.View.Control
         private void lecteurAudio_PositionChanged(object sender, double position)
         {
             if (lecteurAudio == null) return;
-            int etat = (int)(lecteurAudio.getPositionActuellePourcentage() * 1000);
-            int currentSec = (int)lecteurAudio.getPositionActuelleSecondes();
-
             try
             {
+                int etat = (int)(lecteurAudio.getPositionActuellePourcentage() * 1000);
+                int currentSec = (int)lecteurAudio.getPositionActuelleSecondes();
                 if (pv_graph.InvokeRequired)
                 {
                     pv_graph.Invoke((MethodInvoker)delegate
@@ -362,10 +361,7 @@ namespace Dj_application.View.Control
                     setMarker(positionMarker, lecteurAudio.getPositionActuellePourcentage());
                 }
             }
-            catch
-            {
-
-            }
+            catch {  }
 
         }
 

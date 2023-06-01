@@ -15,6 +15,7 @@ namespace Dj_application.WinFormHeritage
         int ThumbWith = 30;
         private Color thumbColor;
         private bool isThumbMoving = false;
+        readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
         private ParametresForm parametresForm = ParametresForm.Instance;
 
         private int targetPosition;
@@ -42,6 +43,11 @@ namespace Dj_application.WinFormHeritage
             {
                 try
                 {
+                    if (tokenSource.Token.IsCancellationRequested)
+                    {
+                        break;
+                    }
+
                     if (this.InvokeRequired)
                     {
                         this.Invoke((MethodInvoker)delegate
@@ -54,9 +60,9 @@ namespace Dj_application.WinFormHeritage
                         changePosition();
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    break;
+                    Console.Error.WriteLine(ex.ToString());
                 }
                 
                 
@@ -162,6 +168,19 @@ namespace Dj_application.WinFormHeritage
         {
             float thumbPosition = (float)(mousePosition.X - ThumbWith / 2) / (ClientSize.Width - ThumbWith);
             return (int)(Minimum + thumbPosition * (Maximum - Minimum));
+        }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // Arrêter le thread
+                if (thread != null && thread.IsAlive)
+                {
+                    tokenSource.Cancel();
+                }
+            }
+
+            base.Dispose(disposing);
         }
     }
 

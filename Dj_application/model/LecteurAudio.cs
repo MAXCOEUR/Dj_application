@@ -78,20 +78,28 @@ namespace Dj_application.model
         public void Jouer()
         {
             sortieAudio.Play();
-            Thread threadPlay = new Thread(() =>
+            threadPlay = new Thread(() =>
             {
                 double lastTime = -1;
                 while (isPlaying)
                 {
-                    double currentTime = getPositionActuelleSecondes();
-                    if (currentTime != lastTime)
+                    try
                     {
-                        UpdatePosition();
-                        lastTime = currentTime;
-                    }
-                    under30Second?.Invoke(this, currentTime >= getDureeTotalSeconde() - parametresForm.getTimeClignotement());
+                        double currentTime = getPositionActuelleSecondes();
+                        if (currentTime != lastTime)
+                        {
+                            UpdatePosition();
+                            lastTime = currentTime;
+                        }
+                        under30Second?.Invoke(this, currentTime >= getDureeTotalSeconde() - parametresForm.getTimeClignotement());
 
-                    Thread.Sleep(100); // Attendre 100 millisecondes
+                        Thread.Sleep(100); // Attendre 100 millisecondes
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Error.WriteLine(ex.ToString());
+                    }
+                    
                 }
             });
 
@@ -120,8 +128,16 @@ namespace Dj_application.model
 
         public double getPositionActuelleSecondes()
         {
-            long positionActuelleEnOctets = lecteurAudio.Position;
-            return (double)positionActuelleEnOctets / lecteurAudio.WaveFormat.AverageBytesPerSecond;
+            try
+            {
+                long positionActuelleEnOctets = lecteurAudio.Position;
+                return (double)positionActuelleEnOctets / lecteurAudio.WaveFormat.AverageBytesPerSecond;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.ToString());
+                return 0;
+            }
 
         }
 
