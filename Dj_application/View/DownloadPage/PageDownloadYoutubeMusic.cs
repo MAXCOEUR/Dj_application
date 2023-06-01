@@ -1,5 +1,6 @@
 ﻿using Dj_application.Outil;
 using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.WinForms;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using System;
@@ -45,7 +46,7 @@ namespace Dj_application.View.DownloadPage
         }
 
 
-        private void bt_dowload_Click(object sender, EventArgs e)
+        private async void bt_dowload_Click(object sender, EventArgs e)
         {
             string url = tb_url.Text.ToString();
             url = url.Trim();
@@ -58,7 +59,6 @@ namespace Dj_application.View.DownloadPage
             {
                 MessageBox.Show("ce n'est pas une vidéo ou une playList youtube Music", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
         }
 
         private void bt_back_Click(object sender, EventArgs e)

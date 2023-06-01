@@ -16,6 +16,7 @@ namespace Dj_application.View
         private WaveOutCapabilities casque;
         private WaveOutCapabilities standard;
         public Font fontDefault = new Font("Arial", 16, FontStyle.Regular);
+        private string browser = "";
         public PalettesCouleur palettesCouleur { get; }
         private int timeSecondeClignotement;
 
@@ -35,6 +36,7 @@ namespace Dj_application.View
         private ParametresForm()
         {
             InitializeComponent();
+            cb_BrowserYTMusic.SelectedIndex = 0;
             this.Text = "Option";
             palettesCouleur = new PalettesCouleur();
             setColor();
@@ -159,6 +161,15 @@ namespace Dj_application.View
         private void numericUpDown_timeClignotement_ValueChanged(object sender, EventArgs e)
         {
             timeSecondeClignotement = (int)numericUpDown_timeClignotement.Value;
+        }
+
+        private void cb_BrowserYTMusic_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            browser = cb_BrowserYTMusic.SelectedItem.ToString();
+        }
+        public string getBrowser()
+        {
+            return browser;
         }
     }
 }

@@ -11,6 +11,7 @@
     <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
     <CleanSQLiteInteropFiles>false</CleanSQLiteInteropFiles>
     <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

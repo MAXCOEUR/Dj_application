@@ -18,6 +18,8 @@ namespace Dj_application.Outil
         string name;
         Window win;
 
+        ParametresForm parametresForm = ParametresForm.Instance;
+
         private const string command = ".\\lib\\yt-dlp.exe";
 
         public DownloadYoutubeLink(string url)
@@ -33,7 +35,12 @@ namespace Dj_application.Outil
 
         private void downloadYoutubeLink()
         {
-            string arguments = "-x --audio-format mp3 " + url;
+            string arguments = "-x --audio-format mp3";
+
+            arguments += " --cookies-from-browser "+parametresForm.getBrowser().ToLower();
+
+            arguments += " " + url;
+
             ProcessStartInfo processInfo = new ProcessStartInfo
             {
                 FileName = command,
@@ -56,6 +63,18 @@ namespace Dj_application.Outil
             Console.WriteLine(output);
             if (!output.Contains("[download]"))
             {
+                if (parametresForm.getBrowser().ToLower() == "chrome")
+                {
+                    Process.Start("cmd", $"/c start chrome https://music.youtube.com/");
+                }
+                else if (parametresForm.getBrowser().ToLower() == "firefox")
+                {
+                    Process.Start("cmd", $"/c start firefox https://music.youtube.com/");
+                }
+                else
+                {
+                    Process.Start("cmd", $"/c start msedge https://music.youtube.com/");
+                }
                 MessageBox.Show("La ou les musiques ne peuvent pas être téléchargées. Essayez sur YouTube classique.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 

@@ -39,11 +39,15 @@
             flowLayoutPanel3 = new FlowLayoutPanel();
             label3 = new Label();
             numericUpDown_timeClignotement = new NumericUpDown();
+            flowLayoutPanel4 = new FlowLayoutPanel();
+            label4 = new Label();
+            cb_BrowserYTMusic = new ComboBox();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_timeClignotement).BeginInit();
+            flowLayoutPanel4.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -52,18 +56,18 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(flowLayoutPanel2, 0, 1);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 0);
-            tableLayoutPanel1.Controls.Add(bt_close, 0, 3);
+            tableLayoutPanel1.Controls.Add(bt_close, 0, 4);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel3, 0, 2);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel4, 0, 3);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 6;
+            tableLayoutPanel1.RowCount = 7;
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(800, 450);
@@ -122,7 +126,7 @@
             cb_audioStandard.FormattingEnabled = true;
             cb_audioStandard.Location = new Point(136, 3);
             cb_audioStandard.Name = "cb_audioStandard";
-            cb_audioStandard.Size = new Size(500, 23);
+            cb_audioStandard.Size = new Size(374, 23);
             cb_audioStandard.TabIndex = 1;
             cb_audioStandard.SelectedIndexChanged += cb_audioStandard_SelectedIndexChanged;
             // 
@@ -130,7 +134,7 @@
             // 
             bt_close.BackColor = Color.Lime;
             bt_close.Dock = DockStyle.Fill;
-            bt_close.Location = new Point(3, 153);
+            bt_close.Location = new Point(3, 259);
             bt_close.Name = "bt_close";
             bt_close.Size = new Size(794, 44);
             bt_close.TabIndex = 3;
@@ -166,6 +170,37 @@
             numericUpDown_timeClignotement.TabIndex = 1;
             numericUpDown_timeClignotement.ValueChanged += numericUpDown_timeClignotement_ValueChanged;
             // 
+            // flowLayoutPanel4
+            // 
+            flowLayoutPanel4.Controls.Add(label4);
+            flowLayoutPanel4.Controls.Add(cb_BrowserYTMusic);
+            flowLayoutPanel4.Dock = DockStyle.Fill;
+            flowLayoutPanel4.Location = new Point(3, 153);
+            flowLayoutPanel4.Name = "flowLayoutPanel4";
+            flowLayoutPanel4.Size = new Size(794, 100);
+            flowLayoutPanel4.TabIndex = 5;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(3, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(254, 15);
+            label4.TabIndex = 0;
+            label4.Text = "choix navigateur ou connnecter youtubeMusic";
+            // 
+            // cb_BrowserYTMusic
+            // 
+            cb_BrowserYTMusic.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cb_BrowserYTMusic.DropDownStyle = ComboBoxStyle.DropDownList;
+            cb_BrowserYTMusic.FormattingEnabled = true;
+            cb_BrowserYTMusic.Items.AddRange(new object[] { "Chrome", "Edge", "FireFox" });
+            cb_BrowserYTMusic.Location = new Point(263, 3);
+            cb_BrowserYTMusic.Name = "cb_BrowserYTMusic";
+            cb_BrowserYTMusic.Size = new Size(247, 23);
+            cb_BrowserYTMusic.TabIndex = 1;
+            cb_BrowserYTMusic.SelectedIndexChanged += cb_BrowserYTMusic_SelectedIndexChanged;
+            // 
             // ParametresForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -182,6 +217,8 @@
             flowLayoutPanel3.ResumeLayout(false);
             flowLayoutPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_timeClignotement).EndInit();
+            flowLayoutPanel4.ResumeLayout(false);
+            flowLayoutPanel4.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -198,5 +235,8 @@
         private Label label3;
         private NumericUpDown numericUpDown_timeClignotement;
         private Label lb_casqueSortie;
+        private FlowLayoutPanel flowLayoutPanel4;
+        private Label label4;
+        private ComboBox cb_BrowserYTMusic;
     }
 }

@@ -39,20 +39,25 @@ namespace Dj_application.Outil
                 CreateNoWindow = true
             };
 
-            using (Process process = new Process())
+            try
             {
-                process.StartInfo = startInfo;
-                process.Start();
-                process.BeginErrorReadLine();
-                process.ErrorDataReceived += (sender, e) => Console.WriteLine(e.Data);
-                process.WaitForExit();
-                
-
-                if (process.ExitCode == 0)
+                using (Process process = new Process())
                 {
-                    return true;
+                    process.StartInfo = startInfo;
+                    process.Start();
+                    process.BeginErrorReadLine();
+                    process.ErrorDataReceived += (sender, e) => Console.WriteLine(e.Data);
+                    process.WaitForExit();
+
+
+                    if (process.ExitCode == 0)
+                    {
+                        return true;
+                    }
                 }
             }
+            catch { }
+            
 
             // Vérifier si le fichier "ffmpeg.exe" existe dans le répertoire ".spotdl" de l'utilisateur
             string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
