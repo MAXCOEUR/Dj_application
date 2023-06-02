@@ -20,7 +20,7 @@ namespace Dj_application.Outil
 
         ParametresForm parametresForm = ParametresForm.Instance;
 
-        private const string command = ".\\lib\\spotdl.exe";
+        private const string command = ".\\lib\\tmpSpotify\\spotdl.exe";
 
         public DownloadSpotifyLink(string url)
         {
@@ -42,7 +42,7 @@ namespace Dj_application.Outil
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                WorkingDirectory = Path.GetDirectoryName(".\\lib")
+                WorkingDirectory = Path.GetFullPath(".\\lib\\tmpSpotify")
             };
 
             string output;
@@ -59,44 +59,23 @@ namespace Dj_application.Outil
                 MessageBox.Show("La ou les musiques n'a pas pu etre telecharger", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            string target = Path.GetFullPath(Path.GetDirectoryName(".\\musique\\telechargement\\"));
-            string[] filesLib = Directory.GetFiles(Path.GetDirectoryName(".\\"));
+            string target = Path.GetFullPath(".\\musique\\telechargement\\");
+            string[] filesLib = Directory.GetFiles(Path.GetFullPath(".\\lib\\tmpSpotify"));
 
             foreach (string file in filesLib)
             {
-                string extension = Path.GetExtension(file);
-
-                if (extension == ".webpm")
-                {
-                    string fileName = Path.GetFileName(file);
-                    try
-                    {
-                        convertYoutubeMp3(fileName);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("le lien n'est pas bon", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                }else if (extension == ".mp3")
+                string extention = Path.GetExtension(file);
+                if (extention == ".mp3")
                 {
                     try
                     {
-                        File.Move(Path.GetFullPath(file), target + "/" + file);
+                        File.Move(file, target + "/" + Path.GetFileName(file));
                     }
-                    catch(Exception ex){  }
+                    catch (Exception ex) { }
                 }
             }
             win.StopLoading();
 
-        }
-
-        private void convertYoutubeMp3(string oldPath)
-        {
-            string name = Path.GetFileNameWithoutExtension(oldPath);
-            string newPath = "musique/telechargement/" + name + ".mp3";
-            ConvertOutil.ConvertToMp3(oldPath, newPath);
-            File.Delete(oldPath);
-            finDonwloadAndConvertion?.Invoke(this, new Musique(newPath));
         }
     }
 }

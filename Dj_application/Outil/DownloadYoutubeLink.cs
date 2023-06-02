@@ -20,7 +20,7 @@ namespace Dj_application.Outil
 
         ParametresForm parametresForm = ParametresForm.Instance;
 
-        private const string command = ".\\lib\\yt-dlp.exe";
+        private const string command = ".\\lib\\tmpYoutube\\yt-dlp.exe";
 
         public DownloadYoutubeLink(string url)
         {
@@ -35,7 +35,16 @@ namespace Dj_application.Outil
 
         private void downloadYoutubeLink()
         {
+            string userDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            string spotdlDirectory = Path.Combine(userDirectory, ".spotdl");
+            string ffmpegPath = Path.Combine(spotdlDirectory, "ffmpeg.exe");
+
             string arguments = "-x --audio-format mp3";
+
+            if (File.Exists(ffmpegPath))
+            {
+                arguments += " --ffmpeg-location \"" + ffmpegPath + "\"";
+            }
 
             arguments += " --cookies-from-browser "+parametresForm.getBrowser().ToLower();
 
@@ -48,7 +57,7 @@ namespace Dj_application.Outil
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true,
-                WorkingDirectory = Path.GetDirectoryName(".\\musique\\telechargement\\")
+                WorkingDirectory = Path.GetFullPath(".\\lib\\tmpYoutube")
             };
 
             string output;
@@ -77,36 +86,21 @@ namespace Dj_application.Outil
                 }
                 MessageBox.Show("La ou les musiques ne peuvent pas être téléchargées. Essayez sur YouTube classique.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-            string[] files = Directory.GetFiles(Path.GetDirectoryName(".\\musique\\telechargement\\"));
-
+            string[] files = Directory.GetFiles(Path.GetFullPath(".\\lib\\tmpYoutube\\"));
+            string target = Path.GetFullPath(".\\musique\\telechargement\\");
             foreach (string file in files)
             {
-                string extension = Path.GetExtension(file);
-
-                if (extension == ".webpm")
+                string extention = Path.GetExtension(file);
+                if (extention == ".mp3")
                 {
-                    string fileName = Path.GetFileName(file);
                     try
                     {
-                        convertYoutubeMp3(fileName);
+                        File.Move(file, target + "/" + Path.GetFileName(file));
                     }
-                    catch
-                    {
-                        MessageBox.Show("le lien n'est pas bon", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
+                    catch (Exception ex) { }
                 }
             }
             win.StopLoading();
-        }
-
-        private void convertYoutubeMp3(string oldPath)
-        {
-            string name = Path.GetFileNameWithoutExtension(oldPath);
-            string newPath = "musique/telechargement/" + name + ".wav";
-            ConvertOutil.ConvertToMp3(oldPath, newPath);
-            File.Delete(oldPath);
-            finDonwloadAndConvertion?.Invoke(this, new Musique(newPath));
         }
 
     }

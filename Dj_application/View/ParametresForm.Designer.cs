@@ -194,7 +194,7 @@
             cb_BrowserYTMusic.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             cb_BrowserYTMusic.DropDownStyle = ComboBoxStyle.DropDownList;
             cb_BrowserYTMusic.FormattingEnabled = true;
-            cb_BrowserYTMusic.Items.AddRange(new object[] { "Chrome", "Edge", "FireFox" });
+            cb_BrowserYTMusic.Items.AddRange(new object[] { "Edge", "Chrome", "FireFox" });
             cb_BrowserYTMusic.Location = new Point(263, 3);
             cb_BrowserYTMusic.Name = "cb_BrowserYTMusic";
             cb_BrowserYTMusic.Size = new Size(247, 23);
