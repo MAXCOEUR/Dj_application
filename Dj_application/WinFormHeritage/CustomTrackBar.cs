@@ -13,6 +13,7 @@ namespace Dj_application.WinFormHeritage
     {
         int vitesse = 1;
         int ThumbWith = 30;
+        int defaultPos = 0;
         private Color thumbColor;
         private bool isThumbMoving = false;
         readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -25,13 +26,16 @@ namespace Dj_application.WinFormHeritage
         {
             this.TickStyle = TickStyle.None;
             this.thumbColor = parametresForm.palettesCouleur.Accentuation;
-            targetPosition = 0;
+            targetPosition = defaultPos;
             SetStyle(ControlStyles.UserPaint, true);
 
             thread = new Thread(threadMethode);
             thread.Start();
         }
-
+        public void setDefaultPos(int def)
+        {
+            defaultPos = def;
+        }
         public void setTargetPosition(int targetPosition)
         {
             this.targetPosition=targetPosition;
@@ -115,53 +119,64 @@ namespace Dj_application.WinFormHeritage
 
             return new Rectangle(thumbX, 0, ThumbWith, this.ClientRectangle.Height);
         }
-
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            base.OnMouseDown(e);
-
-            Rectangle thumbRect = GetThumbRect();
-            if (thumbRect.Contains(e.Location))
+            if(e.Button == MouseButtons.Left)
             {
-                isThumbMoving = true;
-                Capture = true;
-            }
-            else
-            {
-                int newValue = ValueFromMousePosition(e.Location);
-                if (newValue != Value)
+                base.OnMouseDown(e);
+                Rectangle thumbRect = GetThumbRect();
+                if (thumbRect.Contains(e.Location))
                 {
                     isThumbMoving = true;
                     Capture = true;
-                    targetPosition = Math.Clamp(newValue, Minimum, Maximum);
-                    Invalidate();
                 }
+                else
+                {
+                    int newValue = ValueFromMousePosition(e.Location);
+                    if (newValue != Value)
+                    {
+                        isThumbMoving = true;
+                        Capture = true;
+                        targetPosition = Math.Clamp(newValue, Minimum, Maximum);
+                        Invalidate();
+                    }
+                }
+            }
+            else if(e.Button == MouseButtons.Right)
+            {
+                targetPosition = defaultPos;
+                Invalidate();
             }
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            base.OnMouseMove(e);
-
-            if (isThumbMoving)
+            if(e.Button == MouseButtons.Left)
             {
-                int newValue = ValueFromMousePosition(e.Location);
-                if (newValue != Value)
+                base.OnMouseMove(e);
+
+                if (isThumbMoving)
                 {
-                    targetPosition = Math.Clamp(newValue, Minimum, Maximum);
-                    Value = Math.Clamp(newValue, Minimum, Maximum);
-                    Invalidate();
+                    int newValue = ValueFromMousePosition(e.Location);
+                    if (newValue != Value)
+                    {
+                        targetPosition = Math.Clamp(newValue, Minimum, Maximum);
+                        Value = Math.Clamp(newValue, Minimum, Maximum);
+                        Invalidate();
+                    }
                 }
             }
         }
 
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            base.OnMouseUp(e);
-
-            isThumbMoving = false;
-            Capture = false;
-            Invalidate();
+            if(e.Button == MouseButtons.Left)
+            {
+                base.OnMouseUp(e);
+                isThumbMoving = false;
+                Capture = false;
+                Invalidate();
+            }
         }
 
         private int ValueFromMousePosition(Point mousePosition)

@@ -4,6 +4,7 @@ using Dj_application.WinFormHeritage;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace Dj_application.View.Control
@@ -19,6 +20,8 @@ namespace Dj_application.View.Control
         private Boolean isPlay = false;
         private bool isLoading = false;
         private bool isCasque = false;
+        private bool isFlash = false;
+        private System.Timers.Timer timer;
         private LineAnnotation positionMarker;
         private LineAnnotation loadingMarker;
         private RectangleAnnotation progressBarAnnotation;
@@ -48,6 +51,7 @@ namespace Dj_application.View.Control
             InitializeComponent();
 
             tb_volume.setTargetPosition(100);
+            tb_volume.setDefaultPos(100);
 
             setColor();
 
@@ -198,6 +202,10 @@ namespace Dj_application.View.Control
         public void addMusiqueFil(Musique musique)
         {
             musiques.Add(musique);
+            if (musiques.Count > 0)
+            {
+                bt_next.Enabled = true;
+            }
         }
 
         public void initEventAndLecteurAudio(Musique musique)
@@ -239,6 +247,15 @@ namespace Dj_application.View.Control
         {
             try
             {
+                if (musiques.Count > 1)
+                {
+                    bt_next.Enabled = true;
+                }
+                else
+                {
+                    bt_next.Enabled = false;
+                }
+
                 initEventAndLecteurAudio(musique);
 
                 animator.StartAnimation();
@@ -250,7 +267,7 @@ namespace Dj_application.View.Control
 
                 initGrpahEmpty();
                 setvolume();
-                
+
 
                 isLoading = true;
                 StartGeneratingPlotModel();
@@ -269,7 +286,40 @@ namespace Dj_application.View.Control
 
         private void LecteurAudio_under30Second(object sender, bool b)
         {
-            if (!b)
+            if (isFlash != b)
+            {
+                isFlash = b;
+                if (isFlash)
+                {
+                    startFlash();
+                }
+                else
+                {
+                    stopFlash();
+                }
+            }
+        }
+
+        private void startFlash()
+        {
+            timer = new System.Timers.Timer();
+            timer.Interval = 1000;
+            timer.Elapsed += TimerElapsed;
+            timer.Start();
+            pv_graph.BackColor = parametresForm.palettesCouleur.Accentuation;
+        }
+        private void stopFlash()
+        {
+            if (timer != null)
+            {
+                timer.Stop();
+                timer.Dispose();
+            }
+            pv_graph.BackColor = parametresForm.palettesCouleur.Principal;
+        }
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (pv_graph.BackColor == parametresForm.palettesCouleur.Accentuation)
             {
                 pv_graph.BackColor = parametresForm.palettesCouleur.Principal;
             }
@@ -305,7 +355,7 @@ namespace Dj_application.View.Control
                 }
                 catch { }
             }
-            
+
 
         }
         private void bpmGenerate_BpmTrouver(object sender, Musique musique)
@@ -361,24 +411,34 @@ namespace Dj_application.View.Control
                     setMarker(positionMarker, lecteurAudio.getPositionActuellePourcentage());
                 }
             }
-            catch {  }
+            catch { }
 
         }
 
         private void Reprendre()
         {
-            if (lecteurAudio == null) return;
-            lecteurAudio.Reprendre();
-            isPlay = true;
-            bt_play_pause.BackColor = Color.Red;
-            bt_play_pause.BackgroundImage = Resource.bouton_pause;
+            try
+            {
+                if (lecteurAudio == null) return;
+                lecteurAudio.Reprendre();
+                isPlay = true;
+                bt_play_pause.BackColor = Color.Red;
+                bt_play_pause.BackgroundImage = Resource.bouton_pause;
+            }
+            catch { }
+
         }
         private void MettreEnPause()
         {
-            lecteurAudio.MettreEnPause();
-            isPlay = false;
-            bt_play_pause.BackColor = Color.Green;
-            bt_play_pause.BackgroundImage = Resource.bouton_play;
+            try
+            {
+                lecteurAudio.MettreEnPause();
+                isPlay = false;
+                bt_play_pause.BackColor = Color.Green;
+                bt_play_pause.BackgroundImage = Resource.bouton_play;
+            }
+            catch { }
+
         }
 
         private void bt_stop_Click(object sender, EventArgs e)

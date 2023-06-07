@@ -32,7 +32,11 @@ namespace Dj_application.model
         public event EventHandler FinLecture;
 
         private Thread threadPlay;
-        private bool isPlaying = true;
+        private bool isAvencementPlaying = true;
+        private bool isPlaying = false;
+
+        private object lockObject = new object();
+
 
         private ParametresForm parametresForm = ParametresForm.Instance;
 
@@ -56,7 +60,7 @@ namespace Dj_application.model
         }
         public void Dispose()
         {
-            isPlaying = false;
+            isAvencementPlaying = false;
             lecteurAudio.Dispose();
             sortieAudio.Dispose();
         }
@@ -78,10 +82,11 @@ namespace Dj_application.model
         public void Jouer()
         {
             sortieAudio.Play();
+            isPlaying = true;
             threadPlay = new Thread(() =>
             {
                 double lastTime = -1;
-                while (isPlaying)
+                while (isAvencementPlaying)
                 {
                     try
                     {
@@ -108,11 +113,13 @@ namespace Dj_application.model
 
         public void MettreEnPause()
         {
+            isPlaying=false;
             sortieAudio.Pause();
         }
 
         public void Reprendre()
         {
+            isPlaying = true;
             sortieAudio.Play();
         }
 
@@ -148,7 +155,19 @@ namespace Dj_application.model
 
         public void setVolume(float volume)
         {
-            lecteurAudioAvecVolume.Volume = volume;
+            Thread thread = new Thread(() =>
+            {
+                lock (lockObject)
+                {
+                    lecteurAudioAvecVolume.Volume = volume;
+                    if (!isPlaying)
+                    {
+                        sortieAudio.Stop();
+                        sortieAudio.Init(lecteurAudioAvecVolume);
+                    }
+                }
+            });
+            thread.Start();
         }
         public Musique getMusique()
         {

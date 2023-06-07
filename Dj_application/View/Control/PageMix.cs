@@ -183,6 +183,7 @@ namespace Dj_application.View.Control
             }
             tb_mixPiste_ValueChanged(this, new EventArgs());
         }
+
     }
 
 

@@ -247,6 +247,7 @@
             // 
             tableLayoutPanel1.SetColumnSpan(bt_next, 2);
             bt_next.Dock = DockStyle.Fill;
+            bt_next.Enabled = false;
             bt_next.Location = new Point(628, 195);
             bt_next.Margin = new Padding(0);
             bt_next.Name = "bt_next";
