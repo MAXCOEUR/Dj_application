@@ -12,6 +12,7 @@ namespace Dj_application.View.Control
     public partial class LecteurAudioView : UserControl
     {
         LecteurAudio lecteurAudio;
+        LecteurAudio oldLecteurAudio;
 
         List<Musique> musiques = new List<Musique>();
 
@@ -219,7 +220,11 @@ namespace Dj_application.View.Control
                 lecteurAudio.FinLecture -= LecteurAudio_FinLecture;
                 lecteurAudio.under30Second -= LecteurAudio_under30Second;
                 BpmGenerate.BpmTrouver -= bpmGenerate_BpmTrouver;
-                lecteurAudio.Dispose();
+                if (oldLecteurAudio != null)
+                {
+                    oldLecteurAudio.Dispose();
+                }
+                oldLecteurAudio = lecteurAudio;
             }
             lecteurAudio = new LecteurAudio(musique);
             lecteurAudio.PositionChanged += lecteurAudio_PositionChanged;
@@ -330,11 +335,10 @@ namespace Dj_application.View.Control
         }
         private void LecteurAudio_FinLecture(object sender, EventArgs e)
         {
-            if (bt_play_pause.InvokeRequired)
+            if (InvokeRequired)
             {
-                bt_play_pause.Invoke((MethodInvoker)delegate
+                Invoke((MethodInvoker)delegate
                 {
-                    MettreEnPause();
                     try
                     {
                         setAudio(musiques[0]);
@@ -346,7 +350,6 @@ namespace Dj_application.View.Control
             }
             else
             {
-                MettreEnPause();
                 try
                 {
                     setAudio(musiques[0]);

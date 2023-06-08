@@ -42,12 +42,17 @@
             flowLayoutPanel4 = new FlowLayoutPanel();
             label4 = new Label();
             cb_BrowserYTMusic = new ComboBox();
+            flowLayoutPanel5 = new FlowLayoutPanel();
+            label5 = new Label();
+            numericUpDown_timelunchMusic = new NumericUpDown();
             tableLayoutPanel1.SuspendLayout();
             flowLayoutPanel2.SuspendLayout();
             flowLayoutPanel1.SuspendLayout();
             flowLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown_timeClignotement).BeginInit();
             flowLayoutPanel4.SuspendLayout();
+            flowLayoutPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_timelunchMusic).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -56,13 +61,15 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(flowLayoutPanel2, 0, 1);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 0, 0);
-            tableLayoutPanel1.Controls.Add(bt_close, 0, 4);
+            tableLayoutPanel1.Controls.Add(bt_close, 0, 5);
             tableLayoutPanel1.Controls.Add(flowLayoutPanel3, 0, 2);
-            tableLayoutPanel1.Controls.Add(flowLayoutPanel4, 0, 3);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel4, 0, 4);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel5, 0, 3);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 7;
+            tableLayoutPanel1.RowCount = 8;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
             tableLayoutPanel1.RowStyles.Add(new RowStyle());
@@ -75,12 +82,13 @@
             // 
             // flowLayoutPanel2
             // 
+            flowLayoutPanel2.AutoSize = true;
             flowLayoutPanel2.Controls.Add(label2);
             flowLayoutPanel2.Controls.Add(lb_casqueSortie);
             flowLayoutPanel2.Dock = DockStyle.Fill;
-            flowLayoutPanel2.Location = new Point(3, 53);
+            flowLayoutPanel2.Location = new Point(3, 38);
             flowLayoutPanel2.Name = "flowLayoutPanel2";
-            flowLayoutPanel2.Size = new Size(794, 44);
+            flowLayoutPanel2.Size = new Size(794, 15);
             flowLayoutPanel2.TabIndex = 1;
             // 
             // label2
@@ -103,12 +111,13 @@
             // 
             // flowLayoutPanel1
             // 
+            flowLayoutPanel1.AutoSize = true;
             flowLayoutPanel1.Controls.Add(label1);
             flowLayoutPanel1.Controls.Add(cb_audioStandard);
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(3, 3);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(794, 44);
+            flowLayoutPanel1.Size = new Size(794, 29);
             flowLayoutPanel1.TabIndex = 2;
             // 
             // label1
@@ -134,7 +143,7 @@
             // 
             bt_close.BackColor = Color.Lime;
             bt_close.Dock = DockStyle.Fill;
-            bt_close.Location = new Point(3, 259);
+            bt_close.Location = new Point(3, 164);
             bt_close.Name = "bt_close";
             bt_close.Size = new Size(794, 44);
             bt_close.TabIndex = 3;
@@ -144,12 +153,13 @@
             // 
             // flowLayoutPanel3
             // 
+            flowLayoutPanel3.AutoSize = true;
             flowLayoutPanel3.Controls.Add(label3);
             flowLayoutPanel3.Controls.Add(numericUpDown_timeClignotement);
             flowLayoutPanel3.Dock = DockStyle.Fill;
-            flowLayoutPanel3.Location = new Point(3, 103);
+            flowLayoutPanel3.Location = new Point(3, 59);
             flowLayoutPanel3.Name = "flowLayoutPanel3";
-            flowLayoutPanel3.Size = new Size(794, 44);
+            flowLayoutPanel3.Size = new Size(794, 29);
             flowLayoutPanel3.TabIndex = 4;
             // 
             // label3
@@ -172,12 +182,13 @@
             // 
             // flowLayoutPanel4
             // 
+            flowLayoutPanel4.AutoSize = true;
             flowLayoutPanel4.Controls.Add(label4);
             flowLayoutPanel4.Controls.Add(cb_BrowserYTMusic);
             flowLayoutPanel4.Dock = DockStyle.Fill;
-            flowLayoutPanel4.Location = new Point(3, 153);
+            flowLayoutPanel4.Location = new Point(3, 129);
             flowLayoutPanel4.Name = "flowLayoutPanel4";
-            flowLayoutPanel4.Size = new Size(794, 100);
+            flowLayoutPanel4.Size = new Size(794, 29);
             flowLayoutPanel4.TabIndex = 5;
             // 
             // label4
@@ -201,6 +212,34 @@
             cb_BrowserYTMusic.TabIndex = 1;
             cb_BrowserYTMusic.SelectedIndexChanged += cb_BrowserYTMusic_SelectedIndexChanged;
             // 
+            // flowLayoutPanel5
+            // 
+            flowLayoutPanel5.AutoSize = true;
+            flowLayoutPanel5.Controls.Add(label5);
+            flowLayoutPanel5.Controls.Add(numericUpDown_timelunchMusic);
+            flowLayoutPanel5.Dock = DockStyle.Fill;
+            flowLayoutPanel5.Location = new Point(3, 94);
+            flowLayoutPanel5.Name = "flowLayoutPanel5";
+            flowLayoutPanel5.Size = new Size(794, 29);
+            flowLayoutPanel5.TabIndex = 6;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(3, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(277, 15);
+            label5.TabIndex = 0;
+            label5.Text = "temp avant lancement musique d'apres (seconde) :";
+            // 
+            // numericUpDown_timelunchMusic
+            // 
+            numericUpDown_timelunchMusic.Location = new Point(286, 3);
+            numericUpDown_timelunchMusic.Name = "numericUpDown_timelunchMusic";
+            numericUpDown_timelunchMusic.Size = new Size(120, 23);
+            numericUpDown_timelunchMusic.TabIndex = 1;
+            numericUpDown_timelunchMusic.ValueChanged += numericUpDown_timelunchMusic_ValueChanged;
+            // 
             // ParametresForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -210,6 +249,7 @@
             Name = "ParametresForm";
             Text = "ParametresForm";
             tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel1.PerformLayout();
             flowLayoutPanel2.ResumeLayout(false);
             flowLayoutPanel2.PerformLayout();
             flowLayoutPanel1.ResumeLayout(false);
@@ -219,6 +259,9 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown_timeClignotement).EndInit();
             flowLayoutPanel4.ResumeLayout(false);
             flowLayoutPanel4.PerformLayout();
+            flowLayoutPanel5.ResumeLayout(false);
+            flowLayoutPanel5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown_timelunchMusic).EndInit();
             ResumeLayout(false);
         }
 
@@ -238,5 +281,8 @@
         private FlowLayoutPanel flowLayoutPanel4;
         private Label label4;
         private ComboBox cb_BrowserYTMusic;
+        private FlowLayoutPanel flowLayoutPanel5;
+        private Label label5;
+        private NumericUpDown numericUpDown_timelunchMusic;
     }
 }

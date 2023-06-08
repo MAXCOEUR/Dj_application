@@ -19,6 +19,7 @@ namespace Dj_application.View
         private string browser = "";
         public PalettesCouleur palettesCouleur { get; }
         private int timeSecondeClignotement;
+        private int timeLunchMusique;
 
         public static ParametresForm Instance
         {
@@ -42,6 +43,7 @@ namespace Dj_application.View
             setColor();
             Initial();
             numericUpDown_timeClignotement.Value = 30;
+            numericUpDown_timelunchMusic.Value = 10;
             SortieAudioParDefaut();
 
         }
@@ -170,6 +172,15 @@ namespace Dj_application.View
         public string getBrowser()
         {
             return browser;
+        }
+
+        private void numericUpDown_timelunchMusic_ValueChanged(object sender, EventArgs e)
+        {
+            timeLunchMusique = (int)numericUpDown_timelunchMusic.Value;
+        }
+        public int getTimelunchMusic()
+        {
+            return timeLunchMusique;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Dj_application.model
     using OxyPlot.Axes;
     using OxyPlot.Series;
     using OxyPlot.WindowsForms;
+    using System.Runtime.InteropServices;
 
     public class LecteurAudio
     {
@@ -73,7 +74,7 @@ namespace Dj_application.model
         private void UpdatePosition()
         {
             OnPositionChanged(getPositionActuelleSecondes());
-            if (getPositionActuelleSecondes() >= getDureeTotalSeconde()-1)
+            if (getPositionActuelleSecondes() >= getDureeTotalSeconde()-parametresForm.getTimelunchMusic())
             {
                 FinLecture?.Invoke(this, EventArgs.Empty);
             }
@@ -137,6 +138,10 @@ namespace Dj_application.model
         {
             try
             {
+                if(lecteurAudio== null)
+                {
+                    throw new Exception();
+                }
                 long positionActuelleEnOctets = lecteurAudio.Position;
                 return (double)positionActuelleEnOctets / lecteurAudio.WaveFormat.AverageBytesPerSecond;
             }
@@ -190,8 +195,13 @@ namespace Dj_application.model
         private float[] GetWaveformSamples(int sizeZone)
         {
             const int bufferSize = 8192; // Taille du tampon d'échantillons
+            const int nbrDonneeParBuffer = 5;
 
             AudioFileReader lecteurAudioTmp = new AudioFileReader(lecteurAudio.FileName);
+            int totalSamples = (int)(lecteurAudioTmp.TotalTime.TotalSeconds * lecteurAudioTmp.WaveFormat.SampleRate);
+            
+
+
 
 
             var sampleAggregator = new SampleAggregator(lecteurAudio.WaveFormat.SampleRate);
@@ -200,19 +210,23 @@ namespace Dj_application.model
             int bytesRead;
 
             // Calcul du facteur de réduction
-            int totalSamples = (int)(lecteurAudioTmp.TotalTime.TotalSeconds * lecteurAudioTmp.WaveFormat.SampleRate);
-            int reductionFactor = Math.Max(1, totalSamples / sizeZone);
+            
+
 
             long totalBytes = lecteurAudioTmp.Length;
             int oldPourcentage = 0;
 
             while ((bytesRead = lecteurAudioTmp.Read(buffer, 0, buffer.Length)) > 0)
             {
-                for (int i = 0; i < bytesRead; i += reductionFactor)
+                sampleAggregator.AddSamples(buffer, 0, bytesRead);
+
+                List<float> floats = sampleAggregator.GetSnapshot();
+                int reduction = floats.Count / nbrDonneeParBuffer;
+                for (int i = 0; i < floats.Count; i+= reduction)
                 {
-                    sampleAggregator.AddSamples(buffer, 0, bytesRead);
-                    waveform.Add(sampleAggregator.GetSnapshot().Last());
+                    waveform.Add(floats[i]);
                 }
+                
 
                 long currentPosition = lecteurAudioTmp.Position;
                 double percentage = (double)currentPosition / totalBytes * 100;
@@ -232,7 +246,7 @@ namespace Dj_application.model
 
         private void GenerateGraph(PlotView view)
         {
-            int sizeZone = view.Height;
+            int sizeZone = view.Width;
             var lineSeries = new LineSeries();
             
             float[] waveform = GetWaveformSamples(sizeZone);
