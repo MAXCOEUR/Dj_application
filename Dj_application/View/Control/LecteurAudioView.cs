@@ -151,36 +151,54 @@ namespace Dj_application.View.Control
         {
             return numeroPiste;
         }
+        //public void setMarker(LineAnnotation marker, double pourcentage)
+        //{
+        //    if (positionMarker != null)
+        //    {
+        //        PlotModel plotModel = pv_graph.ActualModel;
+
+        //        double sizeZone = plotModel.Axes[1].Maximum;
+
+        //        double newPosition = pourcentage * sizeZone;
+
+        //        marker.X = newPosition;
+
+        //        if (marker.Color == OxyColors.Red)
+        //        {
+        //            if (!isLoading)
+        //            {
+        //                progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
+        //            }
+        //        }
+        //        else
+        //        {
+        //            progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
+        //        }
+
+
+
+
+        //        pv_graph.InvalidatePlot(false);
+        //    }
+        //}
+
         public void setMarker(LineAnnotation marker, double pourcentage)
         {
             if (positionMarker != null)
             {
                 PlotModel plotModel = pv_graph.ActualModel;
-
                 double sizeZone = plotModel.Axes[1].Maximum;
-
                 double newPosition = pourcentage * sizeZone;
-
                 marker.X = newPosition;
 
-                if (marker.Color == OxyColors.Red)
+                if (marker.Color == OxyColors.Red && !isLoading)
                 {
-                    if (!isLoading)
-                    {
-                        progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
-                    }
+                    progressBarAnnotation.MaximumX = newPosition;
                 }
-                else
-                {
-                    progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
-                }
-
-
-
-
                 pv_graph.InvalidatePlot(false);
             }
         }
+
 
         public void setvolume(int volume = -1)
         {

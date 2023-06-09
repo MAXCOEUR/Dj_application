@@ -72,7 +72,9 @@
             treev_arbreFolder.Name = "treev_arbreFolder";
             treev_arbreFolder.Size = new Size(209, 442);
             treev_arbreFolder.TabIndex = 2;
+            treev_arbreFolder.AfterSelect += treev_arbreFolder_AfterSelect;
             treev_arbreFolder.NodeMouseClick += treev_arbreFolder_NodeMouseClick;
+            treev_arbreFolder.KeyUp += treev_arbreFolder_KeyUp;
             // 
             // spCon_explorateur
             // 

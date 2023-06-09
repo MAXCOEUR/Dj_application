@@ -21,6 +21,11 @@ namespace Dj_application.View.Control
         public event EventHandler<Musique> musiqueSelected;
         public event EventHandler<Tuple<int, Musique>> musiqueSelectedWithPiste;
 
+        private bool arrowLeftPressed = false;
+        private DateTime lastArrowLeftPressTime;
+        private bool arrowRightPressed = false;
+        private DateTime lastArrowRightPressTime;
+
         private ParametresForm parametresForm = ParametresForm.Instance;
 
         private void setColor()
@@ -238,6 +243,23 @@ namespace Dj_application.View.Control
                 Musique musique = selectedRow.Cells["MusiqueColumn"].Tag as Musique;
                 musiqueSelected?.Invoke(this, musique);
             }
+            else if (e.KeyCode == Keys.Left)
+            {
+                if (arrowLeftPressed && (DateTime.Now - lastArrowLeftPressTime).TotalMilliseconds < 500)
+                {
+                    // Changer le focus sur le DataGridView
+                    treev_arbreFolder.Focus();
+                }
+                else
+                {
+                    arrowLeftPressed = true;
+                    lastArrowLeftPressTime = DateTime.Now;
+                }
+            }
+            else
+            {
+                arrowLeftPressed = false;
+            }
         }
 
         private void splitContainer1_SizeChanged(object sender, EventArgs e)
@@ -296,21 +318,7 @@ namespace Dj_application.View.Control
 
         private void treev_arbreFolder_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (e.Node != null)
-                {
-                    string nodeFullPath = e.Node.FullPath;
-                    string[] pathSegments = nodeFullPath.Split('\\');
-                    string[] remainingSegments = pathSegments.Skip(1).ToArray();
-                    string selectedFolderPath = string.Join("/", remainingSegments);
-                    selectedFolderPath = Path.Combine(rootFolder, selectedFolderPath);
-
-                    currentFolder = selectedFolderPath;
-                    LoadFiles(selectedFolderPath);
-                }
-            }
-            else if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right)
             {
                 if (e.Node != null)
                 {
@@ -348,5 +356,40 @@ namespace Dj_application.View.Control
             }
         }
 
+        private void treev_arbreFolder_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node != null)
+            {
+                string nodeFullPath = e.Node.FullPath;
+                string[] pathSegments = nodeFullPath.Split('\\');
+                string[] remainingSegments = pathSegments.Skip(1).ToArray();
+                string selectedFolderPath = string.Join("/", remainingSegments);
+                selectedFolderPath = Path.Combine(rootFolder, selectedFolderPath);
+
+                currentFolder = selectedFolderPath;
+                LoadFiles(selectedFolderPath);
+            }
+        }
+
+        private void treev_arbreFolder_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                if (arrowRightPressed && (DateTime.Now - lastArrowRightPressTime).TotalMilliseconds < 500)
+                {
+                    // Changer le focus sur le DataGridView
+                    dgv_listMusique.Focus();
+                }
+                else
+                {
+                    arrowRightPressed = true;
+                    lastArrowRightPressTime = DateTime.Now;
+                }
+            }
+            else
+            {
+                arrowRightPressed = false;
+            }
+        }
     }
 }

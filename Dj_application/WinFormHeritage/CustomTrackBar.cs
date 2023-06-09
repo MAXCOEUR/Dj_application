@@ -32,6 +32,11 @@ namespace Dj_application.WinFormHeritage
             thread = new Thread(threadMethode);
             thread.Start();
         }
+
+        public void setVitesse(int vit)
+        {
+            vitesse = vit;
+        }
         public void setDefaultPos(int def)
         {
             defaultPos = def;

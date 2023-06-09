@@ -195,7 +195,7 @@ namespace Dj_application.model
         private float[] GetWaveformSamples(int sizeZone)
         {
             const int bufferSize = 8192; // Taille du tampon d'échantillons
-            const int nbrDonneeParBuffer = 5;
+            const int nbrDonneeParBuffer = 2;
 
             AudioFileReader lecteurAudioTmp = new AudioFileReader(lecteurAudio.FileName);
             int totalSamples = (int)(lecteurAudioTmp.TotalTime.TotalSeconds * lecteurAudioTmp.WaveFormat.SampleRate);

@@ -41,7 +41,7 @@ namespace Dj_application.View.Control
         {
             this.Dock = DockStyle.Fill;
             InitializeComponent();
-
+            tb_mixPiste.setVitesse(2);
             setColor();
 
             tableLayout.Dock = DockStyle.Fill;
