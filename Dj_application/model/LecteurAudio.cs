@@ -162,15 +162,20 @@ namespace Dj_application.model
         {
             Thread thread = new Thread(() =>
             {
-                lock (lockObject)
+                try
                 {
-                    lecteurAudioAvecVolume.Volume = volume;
-                    if (!isPlaying)
+                    lock (lockObject)
                     {
-                        sortieAudio.Stop();
-                        sortieAudio.Init(lecteurAudioAvecVolume);
+                        lecteurAudioAvecVolume.Volume = volume;
+                        if (!isPlaying)
+                        {
+                            sortieAudio.Stop();
+                            sortieAudio.Init(lecteurAudioAvecVolume);
+                        }
                     }
                 }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                
             });
             thread.Start();
         }
