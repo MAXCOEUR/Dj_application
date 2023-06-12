@@ -49,6 +49,7 @@ namespace Dj_application.View
             this.Controls.Add(tabControl1);
 
             InitializeComponent();
+            WindowState=FormWindowState.Maximized;
             initTab();
             setColor();
 
@@ -64,7 +65,7 @@ namespace Dj_application.View
 
             toolStripButton1.BackColor = parametresForm.palettesCouleur.Mise_Evidence;
 
-            
+
         }
 
         private void setColor()

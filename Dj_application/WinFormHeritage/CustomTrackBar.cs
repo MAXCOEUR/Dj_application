@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -81,7 +82,7 @@ namespace Dj_application.WinFormHeritage
 
         private void changePosition()
         {
-            if(targetPosition==Value)
+            if(Value < targetPosition + vitesse && Value > targetPosition - vitesse)
             {
                 return;
             }
@@ -152,6 +153,12 @@ namespace Dj_application.WinFormHeritage
                 targetPosition = defaultPos;
                 Invalidate();
             }
+        }
+        protected override void OnScroll(EventArgs e)
+        {
+            base.OnScroll(e);
+            targetPosition=Value; 
+            Invalidate();
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
