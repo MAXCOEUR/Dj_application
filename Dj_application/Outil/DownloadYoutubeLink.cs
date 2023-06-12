@@ -55,7 +55,7 @@ namespace Dj_application.Outil
 
                         // Extraire le nom du navigateur à partir du chemin d'accès
                         string browserName = Path.GetFileNameWithoutExtension(browserPath);
-                        return (browserName == "iexplore")?"edge":browserName;
+                        return (browserName == "iexplore")? "microsoftedge" : browserName;
                     }
                 }
             }
@@ -75,8 +75,8 @@ namespace Dj_application.Outil
             {
                 arguments += " --ffmpeg-location \"" + ffmpegPath + "\"";
             }
-
-            arguments += " --cookies-from-browser "+GetDefaultBrowser();
+            string browser = GetDefaultBrowser();
+            arguments += " --cookies-from-browser "+((browser == "microsoftedge") ? "edge" : browser);
 
             arguments += " " + url;
 
