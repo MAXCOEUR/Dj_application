@@ -15,7 +15,7 @@ namespace Dj_application.Outil
 {
     internal class BpmGenerate
     {
-        private const string command = ".\\lib\\BPM_Detector\\main.exe";
+        private const string command = ".\\lib\\BPM_Detect.exe";
         static public event EventHandler<Musique> BpmTrouver;
 
         public void getBpm(Musique musique)

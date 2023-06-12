@@ -438,27 +438,19 @@ namespace Dj_application.View.Control
 
         private void Reprendre()
         {
-            try
-            {
-                if (lecteurAudio == null) return;
-                lecteurAudio.Reprendre();
-                isPlay = true;
-                bt_play_pause.BackColor = Color.Red;
-                bt_play_pause.BackgroundImage = Resource.bouton_pause;
-            }
-            catch { }
+            if (lecteurAudio == null) return;
+            lecteurAudio.Reprendre();
+            isPlay = true;
+            bt_play_pause.BackColor = Color.Red;
+            bt_play_pause.BackgroundImage = Resource.bouton_pause;
 
         }
         private void MettreEnPause()
         {
-            try
-            {
-                lecteurAudio.MettreEnPause();
-                isPlay = false;
-                bt_play_pause.BackColor = Color.Green;
-                bt_play_pause.BackgroundImage = Resource.bouton_play;
-            }
-            catch { }
+            lecteurAudio.MettreEnPause();
+            isPlay = false;
+            bt_play_pause.BackColor = Color.Green;
+            bt_play_pause.BackgroundImage = Resource.bouton_play;
 
         }
 

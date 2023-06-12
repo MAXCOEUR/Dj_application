@@ -1,6 +1,7 @@
 ﻿using Dj_application.model;
 using Dj_application.Singleton;
 using Dj_application.View;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,11 +27,40 @@ namespace Dj_application.Outil
         {
             this.url = url;
             win = SingletonWindow.getInstance().window;
+
             win.StartLoading();
             Task.Run(() =>
             {
                 downloadYoutubeLink();
             });
+        }
+
+        private string GetDefaultBrowser()
+        {
+            const string key = @"HTTP\shell\open\command";
+            using (RegistryKey registryKey = Registry.ClassesRoot.OpenSubKey(key, false))
+            {
+                if (registryKey != null)
+                {
+                    // Obtenir la valeur par défaut du sous-clé
+                    string browserPath = registryKey.GetValue(null) as string;
+                    if (!string.IsNullOrEmpty(browserPath))
+                    {
+                        // Extraire le chemin d'accès du navigateur
+                        browserPath = browserPath.ToLower().Replace("\"", "");
+                        if (browserPath.EndsWith(".exe"))
+                        {
+                            browserPath = browserPath.Substring(0, browserPath.LastIndexOf(".exe") + 4);
+                        }
+
+                        // Extraire le nom du navigateur à partir du chemin d'accès
+                        string browserName = Path.GetFileNameWithoutExtension(browserPath);
+                        return (browserName == "iexplore")?"edge":browserName;
+                    }
+                }
+            }
+
+            return "Navigateur par défaut non trouvé";
         }
 
         private void downloadYoutubeLink()
@@ -46,7 +76,7 @@ namespace Dj_application.Outil
                 arguments += " --ffmpeg-location \"" + ffmpegPath + "\"";
             }
 
-            arguments += " --cookies-from-browser "+parametresForm.getBrowser().ToLower();
+            arguments += " --cookies-from-browser "+GetDefaultBrowser();
 
             arguments += " " + url;
 
@@ -72,19 +102,7 @@ namespace Dj_application.Outil
             Console.WriteLine(output);
             if (!output.Contains("[download]"))
             {
-                if (parametresForm.getBrowser().ToLower() == "chrome")
-                {
-                    Process.Start("cmd", $"/c start chrome https://music.youtube.com/");
-                }
-                else if (parametresForm.getBrowser().ToLower() == "firefox")
-                {
-                    Process.Start("cmd", $"/c start firefox https://music.youtube.com/");
-                }
-                else
-                {
-                    Process.Start("cmd", $"/c start msedge https://music.youtube.com/");
-                }
-                MessageBox.Show("La ou les musiques ne peuvent pas être téléchargées. Essayez sur YouTube classique.", "Alerte", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Process.Start("cmd", $"/c start " + GetDefaultBrowser() + " https://music.youtube.com/");
             }
             string[] files = Directory.GetFiles(Path.GetFullPath(".\\lib\\tmpYoutube\\"));
             string target = Path.GetFullPath(".\\musique\\telechargement\\");

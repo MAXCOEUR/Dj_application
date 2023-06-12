@@ -83,7 +83,11 @@ namespace Dj_application.model
         public void Jouer()
         {
             sortieAudio.Play();
-            isPlaying = true;
+            lock (lockObject)
+            {
+                isPlaying = true;
+            }
+                
             threadPlay = new Thread(() =>
             {
                 double lastTime = -1;
@@ -114,13 +118,15 @@ namespace Dj_application.model
 
         public void MettreEnPause()
         {
-            isPlaying=false;
+            lock (lockObject)
+                isPlaying =false;
             sortieAudio.Pause();
         }
 
         public void Reprendre()
         {
-            isPlaying = true;
+            lock (lockObject)
+                isPlaying = true;
             sortieAudio.Play();
         }
 
@@ -174,7 +180,7 @@ namespace Dj_application.model
                         }
                     }
                 }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                 
             });
             thread.Start();

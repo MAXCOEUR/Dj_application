@@ -72,8 +72,21 @@
   </ItemGroup>
 
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-	  <Exec Command="xcopy /E /I /D /Y &quot;$(ProjectDir)lib&quot; &quot;$(TargetDir)lib&quot;&#xD;&#xA;xcopy /E /I /D /Y &quot;$(ProjectDir)musique&quot; &quot;$(TargetDir)musique&quot;" />
-	</Target>
+	<ItemGroup>
+	  <None Update="lib\BPM_Detect.exe">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="lib\tmpSpotify\spotdl.exe">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="lib\tmpYoutube\yt-dlp.exe">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="musique\telechargement\" />
+	</ItemGroup>
 
 </Project>

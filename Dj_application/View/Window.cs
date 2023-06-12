@@ -46,11 +46,13 @@ namespace Dj_application.View
             imageListPerso.Add(Resource.YouTube_Logo);
             imageListPerso.Add(Resource.Spotify);
             tabControl1 = new CustomTabControl(imageListPerso);
+            this.Controls.Add(tabControl1);
+
             InitializeComponent();
             initTab();
             setColor();
 
-            
+
 
             tabPage1.Text = "0000000000000000";
             tabPage3.Text = "0000000000000000";
@@ -61,6 +63,8 @@ namespace Dj_application.View
             nbrPiste = int.Parse((string)cb_nbrPiste.SelectedItem);
 
             toolStripButton1.BackColor = parametresForm.palettesCouleur.Mise_Evidence;
+
+            
         }
 
         private void setColor()
@@ -98,7 +102,7 @@ namespace Dj_application.View
             tabPage1.SuspendLayout();
             tabPage2.SuspendLayout();
             tabPage4.SuspendLayout();
-            
+
             // 
             // tabPage1
             // 

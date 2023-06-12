@@ -35,11 +35,7 @@ namespace Dj_application.View
             toolStripButton1 = new ToolStripButton();
             Pb_LoadingDownload = new ToolStripProgressBar();
             cb_nbrPiste = new ToolStripComboBox();
-            
             toolStrip1.SuspendLayout();
-            
-            tabControl1.SuspendLayout();
-            
             SuspendLayout();
             // 
             // toolStrip1
@@ -78,17 +74,15 @@ namespace Dj_application.View
             cb_nbrPiste.Name = "cb_nbrPiste";
             cb_nbrPiste.Size = new Size(121, 32);
             cb_nbrPiste.SelectedIndexChanged += cb_nbrPiste_SelectedIndexChanged;
-            
             // 
             // Window
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(tabControl1);
             Controls.Add(toolStrip1);
             Name = "Window";
-            Text = "Window";
+            Text = "DJ_Application";
             FormClosed += Window_FormClosed;
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
