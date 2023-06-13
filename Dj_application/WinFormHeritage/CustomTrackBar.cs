@@ -21,6 +21,7 @@ namespace Dj_application.WinFormHeritage
         private ParametresForm parametresForm = ParametresForm.Instance;
 
         private int targetPosition;
+        private System.Windows.Forms.Timer updateTimer;
         private Thread thread;
 
         public CustomTrackBar()
@@ -30,8 +31,10 @@ namespace Dj_application.WinFormHeritage
             targetPosition = defaultPos;
             SetStyle(ControlStyles.UserPaint, true);
 
-            thread = new Thread(threadMethode);
-            thread.Start();
+            updateTimer = new System.Windows.Forms.Timer();
+            updateTimer.Interval = 10; // Définissez l'intervalle de mise à jour du marqueur
+            updateTimer.Tick += UpdateTimer_Tick;
+            updateTimer.Start();
         }
 
         public void setVitesse(int vit)
@@ -45,38 +48,18 @@ namespace Dj_application.WinFormHeritage
         public void setTargetPosition(int targetPosition)
         {
             this.targetPosition=targetPosition;
+            
         }
 
-        private void threadMethode()
+        private void UpdateTimer_Tick(object sender, EventArgs e)
         {
-            while (true)
+            try
             {
-                try
-                {
-                    if (tokenSource.Token.IsCancellationRequested)
-                    {
-                        break;
-                    }
-
-                    if (this.InvokeRequired)
-                    {
-                        this.Invoke((MethodInvoker)delegate
-                        {
-                            changePosition();
-                        });
-                    }
-                    else
-                    {
-                        changePosition();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine(ex.ToString());
-                }
-                
-                
-                Thread.Sleep(10);
+                changePosition();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.ToString());
             }
         }
 
@@ -94,7 +77,7 @@ namespace Dj_application.WinFormHeritage
             {
                 Value -= vitesse;
             }
-            Invalidate();
+            this.Invalidate();
         }
 
         protected override void OnPaint(PaintEventArgs e)

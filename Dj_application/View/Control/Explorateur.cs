@@ -84,7 +84,7 @@ namespace Dj_application.View.Control
                 column.ReadOnly = true;
             }
 
-            string sourceFolder = Path.Combine(Application.StartupPath, "Musique");
+            string sourceFolder = Path.GetFullPath("musique");
 
             // Vérifier si le dossier "Musique" existe
             if (Directory.Exists(sourceFolder))

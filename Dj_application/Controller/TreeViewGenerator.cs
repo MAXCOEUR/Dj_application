@@ -15,7 +15,7 @@ namespace Dj_application.Controller
         public void GenerateTree(string rootFolder)
         {
             treeView.Nodes.Clear();
-
+            rootFolder = rootFolder.TrimEnd('\\');
             var rootNode = new TreeNode(Path.GetFileName(rootFolder));
             treeView.Nodes.Add(rootNode);
 

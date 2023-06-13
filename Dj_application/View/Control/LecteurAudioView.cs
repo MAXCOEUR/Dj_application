@@ -32,6 +32,7 @@ namespace Dj_application.View.Control
         private ListeAttente listeAttente;
 
         private int volumeMix = 100;
+        private System.Windows.Forms.Timer updateTimer;
 
         private ParametresForm parametresForm = ParametresForm.Instance;
 
@@ -126,6 +127,10 @@ namespace Dj_application.View.Control
 
             initGrpahEmpty();
 
+            updateTimer = new System.Windows.Forms.Timer();
+            updateTimer.Interval = 1000; // Définissez l'intervalle de mise à jour du marqueur
+            updateTimer.Tick += UpdateTimer_Tick;
+
         }
 
         private void initGrpahEmpty()
@@ -151,43 +156,12 @@ namespace Dj_application.View.Control
         {
             return numeroPiste;
         }
-        //public void setMarker(LineAnnotation marker, double pourcentage)
-        //{
-        //    if (positionMarker != null)
-        //    {
-        //        PlotModel plotModel = pv_graph.ActualModel;
-
-        //        double sizeZone = plotModel.Axes[1].Maximum;
-
-        //        double newPosition = pourcentage * sizeZone;
-
-        //        marker.X = newPosition;
-
-        //        if (marker.Color == OxyColors.Red)
-        //        {
-        //            if (!isLoading)
-        //            {
-        //                progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
-        //            }
-        //        }
-        //        else
-        //        {
-        //            progressBarAnnotation.MaximumX = newPosition; // Mettez à jour la nouvelle position du marqueur
-        //        }
-
-
-
-
-        //        pv_graph.InvalidatePlot(false);
-        //    }
-        //}
 
         public void setMarker(LineAnnotation marker, double pourcentage)
         {
             if (positionMarker != null)
             {
-                PlotModel plotModel = pv_graph.ActualModel;
-                double sizeZone = plotModel.Axes[1].Maximum;
+                double sizeZone = pv_graph.ActualModel.Axes[1].Maximum;
                 double newPosition = pourcentage * sizeZone;
                 marker.X = newPosition;
 
@@ -195,9 +169,11 @@ namespace Dj_application.View.Control
                 {
                     progressBarAnnotation.MaximumX = newPosition;
                 }
+
                 pv_graph.InvalidatePlot(false);
             }
         }
+
 
 
         public void setvolume(int volume = -1)
@@ -231,12 +207,9 @@ namespace Dj_application.View.Control
         {
             if (lecteurAudio != null)
             {
-                lecteurAudio.PositionChanged -= lecteurAudio_PositionChanged;
                 lecteurAudio.FinishGraph -= lecteurAudio_FinishGraph;
                 lecteurAudio.LoadingPositionChanged -= lecteurAudio_LoadingPositionChanged;
                 lecteurAudio.clickOnModel -= lecteurAudio_clickOnModel;
-                lecteurAudio.FinLecture -= LecteurAudio_FinLecture;
-                lecteurAudio.under30Second -= LecteurAudio_under30Second;
                 BpmGenerate.BpmTrouver -= bpmGenerate_BpmTrouver;
                 if (oldLecteurAudio != null)
                 {
@@ -245,12 +218,9 @@ namespace Dj_application.View.Control
                 oldLecteurAudio = lecteurAudio;
             }
             lecteurAudio = new LecteurAudio(musique);
-            lecteurAudio.PositionChanged += lecteurAudio_PositionChanged;
             lecteurAudio.FinishGraph += lecteurAudio_FinishGraph;
             lecteurAudio.LoadingPositionChanged += lecteurAudio_LoadingPositionChanged;
             lecteurAudio.clickOnModel += lecteurAudio_clickOnModel;
-            lecteurAudio.FinLecture += LecteurAudio_FinLecture;
-            lecteurAudio.under30Second += LecteurAudio_under30Second;
             BpmGenerate.BpmTrouver += bpmGenerate_BpmTrouver;
 
             ParametresForm pf = ParametresForm.Instance;
@@ -307,7 +277,7 @@ namespace Dj_application.View.Control
             lecteurAudio.StartGeneratingPlotModel(pv_graph);
         }
 
-        private void LecteurAudio_under30Second(object sender, bool b)
+        private void under30Second(bool b)
         {
             if (isFlash != b)
             {
@@ -351,7 +321,7 @@ namespace Dj_application.View.Control
                 pv_graph.BackColor = parametresForm.palettesCouleur.Accentuation;
             }
         }
-        private void LecteurAudio_FinLecture(object sender, EventArgs e)
+        private void FinLecture()
         {
             if (InvokeRequired)
             {
@@ -409,37 +379,29 @@ namespace Dj_application.View.Control
             pv_graph_MouseClick(pv_graph, mouseEventArgs);
         }
 
-
-
-        private void lecteurAudio_PositionChanged(object sender, double position)
+        private void UpdateTimer_Tick(object sender, EventArgs e)
         {
             if (lecteurAudio == null) return;
             try
             {
-                int etat = (int)(lecteurAudio.getPositionActuellePourcentage() * 1000);
                 int currentSec = (int)lecteurAudio.getPositionActuelleSecondes();
-                if (pv_graph.InvokeRequired)
+                int totalSec = (int)lecteurAudio.getDureeTotalSeconde();
+                lb_timeNow.Text = currentSec.ToString();
+                setMarker(positionMarker, lecteurAudio.getPositionActuellePourcentage());
+                if (currentSec >= totalSec - parametresForm.getTimelunchMusic())
                 {
-                    pv_graph.Invoke((MethodInvoker)delegate
-                    {
-                        lb_timeNow.Text = currentSec.ToString();
-                        setMarker(positionMarker, lecteurAudio.getPositionActuellePourcentage());
-                    });
+                    FinLecture();
                 }
-                else
-                {
-                    lb_timeNow.Text = currentSec.ToString();
-                    setMarker(positionMarker, lecteurAudio.getPositionActuellePourcentage());
-                }
+                under30Second(currentSec >= totalSec - parametresForm.getTimeClignotement());
             }
             catch { }
-
         }
 
         private void Reprendre()
         {
             if (lecteurAudio == null) return;
             lecteurAudio.Reprendre();
+            updateTimer.Start();
             isPlay = true;
             bt_play_pause.BackColor = Color.Red;
             bt_play_pause.BackgroundImage = Resource.bouton_pause;
@@ -448,6 +410,7 @@ namespace Dj_application.View.Control
         private void MettreEnPause()
         {
             lecteurAudio.MettreEnPause();
+            updateTimer.Stop();
             isPlay = false;
             bt_play_pause.BackColor = Color.Green;
             bt_play_pause.BackgroundImage = Resource.bouton_play;
@@ -471,6 +434,7 @@ namespace Dj_application.View.Control
                 double clickPercentage = (double)clickX / totalWidth;
                 double positionSeconds = clickPercentage * lecteurAudio.getDureeTotalSeconde();
                 lecteurAudio.Deplacer(positionSeconds);
+                setMarker(positionMarker, clickPercentage);
             }
         }
 

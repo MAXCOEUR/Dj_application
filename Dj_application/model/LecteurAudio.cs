@@ -25,12 +25,9 @@ namespace Dj_application.model
         private VolumeSampleProvider lecteurAudioAvecVolume;
 
         private Musique musique;
-        public event EventHandler<double> PositionChanged;
-        public event EventHandler<bool> under30Second;
         public event EventHandler<bool> FinishGraph;
         public event EventHandler<double> LoadingPositionChanged;
         public event EventHandler<OxyMouseDownEventArgs> clickOnModel;
-        public event EventHandler FinLecture;
 
         private Thread threadPlay;
         private bool isAvencementPlaying = true;
@@ -65,21 +62,6 @@ namespace Dj_application.model
             lecteurAudio.Dispose();
             sortieAudio.Dispose();
         }
-
-        private void OnPositionChanged(double position)
-        {
-            PositionChanged?.Invoke(this, position);
-        }
-
-        private void UpdatePosition()
-        {
-            OnPositionChanged(getPositionActuelleSecondes());
-            if (getPositionActuelleSecondes() >= getDureeTotalSeconde()-parametresForm.getTimelunchMusic())
-            {
-                FinLecture?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
         public void Jouer()
         {
             sortieAudio.Play();
@@ -87,33 +69,6 @@ namespace Dj_application.model
             {
                 isPlaying = true;
             }
-                
-            threadPlay = new Thread(() =>
-            {
-                double lastTime = -1;
-                while (isAvencementPlaying)
-                {
-                    try
-                    {
-                        double currentTime = getPositionActuelleSecondes();
-                        if (currentTime != lastTime)
-                        {
-                            UpdatePosition();
-                            lastTime = currentTime;
-                        }
-                        under30Second?.Invoke(this, currentTime >= getDureeTotalSeconde() - parametresForm.getTimeClignotement());
-
-                        Thread.Sleep(100); // Attendre 100 millisecondes
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.Error.WriteLine(ex.ToString());
-                    }
-                    
-                }
-            });
-
-            threadPlay.Start();
         }
 
         public void MettreEnPause()
@@ -164,26 +119,59 @@ namespace Dj_application.model
             return getPositionActuelleSecondes() / getDureeTotalSeconde();
         }
 
+        private DateTime lastVolumeUpdateTime = DateTime.MinValue;
+        private float lastVolume = 0.0f;
+        private System.Threading.Timer volumeUpdateTimer;
+
         public void setVolume(float volume)
         {
-            Thread thread = new Thread(() =>
+            lastVolume = volume;
+            DateTime currentTime = DateTime.Now;
+
+            if (currentTime.Subtract(lastVolumeUpdateTime).TotalSeconds >= 0.1)
             {
-                try
+                UpdateVolume();
+                lastVolumeUpdateTime = currentTime;
+            }
+            else
+            {
+                if (volumeUpdateTimer != null)
                 {
-                    lock (lockObject)
+                    volumeUpdateTimer.Dispose();
+                }
+
+                volumeUpdateTimer = new System.Threading.Timer(VolumeUpdateTimerCallback, null, 100, Timeout.Infinite);
+            }
+        }
+
+        private void UpdateVolume()
+        {
+            lock (lockObject)
+            {
+                Thread tmp = new Thread(() =>
+                {
+                    try
                     {
-                        lecteurAudioAvecVolume.Volume = volume;
+                        lecteurAudioAvecVolume.Volume = lastVolume;
                         if (!isPlaying)
                         {
                             sortieAudio.Stop();
                             sortieAudio.Init(lecteurAudioAvecVolume);
                         }
                     }
-                }
-                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
-                
-            });
-            thread.Start();
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.ToString());
+                    }
+                });
+                tmp.Start();
+            }
+        }
+
+        private void VolumeUpdateTimerCallback(object state)
+        {
+            UpdateVolume();
+            lastVolumeUpdateTime = DateTime.Now;
         }
         public Musique getMusique()
         {
